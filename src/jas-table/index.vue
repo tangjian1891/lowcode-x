@@ -5,14 +5,20 @@
       class=""
       v-for="template in jasTable?.templateList"
       :key="template.id"
+      :jasTable="jasTableRef"
     ></component>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { createJasTable } from './index'
+import { Field } from './ui-component'
+const fieldList = [Field.createJasInput()]
 
-const jasTable = createJasTable()
+const jasTable = createJasTable({ searchList: fieldList })
+const jasTableRef = ref(jasTable)
+
 // 提供jasTable实例给子组件使用
 
 defineOptions({

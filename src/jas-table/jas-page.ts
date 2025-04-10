@@ -1,6 +1,8 @@
 export class JasTable {
   private data: any[]
   templateList = []
+  searchList = []
+  searchForm = {}
 
   constructor(params: Partial<JasTable>) {
     Object.assign(this, params)

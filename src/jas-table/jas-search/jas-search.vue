@@ -1,7 +1,12 @@
 <template>
   <div class="jas-search">
     <!-- 搜索区域内容 -->
-    搜索1232313123
+    <component
+      :field="field"
+      :jasTable="jasTable"
+      :is="field.component"
+      v-for="field in jasTable.searchList"
+    />
   </div>
 </template>
 
@@ -12,6 +17,7 @@ import { PropType } from 'vue'
 const props = defineProps({
   jasTable: {
     type: Object as PropType<IJasTable>,
+    required: true,
   },
 })
 </script>

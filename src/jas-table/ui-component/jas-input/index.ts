@@ -1,3 +1,4 @@
+import JasInputVue from './index.vue'
 export class JasInput {
   type: string = 'text'
   modelValue: string | number = ''
@@ -14,17 +15,21 @@ export class JasInput {
   max: string | number = ''
   min: string | number = ''
   step: string | number = ''
-  resize: string = ''
+  resize: string = 'none'
   rows: number = 2
   autosize: boolean | { minRows?: number; maxRows?: number } = false
   form: string = ''
   tabindex: string | number = 0
   validateEvent: boolean = true
+  component = JasInputVue
   constructor(params: Partial<JasInput>) {
     Object.assign(this, params)
   }
+  onChange = (value) => {
+    console.log('数据变动率', value)
+  }
 }
 
-export function createInput(params: Partial<JasInput>) {
+export function createJasInput(params: Partial<JasInput>) {
   return new JasInput(params)
 }
