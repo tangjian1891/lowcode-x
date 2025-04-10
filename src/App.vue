@@ -10,7 +10,7 @@ import Child from './Child.vue'
 const obj = {
   onChange: change,
 }
-function change(params: type) {
+function change() {
   console.log('出发了')
 }
 </script>

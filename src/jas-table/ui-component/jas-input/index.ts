@@ -33,3 +33,9 @@ export class JasInput {
 export function createJasInput(params: Partial<JasInput>) {
   return new JasInput(params)
 }
+
+type JasType<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? T[K] : T[K]
+}
+
+export type IJasInput = JasType<JasInput>

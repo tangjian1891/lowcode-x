@@ -1,19 +1,19 @@
 <template>
-  <el-input
+  <el-input-number
     v-bind="field"
     :model-value="value"
     @update:modelValue="update"
     style="width: 240px"
-    placeholder="Please input"
+    placeholder="请输入数字"
   />
 </template>
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import { type IJasInput } from './index'
+import { type IJasNumber } from './index'
 const props = defineProps({
   field: {
-    type: Object as PropType<IJasInput>,
+    type: Object as PropType<IJasNumber>,
     required: true,
   },
   jasTable: Object,

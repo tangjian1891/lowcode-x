@@ -14,7 +14,7 @@
 import { ref } from 'vue'
 import { createJasTable } from './index'
 import { Field } from './ui-component'
-const fieldList = [Field.createJasInput()]
+const fieldList = [Field.createJasInput(), Field.createJasNumber()]
 
 const jasTable = createJasTable({ searchList: fieldList })
 const jasTableRef = ref(jasTable)
