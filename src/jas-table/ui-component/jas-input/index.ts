@@ -1,5 +1,7 @@
 import JasInputVue from './index.vue'
 export class JasInput {
+  id: string = ''
+  label: string = ''
   type: string = 'text'
   modelValue: string | number = ''
   maxlength: string | number = ''
@@ -30,8 +32,8 @@ export class JasInput {
   }
 }
 
-export function createJasInput(params: Partial<JasInput>) {
-  return new JasInput(params)
+export function createJasInput(id: string, label: string, params: Partial<JasInput>) {
+  return new JasInput({ id, label, ...params })
 }
 
 type JasType<T> = {

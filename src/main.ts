@@ -1,6 +1,6 @@
 // import './assets/main.css'
 
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
@@ -13,6 +13,28 @@ import 'element-plus/dist/index.css'
 
 const app = createApp(App)
 
+VxeUITable.VxeUI.formats.add('mySwitch', {
+  tableCellFormatMethod({ cellValue }) {
+    return cellValue === 1 ? '开启' : '关闭'
+  },
+})
+
+VxeUITable.VxeUI.formats.mixin({
+  myAmount: {
+    tableCellFormatMethod({ cellValue }, ...params) {
+      console.log(cellValue, params)
+
+      return '什么鬼东西'
+    },
+  },
+})
+
+VxeUITable.VxeUI.renderer.add('MyTableCellLink', {
+  // 默认显示模板
+  renderTableDefault(renderOpts, renderParams) {
+    return h('span', {}, '什么啊12312123')
+  },
+})
 app.use(createPinia())
 app.use(router)
 app.use(VxeUITable)

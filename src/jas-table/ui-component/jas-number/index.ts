@@ -1,6 +1,8 @@
 import JasNumberVue from './index.vue'
 
 export class JasNumber {
+  id: string = ''
+  label: string = ''
   type: string = 'number'
   modelValue: number = 0
   max: number = Infinity
@@ -26,8 +28,8 @@ export class JasNumber {
   }
 }
 
-export function createJasNumber(params: Partial<JasNumber>) {
-  return new JasNumber(params)
+export function createJasNumber(id: string, label: string, params: Partial<JasNumber>) {
+  return new JasNumber({ id, label, ...params })
 }
 
 type JasType<T> = {
