@@ -13,6 +13,21 @@ import 'element-plus/dist/index.css'
 import test from './test.vue'
 const app = createApp(App)
 
+VxeUI.setConfig({
+  table: {
+    autoResize: true,
+    stripe: true,
+    border: true,
+    round: true,
+    rowConfig: {
+      isHover: true,
+    },
+    columnConfig: {
+      resizable: true,
+    },
+  },
+})
+
 VxeUITable.VxeUI.renderer.add('MyTableCellLink', {
   // 默认显示模板
   renderTableDefault(renderOpts, renderParams) {

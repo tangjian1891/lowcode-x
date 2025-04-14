@@ -15,4 +15,17 @@ function change() {
 }
 </script>
 
-<style scoped></style>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+</style>
