@@ -14,15 +14,16 @@
 import { ref } from 'vue'
 import { createJasTable } from './index'
 import { Field } from './ui-component'
+import { nanoid } from 'nanoid'
 const fieldList = [
-  Field.createJasInput(1, '姓名'),
-  Field.createJasNumber(2, '年龄'),
-  Field.createJasInput(3, '地址'),
-  Field.createJasNumber(4, '电话'),
-  Field.createJasInput(5, '邮箱'),
-  Field.createJasNumber(6, '身份证号'),
-  Field.createJasInput(7, '备注'),
-  Field.createJasNumber(8, '分数'),
+  Field.createJasInput(nanoid(), '姓名'),
+  Field.createJasNumber(nanoid(), '年龄'),
+  Field.createJasInput(nanoid(), '地址'),
+  Field.createJasNumber(nanoid(), '电话'),
+  Field.createJasInput(nanoid(), '邮箱'),
+  Field.createJasNumber(nanoid(), '身份证号'),
+  Field.createJasInput(nanoid(), '备注'),
+  Field.createJasNumber(nanoid(), '分数'),
 ]
 
 const jasTable = createJasTable({ searchList: fieldList })

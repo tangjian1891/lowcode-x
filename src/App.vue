@@ -1,12 +1,10 @@
 <template>
   <jas-table></jas-table>
-
-  <child v-bind="obj"></child>
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'
-import Child from './Child.vue'
 
+function onclick(params: type) {}
 const obj = {
   onChange: change,
 }

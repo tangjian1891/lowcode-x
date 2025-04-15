@@ -17,7 +17,7 @@ export class JasNumber {
   controlsPosition: string = ''
   placeholder: string = '请输入数字'
   fieldName: string = '' // 字段名
-  component = JasNumberVue
+  component = markRaw(JasNumberVue)
 
   constructor(params: Partial<JasNumber>) {
     Object.assign(this, params)
@@ -28,7 +28,7 @@ export class JasNumber {
   }
 }
 
-export function createJasNumber(id: string, label: string, params: Partial<JasNumber>) {
+export function createJasNumber(id: string, label: string, params: Partial<JasNumber> = {}) {
   return new JasNumber({ id, label, ...params })
 }
 

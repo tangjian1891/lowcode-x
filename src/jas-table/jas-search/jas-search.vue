@@ -18,7 +18,7 @@
           <el-form-item>
             <el-button type="primary" @click="handleSearch">查询</el-button>
             <el-button @click="handleReset">重置</el-button>
-            <el-button v-if="hasMoreFields" type="text" @click="toggleExpand">
+            <el-button v-if="hasMoreFields" @click="toggleExpand">
               {{ expanded ? '收起' : '展开' }}
               <el-icon><ArrowUp v-if="expanded" /><ArrowDown v-else /></el-icon>
             </el-button>

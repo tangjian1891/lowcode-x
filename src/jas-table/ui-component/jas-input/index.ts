@@ -23,7 +23,7 @@ export class JasInput {
   form: string = ''
   tabindex: string | number = 0
   validateEvent: boolean = true
-  component = JasInputVue
+  component = markRaw(JasInputVue)
   constructor(params: Partial<JasInput>) {
     Object.assign(this, params)
   }
@@ -32,7 +32,7 @@ export class JasInput {
   }
 }
 
-export function createJasInput(id: string, label: string, params: Partial<JasInput>) {
+export function createJasInput(id: string, label: string, params: Partial<JasInput> = {}) {
   return new JasInput({ id, label, ...params })
 }
 
