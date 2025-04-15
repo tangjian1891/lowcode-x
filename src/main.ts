@@ -61,3 +61,13 @@ app.use(ElementPlus)
 app.mount('#app')
 
 console.log(123)
+
+export function assignContext(childApp: any) {
+  const mainApp: any = app
+  for (const key in mainApp._context) {
+    if (key !== 'app') {
+      const obj = mainApp._context[key]
+      childApp._context[key] = obj
+    }
+  }
+}

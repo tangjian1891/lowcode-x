@@ -1,5 +1,5 @@
 <template>
-  <el-button v-bind="button">{{ button.label }}</el-button>
+  <el-button v-bind="button" :onClick="onClick">{{ button.label }}</el-button>
 </template>
 
 <script lang="ts" setup>
@@ -12,6 +12,14 @@ const props = defineProps({
   },
   jasTable: Object,
 })
+console.log(props.button)
+const button = computed(() => {
+  return { ...props.button, onClick: undefined }
+})
+
+function onClick() {
+  props.button.onClick(props.button, props.jasTable)
+}
 </script>
 
 <style lang="scss" scoped></style>

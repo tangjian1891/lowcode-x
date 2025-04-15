@@ -1,6 +1,8 @@
 import { ElButton } from 'element-plus'
 import { nanoid } from 'nanoid'
 import JasButtonVue from './jas-button.vue'
+import type { IJasTable } from '../jas-page'
+import { createDialog } from '../jas-dialog'
 
 class JasButton {
   id = nanoid()
@@ -21,23 +23,34 @@ class JasButton {
   bg: boolean = false
   link: boolean = false
   underline: boolean = true
-  onClick = (e) => {
-    console.log(e)
-  }
+
   component = markRaw(JasButtonVue)
   constructor(props: Partial<JasButton> = {}) {
     // 用传入的属性覆盖默认值
     Object.assign(this, props)
   }
+
+  onClick(button: IJasButton, jasTable: IJasTable) {}
 }
 export default JasButton
 
-type JasButton<T> = {
+type JasType<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any ? T[K] : T[K]
 }
 
-export type IJasButton = JasButton<JasButton>
+export type IJasButton = JasType<JasButton>
 
 export function createJasButton(label, params: Partial<IJasButton> = {}) {
   return new JasButton({ label, ...params })
+}
+
+// 新增
+export function createJasButtonAdd(...args) {
+  const button = createJasButton(...args)
+  button.onClick = (button, jasTable) => {
+    console.log('新增', button, jasTable)
+
+    createDialog(jasTable)
+  }
+  return button
 }
