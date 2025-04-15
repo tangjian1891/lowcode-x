@@ -2,6 +2,7 @@ export class JasTable {
   templateList = []
   fields = []
   form = {}
+  buttons = []
 
   constructor(params: Partial<JasTable>) {
     Object.assign(this, params)

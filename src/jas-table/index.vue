@@ -15,7 +15,8 @@ import { ref } from 'vue'
 import { createJasTable } from './index'
 import { Field } from './ui-component'
 import { nanoid } from 'nanoid'
-const fieldList = [
+import { createJasButton } from './ui-button'
+const fields = [
   Field.createJasInput(nanoid(), '姓名', { fixed: 'left' }),
   Field.createJasNumber(nanoid(), '年龄'),
   Field.createJasInput(nanoid(), '地址'),
@@ -23,10 +24,11 @@ const fieldList = [
   Field.createJasInput(nanoid(), '邮箱'),
   Field.createJasNumber(nanoid(), '身份证号'),
   Field.createJasInput(nanoid(), '备注'),
-  Field.createJasNumber(nanoid(), '分数'),
+  Field.createJasNumber(nanoid(), '分数', { fixed: 'left' }),
 ]
+const buttons = [createJasButton('新增')]
 
-const jasTable = createJasTable({ fields: fieldList })
+const jasTable = createJasTable({ fields, buttons })
 const jasTableRef = ref(jasTable)
 
 // 提供jasTable实例给子组件使用
