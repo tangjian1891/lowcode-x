@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 // 定义表格区域的逻辑
-import { ref, reactive, type PropType, computed } from 'vue'
+import { type PropType } from 'vue'
 import type { IJasTable } from '../jas-page'
 import type { VxeGridProps } from 'vxe-table'
 const props = defineProps({
@@ -21,18 +21,20 @@ setTimeout(() => {
   i.value = 2
 }, 3000)
 const columns = computed(() => {
-  return props.jasTable.searchList.map((item, index) => {
-    console.log('执行多少次')
-
-    return {
-      field: item.id,
-      title: item.label,
-      visible: true,
-      showOverflow: true,
-      fixed: index === i.value ? 'left' : false,
-      width: 200,
-    }
-  })
+  return props.jasTable.fields
+    .map((item, index) => {
+      if (item.isTable) {
+        return {
+          field: item.id,
+          title: item.label,
+          visible: true,
+          showOverflow: true,
+          fixed: item.fixed,
+          width: 200,
+        }
+      }
+    })
+    .filter(Boolean)
 })
 const count = ref(0)
 const gridOptions = computed<VxeGridProps>(() => {

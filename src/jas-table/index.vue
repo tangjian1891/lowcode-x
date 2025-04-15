@@ -16,7 +16,7 @@ import { createJasTable } from './index'
 import { Field } from './ui-component'
 import { nanoid } from 'nanoid'
 const fieldList = [
-  Field.createJasInput(nanoid(), '姓名'),
+  Field.createJasInput(nanoid(), '姓名', { fixed: 'left' }),
   Field.createJasNumber(nanoid(), '年龄'),
   Field.createJasInput(nanoid(), '地址'),
   Field.createJasNumber(nanoid(), '电话'),
@@ -26,7 +26,7 @@ const fieldList = [
   Field.createJasNumber(nanoid(), '分数'),
 ]
 
-const jasTable = createJasTable({ searchList: fieldList })
+const jasTable = createJasTable({ fields: fieldList })
 const jasTableRef = ref(jasTable)
 
 // 提供jasTable实例给子组件使用

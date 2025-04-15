@@ -1,5 +1,6 @@
+import { Parent } from '../parent'
 import JasInputVue from './index.vue'
-export class JasInput {
+export class JasInput extends Parent {
   id: string = ''
   label: string = ''
   type: string = 'text'
@@ -25,6 +26,7 @@ export class JasInput {
   validateEvent: boolean = true
   component = markRaw(JasInputVue)
   constructor(params: Partial<JasInput>) {
+    super()
     Object.assign(this, params)
   }
   onChange = (value) => {

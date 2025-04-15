@@ -69,8 +69,8 @@ const layoutComputed = computed(() => {
 
   // 计算字段占用的span
   const fieldSpan = Math.floor(24 / (fieldsPerRow + 1)) // +1 为按钮区域预留空间
-  const firstRow = props.jasTable.searchList.slice(0, fieldsPerRow - 1)
-  const moreFieldRows = props.jasTable.searchList.slice(fieldsPerRow - 1)
+  const firstRow = props.jasTable.fields.slice(0, fieldsPerRow - 1)
+  const moreFieldRows = props.jasTable.fields.slice(fieldsPerRow - 1)
 
   return {
     fieldSpan, //单个字段所占span
