@@ -10,18 +10,20 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue'
 import { createJasTable } from './index'
 import { Field } from './ui-component'
 import { nanoid } from 'nanoid'
 import {
+  createInlineJasButton,
   createJasButton,
   createJasButtonAdd,
   createJasButtonEdit,
   createJasButtonExport,
   createJasButtonImport,
 } from './ui-button'
+import { ElButton } from 'element-plus'
 const fields = [
   Field.createJasInput(nanoid(), '姓名', { fixed: 'left', required: true }),
   Field.createJasNumber(nanoid(), '年龄'),
@@ -31,6 +33,17 @@ const fields = [
   Field.createJasNumber(nanoid(), '身份证号'),
   Field.createJasInput(nanoid(), '备注'),
   Field.createJasNumber(nanoid(), '分数', { fixed: 'left' }),
+  {
+    isTable: true,
+    label: '操作',
+    // slots: {
+    //   default: () => {
+    //     return h('div', 'fefefe')
+    //   },
+    // },
+    // cellRender: h(ElButton, '阿萨啊啊'),
+    // cellRender: h('div', '123123'),
+  },
 ]
 const buttons = [
   createJasButtonAdd('新增'),

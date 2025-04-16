@@ -78,3 +78,8 @@ export function createJasButtonImport(...args) {
   }
   return button
 }
+
+// 行内按钮
+export function createInlineJasButton(label, params = {}) {
+  return { ElButton }
+}

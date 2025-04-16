@@ -21,7 +21,7 @@ setTimeout(() => {
   i.value = 2
 }, 3000)
 const columns = computed(() => {
-  return props.jasTable.fields
+  const columns = props.jasTable.fields
     .map((item, index) => {
       if (item.isTable) {
         return {
@@ -31,10 +31,15 @@ const columns = computed(() => {
           showOverflow: true,
           fixed: item.fixed,
           width: 200,
+          slots: item.slots,
+          cellRender: item.cellRender,
         }
       }
     })
     .filter(Boolean)
+  console.log(columns)
+
+  return columns
 })
 const count = ref(0)
 const gridOptions = computed<VxeGridProps>(() => {
