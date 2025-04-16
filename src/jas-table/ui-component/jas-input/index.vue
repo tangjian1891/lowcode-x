@@ -20,11 +20,11 @@ const props = defineProps({
 })
 
 const value = computed(() => {
-  return props.jasTable.form[props.field.fieldName]
+  return props.jasTable.form[props.field.id]
 })
 
 function update(e) {
-  props.jasTable.form[props.field.fieldName] = e
+  props.jasTable.form[props.field.id] = e
 }
 </script>
 

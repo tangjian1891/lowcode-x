@@ -52,9 +52,6 @@ export function createDialog(jasTable, component) {
       document.body.removeChild(div)
       app = div = null
     },
-    onSuccess() {
-      dialogConfig.onSuccess?.()
-    },
   })
 
   assignContext(app)
