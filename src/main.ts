@@ -1,6 +1,6 @@
 // import './assets/main.css'
 
-import { createApp, h } from 'vue'
+import { createApp, h, createVNode, createElementBlock, createBlock } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'

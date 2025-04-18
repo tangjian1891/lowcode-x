@@ -1,16 +1,18 @@
 <template>
   <jas-table></jas-table>
+  <!-- <child>
+    <template #default="foo"> </template>
+  </child> -->
+
+  <!-- <Child :qwer="qwer" :qwer1="qwer"></Child>
+
+  <input type="text" v-model="qwer" /> -->
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'
-
-function onclick(params: type) {}
-const obj = {
-  onChange: change,
-}
-function change() {
-  console.log('出发了')
-}
+import Child from '@/Child.vue'
+import { render } from 'vue'
+import { ElButton } from 'element-plus'
 </script>
 
 <style>

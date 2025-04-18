@@ -36,13 +36,20 @@ const fields = [
   {
     isTable: true,
     label: '操作',
-    // slots: {
-    //   default: () => {
-    //     return h('div', 'fefefe')
-    //   },
-    // },
-    // cellRender: h(ElButton, '阿萨啊啊'),
-    // cellRender: h('div', '123123'),
+    slots: {
+      default: () => {
+        return h('div', [
+          h(ElButton, null, {
+            default: () => 'hahaha',
+          }),
+        ])
+        // return (
+        //   <div>
+        //     <ElButton>hahaha</ElButton>
+        //   </div>
+        // )
+      },
+    },
   },
 ]
 const buttons = [
