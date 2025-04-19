@@ -36,20 +36,23 @@ const fields = [
   {
     isTable: true,
     label: '操作',
+    showOverflow: false,
     slots: {
       default: () => {
-        return h('div', [
-          h(ElButton, null, {
-            default: () => 'hahaha',
-          }),
-        ])
-        // return (
-        //   <div>
-        //     <ElButton>hahaha</ElButton>
-        //   </div>
-        // )
+        return [
+          createJasButtonAdd('新增'),
+          createJasButtonEdit('编辑'),
+          createJasButtonEdit('编辑'),
+          createJasButtonEdit('编辑'),
+          // createJasButtonExport('导出'),
+          // createJasButtonImport('导入'),
+        ].map((button) => {
+          const component = button.component
+          return <component button={button}></component>
+        })
       },
     },
+    width: '300px',
   },
 ]
 const buttons = [

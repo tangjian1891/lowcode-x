@@ -28,11 +28,11 @@ const columns = computed(() => {
           field: item.id,
           title: item.label,
           visible: true,
-          showOverflow: true,
           fixed: item.fixed,
-          width: 200,
+          width: item.width || 200,
           slots: item.slots,
           cellRender: item.cellRender,
+          showOverflow: item.showOverflow || 'ellipsis',
         }
       }
     })

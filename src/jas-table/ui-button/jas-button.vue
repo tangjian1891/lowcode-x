@@ -12,7 +12,6 @@ const props = defineProps({
   },
   jasTable: Object,
 })
-console.log(props.button)
 const button = computed(() => {
   return { ...props.button, onClick: undefined }
 })
