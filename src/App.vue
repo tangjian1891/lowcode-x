@@ -1,12 +1,6 @@
 <template>
-  <jas-table></jas-table>
-  <!-- <child>
-    <template #default="foo"> </template>
-  </child> -->
-
-  <!-- <Child :qwer="qwer" :qwer1="qwer"></Child>
-
-  <input type="text" v-model="qwer" /> -->
+  <!-- <jas-table></jas-table> -->
+  <router-view></router-view>
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'
