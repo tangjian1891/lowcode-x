@@ -1,8 +1,16 @@
 <template>
   <div ref="jasTwoResizeRef" :draggable="false" class="jas-resize">
-    <div v-for="slot in slotsList" :key="slot">
-      <component :is="slot"></component>
-    </div>
+    <template v-for="(slot, index) in slotsList" :key="slot" :is="slot">
+      <component
+        :style="mouse.widthList[index]"
+        @mousedown="mouse.mousedown($event, index)"
+        v-if="index % 2 === 1"
+        :is="slot"
+      ></component>
+      <div v-else :style="mouse.widthList[index]">
+        <component :is="slot"></component>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -17,242 +25,81 @@ const slotsList = computed(() => {
     result.push(slots[key])
     result.push(JasResizeBar)
   })
+  result.pop()
   return result
 })
+const jasTwoResizeRef = ref<HTMLElement | null>(null)
+onMounted(() => {
+  console.log('所有的子元素', jasTwoResizeRef.value?.children)
+  console.log()
+  const arr = [...jasTwoResizeRef.value.children]
+  mouse.widthList = arr.map((item) => {
+    return { width: window.getComputedStyle(item).width }
+  })
+})
 
-// 调整大小组件：记录鼠标位置，获取上一个DOM，下一个DOM，当前的BarDOM
-// 移动范围分为向左向右，最大移动距离不能超过DOM宽度/高度
-// import { emitter } from '@/hooks/hook'
-// import { isNaN } from 'lodash-es'
-// const emitter = {}
-// export default {
-//   name: 'JasResize',
-//   data() {
-//     return {
-//       leftDom: null,
-//       rightDom: null,
-//       lock: false,
-//       lockPageX: 0,
-//       lockPageY: 0,
-//       lockLeftWidth: 0,
-//       lockRightWidth: 0,
-//       lockLeftHeight: 0,
-//       lockRightHeight: 0,
-//       isOpen: true, // 从 resize-bar 组件合并过来的状态
-//     }
-//   },
-//   computed: {
-//     typeVal() {
-//       return this.type === 'vertical' ? 'column' : 'row'
-//     },
-//     // 下面是从 resize-bar 组件合并过来的计算属性
-//     jasResizeBarStyle() {
-//       return {
-//         cursor: this.type === 'vertical' ? 'row-resize' : 'col-resize',
-//       }
-//     },
-//     quickBtnStyle() {
-//       if (this.type === 'vertical') {
-//         return { width: '50px', height: '100%' }
-//       } else {
-//         return { height: '50px', width: '16px' }
-//       }
-//     },
-//   },
-//   props: {
-//     type: {
-//       type: String,
-//       default: 'horizontal',
-//     },
-//     name: {
-//       type: String,
-//       default: '',
-//     },
-//     layoutCss: {
-//       type: String,
-//       default: 'default',
-//     },
-//   },
-//   emits: ['move'],
-//   mounted() {
-//     window.addEventListener('mouseup', this.mouseup)
+const mouse = reactive({
+  isMoving: false,
+  dom: null,
+  widthList: [],
+  index: 0,
 
-//     // 如果是地图相关的resize，处理地图的特殊逻辑
-//     if (this.name === 'mapReszie') {
-//       const barDOM = this.$refs.jasTwoResizeRef.querySelector('.quick_btn')?.parentElement
-//       const previousDom = barDOM?.previousElementSibling
-//       const nextDom = barDOM?.nextElementSibling
+  mouseup(e) {
+    if (!mouse.isMoving) return
+    mouse.isMoving = false
+    document.removeEventListener('mousemove', mouse.mousemove)
+    document.removeEventListener('mouseup', mouse.mouseup)
+  },
 
-//       emitter.on('openMap', async () => {
-//         const { previousDomPX, nextDomPx, totalPx } = this.getTwoSecondPx(previousDom, nextDom)
-//         // 固定一半
-//         const half = parseInt(totalPx / 2)
-//         previousDom.style['flex-basis'] = half + 'px'
-//         nextDom.style['flex-basis'] = totalPx - half + 'px'
-//         await this.$nextTick()
-//         window.jasMap.updateSize()
-//       })
+  mousedown(e, index) {
+    mouse.isMoving = true
+    mouse.index = index
+    document.addEventListener('mousemove', mouse.mousemove)
+    document.addEventListener('mouseup', mouse.mouseup)
+  },
+  //   在文档中移动
+  mousemove(e) {
+    if (!mouse.isMoving) return
+    // 调整widthList中的宽度对象
+    if (jasTwoResizeRef.value) {
+      // 获取所有子元素
+      const children = [...jasTwoResizeRef.value.children]
 
-//       emitter.on('closeMap', () => {
-//         const { previousDomPX, nextDomPx, totalPx } = this.getTwoSecondPx(previousDom, nextDom)
-//         previousDom.style['flex-basis'] = 0 + 'px'
-//         nextDom.style['flex-basis'] = totalPx + 'px'
-//       })
-//     }
-//   },
-//   beforeUnmount() {
-//     window.removeEventListener('mouseup', this.mouseup)
-//     window.removeEventListener('mousemove', this.mousemove)
-//     emitter.off('openMap')
-//     emitter.off('closeMap')
-//   },
-//   methods: {
-//     // 点击快速折叠/展开按钮
-//     quickBtn(e) {
-//       this.isOpen = !this.isOpen // 切换开关状态
+      // 计算相关索引
+      // 拖动条的左侧元素索引（实际内容元素）
+      const leftIndex = mouse.index - 1
+      // 拖动条的右侧元素索引（实际内容元素）
+      const rightIndex = mouse.index + 1
 
-//       const barDOM = e.target.parentElement
-//       const previousDom = barDOM.previousElementSibling
-//       const nextDom = barDOM.nextElementSibling
-//       const { previousDomPX, nextDomPx, totalPx } = this.getTwoSecondPx(previousDom, nextDom)
+      if (leftIndex >= 0 && rightIndex < children.length) {
+        // 获取左侧和右侧内容元素
 
-//       // 执行打开/关闭操作
-//       let setPreviousPx = 0 // 准备设置的px
+        // 获取当前宽度
+        const leftWidth = parseFloat(mouse.widthList[leftIndex].width)
+        const rightWidth = parseFloat(mouse.widthList[rightIndex].width)
 
-//       if (previousDomPX <= 10) {
-//         // 当前是关闭状态，需要打开
-//         setPreviousPx = parseInt(totalPx / 2) // 打开一半的px
-//         if (barDOM.getAttribute('data-flexBasis')) {
-//           setPreviousPx = parseInt(barDOM.getAttribute('data-flexBasis')) // 如果有记录上次打开宽度，则使用上次宽度
-//         }
-//       } else {
-//         // 当前是打开状态，需要关闭
-//         // 非地图设置关闭前的位置记录
-//         if (this.name != 'mapResize') {
-//           let currentPX = 0
-//           if (isNaN(parseInt(getComputedStyle(previousDom)['flex-basis']))) {
-//             currentPX = parseInt(getComputedStyle(previousDom)['width'])
-//           } else {
-//             currentPX = parseInt(getComputedStyle(previousDom)['flex-basis'])
-//           }
-//           barDOM.setAttribute('data-flexBasis', currentPX)
-//         }
-//         setPreviousPx = 0 // 关闭时设为0
-//       }
+        // 计算新宽度（移动差值）
+        const movement = e.movementX // 鼠标移动的距离
+        const newLeftWidth = leftWidth + movement
+        const newRightWidth = rightWidth - movement
+        console.log()
+        console.log('没有吗', movement, newLeftWidth, newRightWidth)
 
-//       // 设置新的尺寸
-//       previousDom.style['flex-basis'] = setPreviousPx + 'px' // 设置previous元素px
-//       nextDom.style['flex-basis'] = totalPx - setPreviousPx + 'px' // 设置next元素px
+        // 更新宽度对象
+        mouse.widthList[leftIndex] = { width: `${newLeftWidth}px` }
+        mouse.widthList[rightIndex] = { width: `${newRightWidth}px` }
+        console.log(mouse.widthList)
+      }
+    }
+  },
+})
 
-//       this.$emit('move')
-//     },
+// 确保组件卸载时移除所有事件监听器
+onBeforeUnmount(() => {
+  document.removeEventListener('mousemove', mouse.mousemove)
+  document.removeEventListener('mouseup', mouse.mouseup)
+})
 
-//     // 获取两块DOM区域的宽度,以及总移动区域
-//     getTwoSecondPx(previousDom, nextDom) {
-//       let previousDomPX = 0
-
-//       // 获取前一个元素的尺寸
-//       const prevFlexBasis = getComputedStyle(previousDom)['flex-basis']
-//       if (isNaN(parseInt(prevFlexBasis))) {
-//         previousDomPX = parseInt(getComputedStyle(previousDom)['width'])
-//       } else {
-//         previousDomPX = parseInt(prevFlexBasis)
-//       }
-
-//       // 获取后一个元素的尺寸
-//       let nextDomPx = getComputedStyle(nextDom)['flex-basis']
-
-//       // 如果next元素是自动撑满的，需要手动获取其实际尺寸
-//       if (nextDomPx == '0%') {
-//         // 纵向取height，横向取width
-//         nextDomPx =
-//           this.type == 'vertical'
-//             ? getComputedStyle(nextDom).height
-//             : getComputedStyle(nextDom).width
-//       }
-
-//       nextDomPx = parseInt(nextDomPx)
-//       const totalPx = previousDomPX + nextDomPx
-
-//       return { previousDomPX, nextDomPx, totalPx }
-//     },
-
-//     // 鼠标点击
-//     mousedown(e) {
-//       if (e?.target?.classList?.contains('jas_resize_bar')) {
-//         this.lock = true
-//         const { pageX, pageY } = e
-
-//         // 点击时，锁定位置和相关DOM元素
-//         this.lockPageX = pageX
-//         this.lockPageY = pageY
-//         this.leftDom = e.target.previousElementSibling
-//         this.rightDom = e.target.nextElementSibling
-
-//         // 记录初始尺寸
-//         this.lockLeftWidth = parseInt(getComputedStyle(this.leftDom).width)
-//         this.lockRightWidth = parseInt(getComputedStyle(this.rightDom).width)
-//         this.lockLeftHeight = parseInt(getComputedStyle(this.leftDom).height)
-//         this.lockRightHeight = parseInt(getComputedStyle(this.rightDom).height)
-
-//         // 禁用文本选择，防止拖动时选中文本
-//         document.body.classList.add('events_none')
-
-//         // 添加mousemove事件监听
-//         window.addEventListener('mousemove', this.mousemove)
-//       }
-//     },
-
-//     // 鼠标移动
-//     mousemove(e) {
-//       if (this.lock) {
-//         const { pageX, pageY } = e
-
-//         // 计算偏移量并应用到元素样式
-//         if (this.type === 'horizontal') {
-//           let offsetPx = pageX - this.lockPageX
-//           const parsedOffset = parseInt(offsetPx)
-
-//           // 限制最大偏移量
-//           if (parsedOffset > 0 && parsedOffset >= this.lockRightWidth) {
-//             offsetPx = this.lockRightWidth
-//           } else if (parsedOffset < 0 && Math.abs(parsedOffset) >= this.lockLeftWidth) {
-//             offsetPx = 0 - this.lockLeftWidth
-//           }
-
-//           // 应用新尺寸
-//           this.leftDom.style['flex-basis'] = this.lockLeftWidth + offsetPx + 'px'
-//           this.rightDom.style['flex-basis'] = this.lockRightWidth - offsetPx + 'px'
-//         } else {
-//           let offsetPx = pageY - this.lockPageY
-//           const parsedOffset = parseInt(offsetPx)
-
-//           // 限制最大偏移量
-//           if (parsedOffset > 0 && parsedOffset >= this.lockRightHeight) {
-//             offsetPx = this.lockRightHeight
-//           } else if (parsedOffset < 0 && Math.abs(parsedOffset) >= this.lockLeftHeight) {
-//             offsetPx = 0 - this.lockLeftHeight
-//           }
-
-//           // 应用新尺寸
-//           this.leftDom.style['flex-basis'] = this.lockLeftHeight + offsetPx + 'px'
-//           this.rightDom.style['flex-basis'] = this.lockRightHeight - offsetPx + 'px'
-//         }
-
-//         this.$emit('move')
-//       }
-//     },
-
-//     // 松开鼠标按键
-//     mouseup(e) {
-//       if (this.lock) {
-//         this.lock = false
-//         document.body.classList.remove('events_none')
-//         window.removeEventListener('mousemove', this.mousemove)
-//       }
-//     },
-//   },
-// }
 const typeVal = ref('')
 </script>
 
