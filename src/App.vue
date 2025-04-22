@@ -1,11 +1,13 @@
 <template>
   <!-- <jas-table></jas-table> -->
   <!-- <router-view></router-view> -->
-  <jas-resize>
-    <template #q1> 这是第一部分 </template>
-    <template #q2> 这是第二部分 </template>
-    <template #q3> 这是第二部分 </template>
-  </jas-resize>
+
+  <div style="width: 500px; height: 500px; border: 1px solid red">
+    <jas-resize :span="300">
+      <template #section1> 这是第一部分 </template>
+      <template #section2> 这是第二部分 </template>
+    </jas-resize>
+  </div>
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'

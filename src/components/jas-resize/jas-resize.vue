@@ -1,97 +1,93 @@
 <template>
-  <div ref="jasTwoResizeRef" :draggable="false" class="jas-resize">
-    <template v-for="(slot, index) in slotsList" :key="slot" :is="slot">
-      <component
-        :style="mouse.widthList[index]"
-        @mousedown="mouse.mousedown($event, index)"
-        v-if="index % 2 === 1"
-        :is="slot"
-      ></component>
-      <div v-else :style="mouse.widthList[index]">
-        <component :is="slot"></component>
-      </div>
-    </template>
+  <div
+    ref="jasTwoResizeRef"
+    :draggable="false"
+    class="jas-resize"
+    :class="{ events_none: mouse.isMoving }"
+  >
+    <div :style="{ width: leftWidth + 'px', 'flex-shrink': 0 }">
+      <slot name="section1"></slot>
+    </div>
+    <jas-resize-bar @mousedown="mouse.mousedown($event)"></jas-resize-bar>
+    <div style="flex: 1">
+      <slot name="section2"></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import JasResizeBar from './jas-resize-bar.vue'
-const slots = defineSlots()
-console.log('查看一下', slots)
-const slotsList = computed(() => {
-  const slotKeys = Object.keys(slots)
-  const result = []
-  slotKeys.forEach((key) => {
-    result.push(slots[key])
-    result.push(JasResizeBar)
-  })
-  result.pop()
-  return result
-})
-const jasTwoResizeRef = ref<HTMLElement | null>(null)
-onMounted(() => {
-  console.log('所有的子元素', jasTwoResizeRef.value?.children)
-  console.log()
-  const arr = [...jasTwoResizeRef.value.children]
-  mouse.widthList = arr.map((item) => {
-    return { width: window.getComputedStyle(item).width }
-  })
-})
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 
+const props = defineProps({
+  span: {
+    type: [String, Number],
+    default: 200,
+  },
+})
+const slots = defineSlots()
+
+// 将 span 转换为数值并作为初始左侧宽度
+const leftWidth = ref(typeof props.span === 'string' ? parseInt(props.span) : props.span)
+const jasTwoResizeRef = ref<HTMLElement | null>(null)
+
+// 获取父容器宽度
+const getParentWidth = () => {
+  if (jasTwoResizeRef.value) {
+    return jasTwoResizeRef.value.clientWidth
+  }
+  return 0
+}
+
+// 简化后的拖拽控制逻辑
 const mouse = reactive({
   isMoving: false,
-  dom: null,
-  widthList: [],
-  index: 0,
+  startX: 0,
+  startWidth: 0,
 
-  mouseup(e) {
+  mousedown(e) {
+    // 记录初始位置和宽度
+    mouse.isMoving = true
+    mouse.startX = e.clientX
+    mouse.startWidth = leftWidth.value
+
+    // 添加全局事件监听
+    document.addEventListener('mousemove', mouse.mousemove)
+    document.addEventListener('mouseup', mouse.mouseup)
+  },
+
+  mousemove(e) {
     if (!mouse.isMoving) return
+
+    // 计算移动距离并更新宽度
+    const deltaX = e.clientX - mouse.startX
+    const newWidth = mouse.startWidth + deltaX
+
+    // 获取父容器宽度
+    const parentWidth = getParentWidth()
+
+    // 设置最小宽度和最大宽度限制
+    // 最小不小于50px，最大不超过父容器宽度
+    const maxAllowedWidth = parentWidth > 0 ? parentWidth : Infinity
+    leftWidth.value = Math.min(maxAllowedWidth, Math.max(50, newWidth))
+  },
+
+  mouseup() {
     mouse.isMoving = false
     document.removeEventListener('mousemove', mouse.mousemove)
     document.removeEventListener('mouseup', mouse.mouseup)
   },
+})
 
-  mousedown(e, index) {
-    mouse.isMoving = true
-    mouse.index = index
-    document.addEventListener('mousemove', mouse.mousemove)
-    document.addEventListener('mouseup', mouse.mouseup)
-  },
-  //   在文档中移动
-  mousemove(e) {
-    if (!mouse.isMoving) return
-    // 调整widthList中的宽度对象
-    if (jasTwoResizeRef.value) {
-      // 获取所有子元素
-      const children = [...jasTwoResizeRef.value.children]
-
-      // 计算相关索引
-      // 拖动条的左侧元素索引（实际内容元素）
-      const leftIndex = mouse.index - 1
-      // 拖动条的右侧元素索引（实际内容元素）
-      const rightIndex = mouse.index + 1
-
-      if (leftIndex >= 0 && rightIndex < children.length) {
-        // 获取左侧和右侧内容元素
-
-        // 获取当前宽度
-        const leftWidth = parseFloat(mouse.widthList[leftIndex].width)
-        const rightWidth = parseFloat(mouse.widthList[rightIndex].width)
-
-        // 计算新宽度（移动差值）
-        const movement = e.movementX // 鼠标移动的距离
-        const newLeftWidth = leftWidth + movement
-        const newRightWidth = rightWidth - movement
-        console.log()
-        console.log('没有吗', movement, newLeftWidth, newRightWidth)
-
-        // 更新宽度对象
-        mouse.widthList[leftIndex] = { width: `${newLeftWidth}px` }
-        mouse.widthList[rightIndex] = { width: `${newRightWidth}px` }
-        console.log(mouse.widthList)
-      }
+// 在组件挂载后获取初始父容器宽度
+onMounted(() => {
+  // 确保初始宽度不超过父容器限制
+  const parentWidth = getParentWidth()
+  if (parentWidth > 0) {
+    if (leftWidth.value > parentWidth) {
+      leftWidth.value = parentWidth
     }
-  },
+  }
 })
 
 // 确保组件卸载时移除所有事件监听器
@@ -99,8 +95,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('mousemove', mouse.mousemove)
   document.removeEventListener('mouseup', mouse.mouseup)
 })
-
-const typeVal = ref('')
 </script>
 
 <style lang="scss" scoped>
