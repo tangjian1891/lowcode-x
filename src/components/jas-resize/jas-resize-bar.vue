@@ -1,29 +1,20 @@
 <template>
   <div
-    class="quick_btn"
-    :class="{ 'vertical-bar': direction === 'vertical' }"
-    :style="
-      direction === 'horizontal'
-        ? { width: barWidth + 'px' }
-        : { height: barWidth + 'px', width: '100%' }
-    "
+    :class="['resize-bar', `resize-bar--${direction}`]"
+    :style="direction === 'horizontal' ? { width: barWidth + 'px' } : { height: barWidth + 'px' }"
     @mousedown.prevent="emit('mousedown', $event)"
-    @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
   >
     <!-- 中心常驻快捷按钮 -->
-    <div class="toggle-button" @click.stop="toggleSections">
+    <div class="resize-bar__toggle" @click.stop="toggleSections">
       <span
-        class="toggle-icon"
-        :class="{
-          collapsed:
-            (direction === 'horizontal' && leftWidth === 0) ||
-            (direction === 'vertical' && leftWidth === 0),
-          vertical: direction === 'vertical',
-        }"
+        :class="[
+          'resize-bar__toggle-icon',
+          `resize-bar__toggle-icon--${direction}`,
+          { 'resize-bar__toggle-icon--collapsed': !panelSize },
+        ]"
       ></span>
     </div>
-    <div :class="['extra', { active: isActive }]" @mouseover="mouseover" @mouseout="mouseout"></div>
+    <div class="resize-bar__extra"></div>
   </div>
 </template>
 
@@ -33,94 +24,99 @@ import { ref } from 'vue'
 const props = defineProps({
   barWidth: {
     type: Number,
-    default: 10,
+    default: 1,
   },
-  leftWidth: Number,
+  panelSize: Number,
   direction: {
     type: String,
-    default: 'horizontal', // 'horizontal' 或 'vertical'
+    default: 'horizontal',
   },
 })
-
-const isHovered = ref(false)
-const isCollapsed = ref(false)
 
 const emit = defineEmits(['mousedown', 'toggle'])
 
 // 处理快捷按钮点击事件
 const toggleSections = (event) => {
-  event.stopPropagation() // 阻止事件冒泡
+  event.stopPropagation()
   emit('toggle')
-}
-
-const isActive = ref(false)
-function mouseover() {
-  clearTimeout(timeSeed)
-  isActive.value = true
-}
-let timeSeed
-function mouseout() {
-  clearTimeout(timeSeed)
-  timeSeed = setTimeout(() => {
-    isActive.value = false
-  }, 300)
 }
 </script>
 
 <style lang="scss" scoped>
-.quick_btn {
+.resize-bar {
   position: relative;
-  cursor: move;
   flex-shrink: 0;
   background-color: black;
-  position: relative;
   transition: background-color 0.2s;
 
-  &.vertical-bar {
+  // 基础样式（水平布局）
+  &--horizontal {
+    cursor: ew-resize;
+    height: 100%;
+
+    .resize-bar__extra {
+      width: 20px;
+      height: 100%;
+      right: -20px;
+      top: 0;
+    }
+
+    &:hover .resize-bar__extra {
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .resize-bar__toggle {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  // 垂直布局特殊样式
+  &--vertical {
     cursor: ns-resize;
-    .extra {
+    width: 100%;
+
+    .resize-bar__extra {
       width: 100%;
       height: 20px;
-      right: 0;
       bottom: -20px;
-      top: auto;
+      left: 0;
     }
 
-    &:hover .extra {
-      height: 30px;
-      width: 100%;
+    &:hover .resize-bar__extra {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .resize-bar__toggle {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 
-  .extra {
-    width: 20px;
-    background-color: transparent;
-    height: 100%;
-    transition: all 0.3s ease;
-    opacity: 0;
-    position: absolute;
-    right: -20px;
-    top: 0;
-    box-shadow: none;
-  }
-
+  // 鼠标悬停效果
   &:hover {
     background-color: #f0f0f0;
 
-    .extra {
+    .resize-bar__extra {
       opacity: 1;
-      width: 30px;
       background-color: rgba(245, 245, 245, 0.8);
-      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
     }
   }
 
-  // 常驻的快捷按钮
-  .toggle-button {
+  // 额外区域样式
+  &__extra {
     position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(0, -50%);
+    background-color: transparent;
+    transition: all 0.3s ease;
+    opacity: 0;
+    box-shadow: none;
+  }
+
+  // 折叠/展开按钮
+  &__toggle {
+    position: absolute;
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -140,7 +136,8 @@ function mouseout() {
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     }
 
-    .toggle-icon {
+    // 折叠/展开图标
+    &-icon {
       width: 0;
       height: 0;
       border-top: 4px solid transparent;
@@ -148,14 +145,18 @@ function mouseout() {
       border-right: 4px solid #666;
       transition: transform 0.3s;
 
-      &.collapsed {
-        transform: rotate(180deg);
+      // 水平方向图标
+      &--horizontal {
+        &.resize-bar__toggle-icon--collapsed {
+          transform: rotate(180deg);
+        }
       }
 
-      &.vertical {
+      // 垂直方向图标
+      &--vertical {
         transform: rotate(90deg);
 
-        &.collapsed {
+        &.resize-bar__toggle-icon--collapsed {
           transform: rotate(270deg);
         }
       }
