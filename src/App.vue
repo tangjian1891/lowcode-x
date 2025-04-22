@@ -3,7 +3,7 @@
   <!-- <router-view></router-view> -->
 
   <div style="margin: 500px 0 0 500px; width: 50%; height: 500px; border: 1px solid red">
-    <jas-resize :span="300">
+    <jas-resize :span="300" direction="vertical">
       <template #section1> 这是第一部分 </template>
       <template #section2> 这是第二部分 </template>
     </jas-resize>

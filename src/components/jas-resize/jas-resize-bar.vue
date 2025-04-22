@@ -1,25 +1,49 @@
 <template>
   <div
     class="quick_btn"
-    :style="{ width: barWidth + 'px' }"
+    :class="{ 'vertical-bar': direction === 'vertical' }"
+    :style="
+      direction === 'horizontal'
+        ? { width: barWidth + 'px' }
+        : { height: barWidth + 'px', width: '100%' }
+    "
     @mousedown.prevent="emit('mousedown', $event)"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
   >
     <!-- 中心常驻快捷按钮 -->
-    <div class="toggle-button" @click.stop="toggleSections" @mousedown.prevent>
-      <span class="toggle-icon" :class="{ collapsed: leftWidth === 0 }"></span>
+    <div class="toggle-button" @click.stop="toggleSections">
+      <span
+        class="toggle-icon"
+        :class="{
+          collapsed:
+            (direction === 'horizontal' && leftWidth === 0) ||
+            (direction === 'vertical' && leftWidth === 0),
+          vertical: direction === 'vertical',
+        }"
+      ></span>
     </div>
     <div :class="['extra', { active: isActive }]" @mouseover="mouseover" @mouseout="mouseout"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+
 const props = defineProps({
   barWidth: {
     type: Number,
     default: 10,
   },
   leftWidth: Number,
+  direction: {
+    type: String,
+    default: 'horizontal', // 'horizontal' 或 'vertical'
+  },
 })
+
+const isHovered = ref(false)
+const isCollapsed = ref(false)
 
 const emit = defineEmits(['mousedown', 'toggle'])
 
@@ -50,6 +74,24 @@ function mouseout() {
   flex-shrink: 0;
   background-color: black;
   position: relative;
+  transition: background-color 0.2s;
+
+  &.vertical-bar {
+    cursor: ns-resize;
+    .extra {
+      width: 100%;
+      height: 20px;
+      right: 0;
+      bottom: -20px;
+      top: auto;
+    }
+
+    &:hover .extra {
+      height: 30px;
+      width: 100%;
+    }
+  }
+
   .extra {
     width: 20px;
     background-color: transparent;
@@ -62,10 +104,15 @@ function mouseout() {
     box-shadow: none;
   }
 
-  .extra.active {
-    opacity: 1;
-    background-color: rgba(245, 245, 245, 0.8);
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: #f0f0f0;
+
+    .extra {
+      opacity: 1;
+      width: 30px;
+      background-color: rgba(245, 245, 245, 0.8);
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+    }
   }
 
   // 常驻的快捷按钮
@@ -103,6 +150,14 @@ function mouseout() {
 
       &.collapsed {
         transform: rotate(180deg);
+      }
+
+      &.vertical {
+        transform: rotate(90deg);
+
+        &.collapsed {
+          transform: rotate(270deg);
+        }
       }
     }
   }
