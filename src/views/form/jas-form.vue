@@ -1,9 +1,9 @@
 <template>
-  <jas-form :formId="formId" :mode="mode" />
+  <!-- <jas-form :formId="formId" :mode="mode" /> -->
 </template>
 
 <script lang="ts" setup>
-import JasForm from './jas-form-page.vue'
+// import JasForm from './jas-form-page.vue'
 const route = useRoute()
 
 const formId = route.query.formId

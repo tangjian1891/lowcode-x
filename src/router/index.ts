@@ -21,7 +21,7 @@ const router = createRouter({
         {
           path: 'form/:formId/:mode',
           name: 'jas-form',
-          component: () => import('@/views/jas-layout.vue'),
+          component: () => import('@/views/form/jas-form.vue'),
         },
         {
           path: 'jas-table/:formId',
