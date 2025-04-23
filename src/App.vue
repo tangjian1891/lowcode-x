@@ -1,10 +1,11 @@
 <template>
-  <jas-resize :span="300">
+  <router-view></router-view>
+  <!-- <jas-resize :span="300">
     <template #section1> 侧边栏 </template>
     <template #section2>
       <jas-table></jas-table>
     </template>
-  </jas-resize>
+  </jas-resize> -->
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'

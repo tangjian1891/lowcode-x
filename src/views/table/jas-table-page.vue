@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import JasTable from './jas-table.vue'
+import JasTable from '@/jas-table/index.vue'
 
 const route = useRoute()
 

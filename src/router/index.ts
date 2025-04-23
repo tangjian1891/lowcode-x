@@ -1,45 +1,39 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: '/jas-layout/1231313',
     },
+
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-    },
-    {
-      path: '/layout/:systemId',
-      name: 'layout',
+      path: '/jas-layout/:systemId',
+      name: 'jas-layout',
       component: () => import('@/views/layout/jas-layout.vue'),
       children: [
         {
           path: 'form/:formId/:mode',
-          name: 'layout-form',
+          name: 'jas-form',
           component: () => import('@/views/jas-layout.vue'),
         },
         {
-          path: 'table/:formId',
-          name: 'layout-table',
-          component: () => import('@/views/jas-layout.vue'),
+          path: 'jas-table/:formId',
+          name: 'jas-table',
+          component: () => import('@/jas-table/index.vue'),
         },
       ],
     },
     {
       path: '/form/:formId/:mode',
       name: 'form',
-      component: () => import('@/views/form/form.vue'),
+      component: () => import('@/views/form/jas-form-page.vue'),
     },
     {
-      path: '/table/:formId',
-      name: 'table',
-      component: () => import('@/views/table/table.vue'),
+      path: '/jas-table-page/:formId',
+      name: 'jas-table-page',
+      component: () => import('@/views/table/jas-table-page.vue'),
     },
   ],
 })
