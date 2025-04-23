@@ -112,6 +112,7 @@ const toggleSections = (event) => {
     transition: all 0.3s ease;
     opacity: 0;
     box-shadow: none;
+    z-index: 10; // 添加较高的z-index确保不被遮挡
   }
 
   // 折叠/展开按钮
