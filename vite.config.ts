@@ -10,7 +10,7 @@ import UnoCSS from 'unocss/vite'
 export default defineConfig({
   plugins: [
     vue(),
-    UnoCSS(),
+    UnoCSS({}),
     vueJsx(),
     AutoImport({
       dts: true,

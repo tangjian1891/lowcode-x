@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full h-full flex flex-col overflow-hidden">
+  <div class="h-full w-full flex flex-col overflow-hidden">
     <div class="shrink-0 basis-50px">
-      <jas-top-menu @select="handleTopMenuSelect" />
+      <jas-top-layout @select="handleTopMenuSelect" />
     </div>
     <div class="flex-1">
-      <jas-resize>
+      <jas-resize span="300">
         <template #p1>
           <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
         </template>
@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import JasTopMenu from './components/jas-top-menu.vue'
+import JasTopLayout from './components/jas-top-layout.vue'
 import JasSideMenu from './components/jas-side-menu.vue'
 import JasTabNav from './components/jas-tab-nav.vue'
 import JasResize from '@/components/jas-resize/jas-resize.vue'
@@ -50,68 +50,4 @@ const handleSideMenuSelect = (index: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.layout-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.layout-top {
-  height: 50px;
-  background-color: #001529;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-  .logo {
-    font-size: 18px;
-    font-weight: bold;
-    width: 120px;
-  }
-
-  .user-info {
-    min-width: 150px;
-    text-align: right;
-
-    .logout {
-      margin-left: 10px;
-      cursor: pointer;
-      color: #1890ff;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
-
-.layout-main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-.layout-left {
-  width: 300px;
-  background-color: #f0f2f5;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.layout-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.layout-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  background-color: #fff;
-}
-</style>
+<style lang="scss" scoped></style>
