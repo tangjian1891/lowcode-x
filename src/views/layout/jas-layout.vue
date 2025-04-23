@@ -1,32 +1,21 @@
 <template>
-  <el-container>
-    <el-header>1</el-header>
-    <el-main>2</el-main>
-  </el-container>
-  <!-- <div class="layout-container">
-    <div class="layout-top">
-      <div class="logo">系统LOGO</div>
+  <div class="w-full h-full flex flex-col overflow-hidden">
+    <div class="shrink-0 basis-50px">
       <jas-top-menu @select="handleTopMenuSelect" />
-      <div class="user-info">
-        <span>欢迎，管理员</span>
-        <span class="logout">退出</span>
-      </div>
     </div>
-    <div class="layout-main">
-      <div class="layout-left">
-        <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
-      </div>
-      <div class="layout-right">
-        <jas-tab-nav ref="tabNavRef" />
-        <div class="layout-content">
+    <div class="flex-1">
+      <jas-resize>
+        <template #p1>
+          <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
+        </template>
+        <template #p2>
           <keep-alive :include="cachedViews">
             <router-view v-if="$route.meta.keepAlive" />
           </keep-alive>
-          <router-view v-if="!$route.meta.keepAlive" />
-        </div>
-      </div>
+        </template>
+      </jas-resize>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -35,6 +24,7 @@ import { useRoute } from 'vue-router'
 import JasTopMenu from './components/jas-top-menu.vue'
 import JasSideMenu from './components/jas-side-menu.vue'
 import JasTabNav from './components/jas-tab-nav.vue'
+import JasResize from '@/components/jas-resize/jas-resize.vue'
 
 const route = useRoute()
 const systemId = route.params.systemId

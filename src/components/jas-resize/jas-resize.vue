@@ -12,7 +12,7 @@
           : { height: firstPanelSize + 'px' }
       "
     >
-      <slot name="section1"></slot>
+      <slot name="p1"></slot>
     </div>
     <jas-resize-bar
       :direction="direction"
@@ -22,7 +22,7 @@
       @toggle="handleToggle"
     />
     <div class="resize-panel resize-panel-second">
-      <slot name="section2"></slot>
+      <slot name="p2"></slot>
     </div>
   </div>
 </template>

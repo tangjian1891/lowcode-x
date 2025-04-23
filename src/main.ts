@@ -10,6 +10,7 @@ import 'vxe-table/lib/style.css'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import 'virtual:uno.css'
 import { mergeAppContext } from './utils/merge-app-context'
 const app = createApp(App)
 
