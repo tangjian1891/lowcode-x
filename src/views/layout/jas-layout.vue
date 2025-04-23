@@ -1,8 +1,11 @@
 <template>
-  <div class="layout-container">
+  <el-container>
+    <el-header>1</el-header>
+    <el-main>2</el-main>
+  </el-container>
+  <!-- <div class="layout-container">
     <div class="layout-top">
       <div class="logo">系统LOGO</div>
-      <!-- 使用抽离的顶部菜单组件 -->
       <jas-top-menu @select="handleTopMenuSelect" />
       <div class="user-info">
         <span>欢迎，管理员</span>
@@ -11,11 +14,9 @@
     </div>
     <div class="layout-main">
       <div class="layout-left">
-        <!-- 使用抽离的左侧菜单组件 -->
         <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
       </div>
       <div class="layout-right">
-        <!-- 使用抽离的标签导航组件 -->
         <jas-tab-nav ref="tabNavRef" />
         <div class="layout-content">
           <keep-alive :include="cachedViews">
@@ -25,7 +26,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts" setup>

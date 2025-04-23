@@ -1,5 +1,6 @@
 <template>
   <router-view></router-view>
+  <div class="text font-bold underline">123</div>
 </template>
 <script setup lang="ts">
 import JasTable from '@/jas-table/index.vue'
