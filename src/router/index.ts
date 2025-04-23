@@ -5,9 +5,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/jas-layout/1231313',
+      redirect: '/jas-layout/1231313/jas-table/1231312312',
     },
 
+    {
+      path: '/child',
+      name: 'child',
+      component: () => import('@/Child.vue'),
+    },
     {
       path: '/jas-layout/:systemId',
       name: 'jas-layout',

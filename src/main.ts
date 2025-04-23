@@ -28,32 +28,32 @@ VxeUI.setConfig({
   },
 })
 
-VxeUITable.VxeUI.renderer.add('MyTableCellLink', {
-  // 默认显示模板
-  renderTableDefault(renderOpts, renderParams) {
-    return h('span', {}, '什么啊12312123')
-  },
-})
+// VxeUITable.VxeUI.renderer.add('MyTableCellLink', {
+//   // 默认显示模板
+//   renderTableDefault(renderOpts, renderParams) {
+//     return h('span', {}, '什么啊12312123')
+//   },
+// })
 
-VxeUI.renderer.add('setStyle', {
-  tableCellClassName() {
-    console.log('没有吗啊')
+// VxeUI.renderer.add('setStyle', {
+//   tableCellClassName() {
+//     console.log('没有吗啊')
 
-    return 'redredredredredred'
-  },
-  tableCellStyle() {
-    return { color: 'red', background: 'blue' }
-  },
-  renderTableDefault() {
-    return '分分分'
-  },
-})
+//     return 'redredredredredred'
+//   },
+//   tableCellStyle() {
+//     return { color: 'red', background: 'blue' }
+//   },
+//   renderTableDefault() {
+//     return '分分分'
+//   },
+// })
 
-VxeUI.renderer.add('MyTableFilterInput', {
-  renderTableHeader() {
-    return h('span', {}, '表头')
-  },
-})
+// VxeUI.renderer.add('MyTableFilterInput', {
+//   renderTableHeader() {
+//     return h('span', {}, '表头')
+//   },
+// })
 app.use(createPinia())
 app.use(router)
 app.use(VxeUITable)
