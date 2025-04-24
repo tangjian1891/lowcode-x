@@ -19,8 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
 const props = defineProps({
   barWidth: {
     type: Number,
@@ -57,7 +55,7 @@ const toggleSections = (event) => {
     .resize-bar__extra {
       width: 20px;
       height: 100%;
-      right: -20px;
+      right: -10px;
       top: 0;
     }
 
@@ -66,6 +64,7 @@ const toggleSections = (event) => {
     }
 
     .resize-bar__toggle {
+      z-index: 11;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -80,7 +79,7 @@ const toggleSections = (event) => {
     .resize-bar__extra {
       width: 100%;
       height: 20px;
-      bottom: -20px;
+      bottom: -10px;
       left: 0;
     }
 
