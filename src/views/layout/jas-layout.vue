@@ -9,9 +9,11 @@
           <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
         </template>
         <template #p2>
-          <keep-alive :include="cachedViews">
-            <router-view v-if="$route.meta.keepAlive" />
-          </keep-alive>
+          <router-view #default="{ Component }">
+            <keep-alive :include="cachedViews">
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
         </template>
       </jas-resize>
     </div>

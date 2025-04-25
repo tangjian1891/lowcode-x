@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import DynamicMenu from '@/views/layout/dynamic-menu.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      redirect: '/jas-layout/1231313/jas-table/1231312312',
+      redirect: '/jas-layout/1231313/1231312312',
     },
 
     {
@@ -19,15 +19,20 @@ const router = createRouter({
       component: () => import('@/views/layout/jas-layout.vue'),
       children: [
         {
-          path: 'form/:formId/:mode',
-          name: 'jas-form',
+          path: ':menuId',
+          name: 'menu',
           component: () => import('@/views/form/jas-form.vue'),
         },
-        {
-          path: 'jas-table/:formId',
-          name: 'jas-table',
-          component: () => import('@/jas-table/index.vue'),
-        },
+        // {
+        //   path: 'form/:formId/:mode',
+        //   name: 'jas-form',
+        //   component: () => import('@/views/form/jas-form.vue'),
+        // },
+        // {
+        //   path: 'jas-table/:formId',
+        //   name: 'jas-table',
+        //   component: () => import('@/jas-table/index.vue'),
+        // },
       ],
     },
     {
@@ -44,3 +49,24 @@ const router = createRouter({
 })
 
 export default router
+window.router = router
+
+router.beforeEach((to, from) => {
+  console.log(to.name, to.path)
+  if (to.name === 'menu') {
+    const menuId = to.params.menuId as string
+    router.addRoute('jas-layout', {
+      path: ':menuId',
+      name: menuId,
+      component: {
+        name: menuId,
+        render() {
+          return h(DynamicMenu)
+        },
+      },
+    })
+    router.replace({ name: menuId, params: to.params })
+    return false
+  }
+  return true
+})
