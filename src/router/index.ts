@@ -10,7 +10,7 @@ const router = createRouter({
     {
       path: '/jas-layout/:systemId',
       name: 'jas-layout',
-      component: () => import('@/views/layout/jas-layout.vue'),
+      component: () => import('@/layout/jas-layout.vue'),
       children: [
         {
           path: ':menuId',

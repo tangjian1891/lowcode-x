@@ -4,8 +4,8 @@
 
 <script lang="ts" setup>
 import { ref, shallowRef, defineAsyncComponent, onMounted } from 'vue'
-import { Menu, SubMenuType, JasLayout } from '@/views/layout'
-import { systemManagementMenus } from '@/views/layout/menu-data'
+import { Menu, SubMenuType, JasLayout } from '@/layout'
+import { systemManagementMenus } from '@/layout/menu-data'
 import { useRoute } from 'vue-router'
 
 const targetComp = shallowRef()

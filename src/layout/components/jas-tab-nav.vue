@@ -17,8 +17,8 @@
 import { ref, watch } from 'vue'
 import type { TabPanelName } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
-import { Menu, JasLayout } from '@/views/layout'
-import { systemManagementMenus } from '@/views/layout/menu-data'
+import { Menu, JasLayout } from '@/layout'
+import { systemManagementMenus } from '@/layout/menu-data'
 
 const router = useRouter()
 const route = useRoute()
