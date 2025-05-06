@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TjDynamice from '@/views/tj-dynamice.vue'
+import TjDynamice from '@/views/tj-dynamic.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

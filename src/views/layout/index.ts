@@ -38,6 +38,21 @@ class JasLayout {
   }
 
   async getMenuListBySystemId() {}
+
+  // 根据menuId查找菜单项
+  static findMenuById(menuId: string, menus: Menu[]): Menu | null {
+    for (const menuItem of menus) {
+      if (menuItem.id === menuId) {
+        return menuItem
+      }
+      if (menuItem.children && menuItem.children.length > 0) {
+        const found = JasLayout.findMenuById(menuId, menuItem.children)
+        if (found) return found
+      }
+    }
+    return null
+  }
+
   static goRoute(router: Router, menu: Menu) {
     const currentRoute = router.currentRoute.value
     router.push({

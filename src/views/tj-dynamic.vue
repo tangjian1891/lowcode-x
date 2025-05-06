@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { ref, shallowRef, defineAsyncComponent, onMounted } from 'vue'
-import { Menu, SubMenuType } from '@/views/layout'
+import { Menu, SubMenuType, JasLayout } from '@/views/layout'
 import { systemManagementMenus } from '@/views/layout/menu-data'
 import { useRoute } from 'vue-router'
 
@@ -12,29 +12,9 @@ const targetComp = shallowRef()
 const menu = ref()
 const route = useRoute()
 
-// 根据menuId查找菜单项
-const findMenuById = (menuId: string, menus: Menu[]): Menu | null => {
-  for (const menuItem of menus) {
-    if (menuItem.id === menuId) {
-      return menuItem
-    }
-    if (menuItem.children && menuItem.children.length > 0) {
-      const found = findMenuById(menuId, menuItem.children)
-      if (found) return found
-    }
-  }
-  return null
-}
-
 // 根据菜单类型加载对应的组件
 const loadComponentByMenu = (menuItem: Menu) => {
   menu.value = menuItem
-
-  if (!menuItem) {
-    console.error('未找到对应的菜单项')
-    return
-  }
-
   switch (menuItem.subType) {
     case SubMenuType.EXTERNAL_MENU:
       // 加载外部链接组件
@@ -75,26 +55,18 @@ const getComponentPathByValue = (value: string): string => {
 onMounted(() => {
   // 从路由参数中获取menuId
   const menuId = route.params.menuId as string
-  console.log('有菜单啊', menuId)
 
-  if (menuId) {
-    // 根据menuId查找菜单项
-    const menuItem = findMenuById(menuId, systemManagementMenus)
-    if (menuItem) {
-      loadComponentByMenu(menuItem)
-    } else {
-      console.error('未找到ID为', menuId, '的菜单项')
-    }
+  if (!menuId) {
+    console.error('菜单ID不存在')
+    return
+  }
+
+  // 使用 JasLayout 中的静态方法查找菜单项
+  const menuItem = JasLayout.findMenuById(menuId, systemManagementMenus)
+  if (menuItem) {
+    loadComponentByMenu(menuItem)
   } else {
-    // 保留原有逻辑作为默认情况
-    menu.value = new Menu({
-      name: '内部的',
-      subType: SubMenuType.INTERNAL,
-      value: 'https://www.baidu.com',
-    })
-    targetComp.value = defineAsyncComponent(() => {
-      return import('@/views/manage-plan/manage-plan.vue')
-    })
+    console.error('未找到ID为', menuId, '的菜单项')
   }
 })
 </script>

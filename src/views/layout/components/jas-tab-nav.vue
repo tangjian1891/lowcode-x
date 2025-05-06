@@ -1,155 +1,120 @@
 <template>
   <div class="tab-nav-container">
     <el-tabs
-      v-model="activeTabName"
+      v-model="activeTabId"
       type="card"
       closable
       @tab-click="handleTabClick"
-      @tab-remove="handleTabRemove"
-      @tab-change="handleTabChange"
+      @tab-remove="handleRemoveTab"
     >
-      <el-tab-pane v-for="tab in visitedTags" :key="tab.path" :label="tab.title" :name="tab.path">
+      <el-tab-pane v-for="tab in tabList" :key="tab.id" :label="tab.name" :name="tab.id">
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import type { TabPanelName } from 'element-plus'
+import { useRouter, useRoute } from 'vue-router'
+import { Menu, JasLayout } from '@/views/layout'
+import { systemManagementMenus } from '@/views/layout/menu-data'
 
-const route = useRoute()
 const router = useRouter()
+const route = useRoute()
 
-// 标签页数据结构
-interface TagView {
-  path: string
-  title: string
-  name?: string
+// 保存打开的标签页
+interface TabItem {
+  id: string
+  name: string
+  route: string
 }
 
-// 初始化标签页数据
-const visitedTags = ref<TagView[]>([
-  { path: '/home', title: '首页', name: 'Home' },
-  { path: '/about', title: '关于', name: 'About' },
-  { path: '/table', title: '表格示例', name: 'Table' },
-  { path: '/user/list', title: '用户管理', name: 'UserList' },
-  { path: '/system/config', title: '系统配置', name: 'SystemConfig' },
-  { path: '/dashboard/analysis', title: '数据分析', name: 'Analysis' },
-  { path: '/dashboard/monitor', title: '系统监控', name: 'Monitor' },
-  { path: '/report/daily', title: '日报表', name: 'DailyReport' },
-  { path: '/report/weekly', title: '周报表', name: 'WeeklyReport' },
-  { path: '/report/monthly', title: '月报表', name: 'MonthlyReport' },
-  { path: '/customer/list', title: '客户列表', name: 'CustomerList' },
-  { path: '/customer/detail', title: '客户详情', name: 'CustomerDetail' },
-  { path: '/product/category', title: '产品分类', name: 'ProductCategory' },
-  { path: '/product/inventory', title: '库存管理', name: 'Inventory' },
-  { path: '/sale/order', title: '销售订单', name: 'SaleOrder' },
-  { path: '/sale/statistics', title: '销售统计', name: 'SaleStatistics' },
-  { path: '/finance/income', title: '收入管理', name: 'Income' },
-  { path: '/finance/expense', title: '支出管理', name: 'Expense' },
-  { path: '/finance/report', title: '财务报表', name: 'FinanceReport' },
-  { path: '/hr/employee', title: '员工管理', name: 'Employee' },
-  { path: '/hr/attendance', title: '考勤记录', name: 'Attendance' },
-  { path: '/hr/salary', title: '薪资管理', name: 'Salary' },
-  { path: '/settings/role', title: '角色管理', name: 'Role' },
-  { path: '/settings/permission', title: '权限设置', name: 'Permission' },
-])
+const tabList = ref<TabItem[]>([])
+const activeTabId = ref<string>('')
 
-// 当前活动标签名称
-const activeTabName = ref(route.path)
+// 处理标签页点击事件
+const handleTabClick = (tab: any) => {
+  const tabId = tab.props.name
+  const selectedMenu = JasLayout.findMenuById(tabId, systemManagementMenus)
+  if (selectedMenu) {
+    JasLayout.goRoute(router, selectedMenu)
+  }
+}
 
-// 需要缓存的组件名列表
-const cachedViews = ref<string[]>(['HomeView', 'AboutView', 'TableView'])
+// 处理标签页关闭事件
+const handleRemoveTab = (targetId: TabPanelName) => {
+  // 找到要关闭标签页的索引
+  const index = tabList.value.findIndex((tab) => tab.id === targetId)
 
-// 根据当前路由添加标签页
-const addVisitedTag = (route: any) => {
-  const { path, meta, name } = route
-  // 如果路由没有标题则不添加到标签页
-  if (!meta?.title) return
+  // 删除标签
+  tabList.value.splice(index, 1)
 
-  // 检查是否已存在
-  const isExist = visitedTags.value.some((tag) => tag.path === path)
+  // 如果关闭的是当前激活的标签页，则需要激活其他标签页
+  if (activeTabId.value === targetId) {
+    // 如果还有其他标签页，则激活最后一个标签页
+    if (tabList.value.length > 0) {
+      // 优先激活被关闭标签右侧的标签，如果没有则激活左侧标签
+      const nextActiveTab = tabList.value[index] || tabList.value[index - 1]
+      activeTabId.value = nextActiveTab.id
+
+      // 跳转到新激活的标签页
+      const nextMenu = JasLayout.findMenuById(nextActiveTab.id, systemManagementMenus)
+      if (nextMenu) {
+        JasLayout.goRoute(router, nextMenu)
+      }
+    } else {
+      // 如果没有标签页了，可以跳转到首页或其他默认页面
+      router.push('/dashboard')
+    }
+  }
+}
+
+// 添加标签页的方法
+const addTab = (menu: Menu) => {
+  // 检查标签是否已经存在
+  const isExist = tabList.value.some((tab) => tab.id === menu.id)
+
   if (!isExist) {
-    visitedTags.value.push({
-      path,
-      title: meta.title,
-      name,
+    // 添加新标签
+    tabList.value.push({
+      id: menu.id,
+      name: menu.name,
+      route: `/jas-layout/${route.params.systemId}/${menu.id}`,
     })
   }
 
-  // 添加到缓存视图
-  if (meta?.keepAlive && name && !cachedViews.value.includes(name)) {
-    cachedViews.value.push(name)
-  }
+  // 激活标签
+  activeTabId.value = menu.id
 }
 
-// 标签点击事件
-const handleTabClick = (tab: any) => {
-  router.push(tab.props.name)
-}
-
-// 标签移除事件
-const handleTabRemove = (targetPath: string) => {
-  // 找到要关闭的标签索引
-  const index = visitedTags.value.findIndex((tag) => tag.path === targetPath)
-  if (index === -1) return
-
-  const tag = visitedTags.value[index]
-
-  // 移除标签
-  visitedTags.value.splice(index, 1)
-
-  // 如果关闭的是当前激活的标签，则需要导航到其他标签
-  if (targetPath === route.path) {
-    // 优先跳转到右侧标签，如果没有右侧标签则跳转到左侧标签
-    const nextTag = visitedTags.value[index] || visitedTags.value[index - 1]
-    if (nextTag) {
-      router.push(nextTag.path)
-    }
-  }
-
-  // 如果需要，也可以从cachedViews中移除
-  if (tag.name) {
-    const i = cachedViews.value.indexOf(tag.name)
-    if (i > -1) {
-      cachedViews.value.splice(i, 1)
-    }
-  }
-}
-
-// 标签切换事件
-const handleTabChange = (tabName: string) => {
-  activeTabName.value = tabName
-}
-
-// 监听路由变化，添加标签页
+// 监听路由变化，自动添加和激活标签页
 watch(
-  () => route.path,
+  () => route.params,
   () => {
-    addVisitedTag(route)
-    activeTabName.value = route.path
+    if (route.name === 'JasLayout' && route.params.systemId && route.params.menuId) {
+      const menuId = route.params.menuId as string
+      const menu = JasLayout.findMenuById(menuId, systemManagementMenus)
+
+      if (menu) {
+        addTab(menu)
+      }
+    }
   },
-  { immediate: true },
+  { immediate: true }, // 确保组件初始化时也执行一次
 )
 
-// 组件挂载时初始化第一个标签
-onMounted(() => {
-  addVisitedTag(route)
-  activeTabName.value = route.path
-})
-
-// 导出给父组件使用
+// 暴露方法给父组件
 defineExpose({
-  visitedTags,
-  cachedViews,
+  addTab,
 })
 </script>
 
 <style lang="scss" scoped>
 .tab-nav-container {
   background-color: #fff;
-  border-bottom: 1px solid #dcdfe6;
+  padding: 0 10px;
+  border-bottom: 1px solid #e8e8e8;
 
   :deep(.el-tabs__header) {
     margin-bottom: 0;
@@ -162,19 +127,25 @@ defineExpose({
   :deep(.el-tabs__item) {
     height: 36px;
     line-height: 36px;
-    border-radius: 4px;
-    margin-right: 4px;
-    transition: all 0.2s;
+    border: 1px solid #e8e8e8;
+    border-bottom: none;
+    margin-right: 3px;
+    transition: all 0.3s;
+
+    &:hover {
+      color: #1890ff;
+    }
 
     &.is-active {
-      background-color: #409eff;
-      color: #fff;
-      border-color: #409eff;
+      color: #1890ff;
+      background-color: #f0f7ff;
     }
+  }
 
-    &:not(.is-active):hover {
-      background-color: #e6f7ff;
-    }
+  :deep(.el-tabs__nav-next),
+  :deep(.el-tabs__nav-prev) {
+    line-height: 36px;
+    color: #666;
   }
 }
 </style>

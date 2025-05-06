@@ -66,7 +66,7 @@ const emit = defineEmits(['select'])
 const handleSelect = (index: string) => {
   activeMenu.value = index
   // 查找选中的菜单项
-  const selectedMenu = findMenuById(index)
+  const selectedMenu = JasLayout.findMenuById(index, menuData.value)
   JasLayout.goRoute(router, selectedMenu)
   // emit('select', selectedMenu)
 }
@@ -84,18 +84,6 @@ const getMenuIcon = (menu) => {
 
   // 默认图标
   return 'Menu'
-}
-
-// 通过ID查找菜单项
-const findMenuById = (id: string) => {
-  for (const folder of menuData.value) {
-    if (folder.id === id) return folder
-
-    for (const menu of folder.children) {
-      if (menu.id === id) return menu
-    }
-  }
-  return null
 }
 
 // 暴露方法给父组件
