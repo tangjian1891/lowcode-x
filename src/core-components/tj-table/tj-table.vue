@@ -5,6 +5,13 @@
 <script lang="ts" setup>
 import JasTable from '@/jas-table/index.vue'
 
+const props = defineProps({
+  menu: {
+    type: Object,
+    required: true,
+  },
+})
+
 const route = useRoute()
 
 const formId = route.query.formId

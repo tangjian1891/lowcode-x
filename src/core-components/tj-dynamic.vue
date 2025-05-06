@@ -32,8 +32,9 @@ const loadComponentByMenu = (menuItem: Menu) => {
     case SubMenuType.GENERAL_FORM:
       // 加载通用表单组件
       targetComp.value = defineAsyncComponent(() => {
-        return import('@/views/form/jas-form-page.vue')
+        return import('@/core-components/tj-table/tj-table.vue')
       })
+
       break
     default:
       console.error('未知的菜单子类型:', menuItem.subType)

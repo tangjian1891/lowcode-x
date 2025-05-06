@@ -1,17 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TjDynamice from '@/views/tj-dynamic.vue'
+import TjDynamice from '@/core-components/tj-dynamic.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       redirect: '/jas-layout/1231313/1231312312',
-    },
-
-    {
-      path: '/child',
-      name: 'child',
-      component: () => import('@/Child.vue'),
     },
     {
       path: '/jas-layout/:systemId',
@@ -29,16 +23,6 @@ const router = createRouter({
           },
         },
       ],
-    },
-    {
-      path: '/form/:formId/:mode',
-      name: 'form',
-      component: () => import('@/views/form/jas-form-page.vue'),
-    },
-    {
-      path: '/jas-table-page/:formId',
-      name: 'jas-table-page',
-      component: () => import('@/views/table/jas-table-page.vue'),
     },
   ],
 })
