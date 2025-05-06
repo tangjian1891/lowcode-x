@@ -7,13 +7,19 @@ import App from './App.vue'
 import router from './router'
 import VxeUITable, { VxeUI } from 'vxe-table'
 import 'vxe-table/lib/style.css'
+import VxeUIAll from 'vxe-pc-ui'
+import 'vxe-pc-ui/lib/style.css'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'virtual:uno.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 import { mergeAppContext } from './utils/merge-app-context'
 const app = createApp(App)
-
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 VxeUI.setConfig({
   table: {
     autoResize: true,
@@ -58,6 +64,7 @@ VxeUI.renderer.add('MyTableFilterInput', {
 app.use(createPinia())
 app.use(router)
 app.use(VxeUITable)
+app.use(VxeUIAll)
 app.use(ElementPlus)
 app.mount('#app')
 

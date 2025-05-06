@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import type { Router } from 'vue-router'
 
 // 菜单类型枚举
 export enum MenuType {
@@ -37,7 +38,12 @@ class JasLayout {
   }
 
   async getMenuListBySystemId() {}
-  static goRoute(router, menu) {}
+  static goRoute(router: Router, menu: Menu) {
+    const currentRoute = router.currentRoute.value
+    router.push({
+      path: `/jas-layout/${currentRoute.params.systemId}/${menu.id}`,
+    })
+  }
 }
 
 export { JasLayout }

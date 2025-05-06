@@ -9,39 +9,40 @@
       active-text-color="#1890ff"
       @select="handleSelect"
     >
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon><document /></el-icon>
-          <span>数据管理</span>
-        </template>
-        <el-menu-item index="1-1">用户列表</el-menu-item>
-        <el-menu-item index="1-2">角色管理</el-menu-item>
-        <el-menu-item index="1-3">权限配置</el-menu-item>
-      </el-sub-menu>
-      <el-sub-menu index="2">
-        <template #title>
-          <el-icon><setting /></el-icon>
-          <span>系统设置</span>
-        </template>
-        <el-menu-item index="2-1">基础设置</el-menu-item>
-        <el-menu-item index="2-2">高级配置</el-menu-item>
-      </el-sub-menu>
-      <el-sub-menu index="3">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>数据分析</span>
-        </template>
-        <el-menu-item index="3-1">数据概览</el-menu-item>
-        <el-menu-item index="3-2">详细统计</el-menu-item>
-        <el-menu-item index="3-3">生成报表</el-menu-item>
-      </el-sub-menu>
+      <!-- 动态渲染菜单项，替换原来的静态菜单 -->
+      <template v-for="folder in menuData" :key="folder.id">
+        <el-sub-menu v-if="folder.type === MenuType.FOLDER" :index="folder.id">
+          <template #title>
+            <el-icon><component :is="folder.icon || 'Folder'" /></el-icon>
+            <span>{{ folder.name }}</span>
+          </template>
+
+          <!-- 渲染菜单项 -->
+          <template v-for="menu in folder.children" :key="menu.id">
+            <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
+              <el-icon>
+                <!-- 根据不同的子类型使用不同的图标 -->
+                <component :is="getMenuIcon(menu)" />
+              </el-icon>
+              <span>{{ menu.name }}</span>
+            </el-menu-item>
+          </template>
+        </el-sub-menu>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Document, Setting, Location } from '@element-plus/icons-vue'
+import { ref, computed } from 'vue'
+
+import { initSystemMenu } from '../menu-data'
+import { JasLayout, MenuType, SubMenuType } from '../index'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+// 为initSystemMenu函数提供系统ID参数
+const menuData = computed(() => initSystemMenu('system-001'))
 
 // 定义组件的props
 const props = defineProps({
@@ -51,7 +52,12 @@ const props = defineProps({
   },
 })
 
-const activeMenu = ref('1-1') // 默认选中"用户列表"
+const activeMenu = ref('') // 默认不选中任何菜单项
+
+// 初始化默认选中的菜单项(如果有菜单)
+if (menuData.value.length > 0 && menuData.value[0].children.length > 0) {
+  activeMenu.value = menuData.value[0].children[0].id
+}
 
 // 定义emit事件
 const emit = defineEmits(['select'])
@@ -59,7 +65,37 @@ const emit = defineEmits(['select'])
 // 处理菜单选择事件
 const handleSelect = (index: string) => {
   activeMenu.value = index
-  emit('select', index)
+  // 查找选中的菜单项
+  const selectedMenu = findMenuById(index)
+  JasLayout.goRoute(router, selectedMenu)
+  // emit('select', selectedMenu)
+}
+
+// 根据菜单的子类型获取对应的图标
+const getMenuIcon = (menu) => {
+  // 只根据菜单子类型返回对应图标，不再考虑自定义图标
+  if (menu.subType === SubMenuType.GENERAL_FORM) {
+    return 'Document'
+  } else if (menu.subType === SubMenuType.INTERNAL) {
+    return 'Operation'
+  } else if (menu.subType === SubMenuType.EXTERNAL_MENU) {
+    return 'Link'
+  }
+
+  // 默认图标
+  return 'Menu'
+}
+
+// 通过ID查找菜单项
+const findMenuById = (id: string) => {
+  for (const folder of menuData.value) {
+    if (folder.id === id) return folder
+
+    for (const menu of folder.children) {
+      if (menu.id === id) return menu
+    }
+  }
+  return null
 }
 
 // 暴露方法给父组件

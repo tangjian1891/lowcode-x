@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DynamicMenu from '@/views/layout/dynamic-menu.vue'
+import TjDynamice from '@/views/tj-dynamice.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -21,18 +21,13 @@ const router = createRouter({
         {
           path: ':menuId',
           name: 'menu',
-          component: () => import('@/views/form/jas-form.vue'),
+          component: {
+            name: 'dynamic-menu',
+            render() {
+              return h('div', '')
+            },
+          },
         },
-        // {
-        //   path: 'form/:formId/:mode',
-        //   name: 'jas-form',
-        //   component: () => import('@/views/form/jas-form.vue'),
-        // },
-        // {
-        //   path: 'jas-table/:formId',
-        //   name: 'jas-table',
-        //   component: () => import('@/jas-table/index.vue'),
-        // },
       ],
     },
     {
@@ -61,7 +56,7 @@ router.beforeEach((to, from) => {
       component: {
         name: menuId,
         render() {
-          return h(DynamicMenu)
+          return h(TjDynamice)
         },
       },
     })
