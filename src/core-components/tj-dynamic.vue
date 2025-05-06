@@ -24,9 +24,8 @@ const loadComponentByMenu = (menuItem: Menu) => {
       break
     case SubMenuType.INTERNAL:
       // 加载内部路由对应的组件
-      const componentPath = getComponentPathByValue(menuItem.value)
       targetComp.value = defineAsyncComponent(() => {
-        return import(componentPath)
+        return import('@/views/a.vue')
       })
       break
     case SubMenuType.GENERAL_FORM:
@@ -39,18 +38,6 @@ const loadComponentByMenu = (menuItem: Menu) => {
     default:
       console.error('未知的菜单子类型:', menuItem.subType)
   }
-}
-
-// 根据菜单value获取组件路径的映射
-const getComponentPathByValue = (value: string): string => {
-  const componentMap: Record<string, string> = {
-    'role-management': '@/views/manage-plan/manage-plan.vue',
-    'form-designer': '@/views/form/jas-form-page.vue',
-    'code-generator': '@/views/table/jas-table-page.vue',
-    // 可以根据实际情况添加更多映射
-  }
-
-  return componentMap[value] || '@/views/manage-plan/manage-plan.vue' // 默认返回
 }
 
 onMounted(() => {
