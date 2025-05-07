@@ -39,10 +39,8 @@ const fields = [
     slots: {
       default: () => {
         return [
-          Button.createJasButtonAdd('新增'),
-          Button.createJasButtonEdit('编辑'),
-          Button.createJasButtonEdit('编辑'),
-          Button.createJasButtonEdit('编辑'),
+          Button.createAddButton('新增'),
+          Button.createEditButton('编辑'),
           // createJasButtonExport('导出'),
           // createJasButtonImport('导入'),
         ].map((button) => {
@@ -54,12 +52,7 @@ const fields = [
     width: '300px',
   },
 ]
-const buttons = [
-  Button.createJasButtonAdd('新增'),
-  Button.createJasButtonEdit('编辑'),
-  Button.createJasButtonExport('导出'),
-  Button.createJasButtonImport('导入'),
-]
+const buttons = [Button.createAddButton('新增'), Button.createEditButton('编辑')]
 
 const tjTable = ref(new TjTable({ fields, buttons }))
 console.log(tjTable.value)

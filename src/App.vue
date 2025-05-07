@@ -2,9 +2,6 @@
   <router-view></router-view>
 </template>
 <script setup lang="ts">
-import JasTable from '@/jas-table/index.vue'
-import Child from '@/Child.vue'
-import { render } from 'vue'
 import { ElButton } from 'element-plus'
 import JasResize from './components/jas-resize/jas-resize.vue'
 </script>

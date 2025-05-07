@@ -35,7 +35,7 @@ update:modelValue触发，正式关闭。
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { type IJasTable } from '../jas-table/jas-page'
+import { type IJasTable } from '@/core-components/tj-table/types'
 import { isFunction } from 'lodash-es'
 import { DialogSizeEnum, dialogSizeMapping } from './index'
 defineOptions({

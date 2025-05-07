@@ -1,5 +1,7 @@
 import { mergeAppContext } from '@/utils/merge-app-context'
 import JasDialog from './index.vue'
+import type { IJasTable } from '@/core-components/tj-table/types'
+
 // 弹窗尺寸，原则上不再需要外部穿透修改大小了
 export enum DialogSizeEnum {
   w320, //高 min240-max600
@@ -42,7 +44,7 @@ export const dialogSizeMapping = {
   },
 }
 
-export function createDialog(tjTable, component) {
+export function createDialog(tjTable: IJasTable, component: any) {
   let app = createApp(JasDialog, {
     tjTable,
     component,

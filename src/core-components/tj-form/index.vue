@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import type { IJasTable } from '../jas-page'
+import type { IJasTable } from '../tj-table/types'
 import { ElMessage } from 'element-plus'
 const emit = defineEmits(['close', 'checkAndClose', 'confirm'])
 const props = defineProps({
@@ -27,12 +27,12 @@ const props = defineProps({
 })
 const formRef = ref()
 
-async function onConfirm(params: type) {
+async function onConfirm() {
   await formRef.value.validate()
   emit('close')
 }
 
-function onClose(params: type) {
+function onClose() {
   emit('checkAndClose')
 }
 console.log('可以拿到', props.tjTable)

@@ -33,7 +33,6 @@ const loadComponentByMenu = (menuItem: Menu) => {
       targetComp.value = defineAsyncComponent(() => {
         return import('@/core-components/tj-table/tj-table.vue')
       })
-
       break
     default:
       console.error('未知的菜单子类型:', menuItem.subType)
