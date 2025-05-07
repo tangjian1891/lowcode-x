@@ -2,9 +2,9 @@ import { ElButton } from 'element-plus'
 import { nanoid } from 'nanoid'
 import JasButtonVue from './jas-button.vue'
 import type { IJasTable } from '../jas-page'
-import { createDialog } from '../jas-dialog'
-import JasImport from '../jas-import/jas-import.vue'
-import JasForm from '../jas-form/jas-form.vue'
+import { createDialog } from '@/tj-dialog/index.ts'
+import JasImport from '../jas-import/index.vue'
+import JasForm from '@/core-components/tj-form/index.vue'
 class JasButton {
   id = nanoid()
   // el-button 的属性及默认值
@@ -31,7 +31,7 @@ class JasButton {
     Object.assign(this, props)
   }
 
-  onClick(button: IJasButton, jasTable: IJasTable) {}
+  onClick(button: IJasButton, tjTable: IJasTable) {}
 }
 export default JasButton
 
@@ -48,23 +48,23 @@ export function createJasButton(label, params: Partial<IJasButton> = {}) {
 // 新增
 export function createJasButtonAdd(...args) {
   const button = createJasButton(...args)
-  button.onClick = (button, jasTable) => {
-    createDialog(jasTable, JasForm)
+  button.onClick = (button, tjTable) => {
+    createDialog(tjTable, JasForm)
   }
   return button
 }
 // 编辑
 export function createJasButtonEdit(...args) {
   const button = createJasButton(...args)
-  button.onClick = (button, jasTable) => {
-    createDialog(jasTable, JasForm)
+  button.onClick = (button, tjTable) => {
+    createDialog(tjTable, JasForm)
   }
   return button
 }
 
 export function createJasButtonExport(...args) {
   const button = createJasButton(...args)
-  button.onClick = (button, jasTable) => {
+  button.onClick = (button, tjTable) => {
     console.log('点击触发')
   }
   return button
@@ -73,8 +73,8 @@ export function createJasButtonExport(...args) {
 // 导入
 export function createJasButtonImport(...args) {
   const button = createJasButton(...args)
-  button.onClick = (button, jasTable) => {
-    createDialog(jasTable, JasImport)
+  button.onClick = (button, tjTable) => {
+    createDialog(tjTable, JasImport)
   }
   return button
 }

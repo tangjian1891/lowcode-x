@@ -1,5 +1,5 @@
 import { mergeAppContext } from '@/utils/merge-app-context'
-import JasDialog from './jas-dialog.vue'
+import JasDialog from './index.vue'
 // 弹窗尺寸，原则上不再需要外部穿透修改大小了
 export enum DialogSizeEnum {
   w320, //高 min240-max600
@@ -42,9 +42,9 @@ export const dialogSizeMapping = {
   },
 }
 
-export function createDialog(jasTable, component) {
+export function createDialog(tjTable, component) {
   let app = createApp(JasDialog, {
-    jasTable,
+    tjTable,
     component,
     onClose() {
       app.unmount()

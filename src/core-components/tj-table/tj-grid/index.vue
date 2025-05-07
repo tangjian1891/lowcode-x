@@ -1,5 +1,5 @@
 <template>
-  <div class="jas-table-area">
+  <div class="tj-table-area">
     <!-- 表格区域内容 -->
     <vxe-grid v-bind="gridOptions"></vxe-grid>
   </div>
@@ -8,11 +8,11 @@
 <script lang="ts" setup>
 // 定义表格区域的逻辑
 import { type PropType } from 'vue'
-import type { IJasTable } from '../jas-page'
+import type { ITjTable } from '../tj-table'
 import type { VxeGridProps } from 'vxe-table'
 const props = defineProps({
-  jasTable: {
-    type: Object as PropType<IJasTable>,
+  tjTable: {
+    type: Object as PropType<ITjTable>,
     required: true,
   },
 })
@@ -21,7 +21,7 @@ setTimeout(() => {
   i.value = 2
 }, 3000)
 const columns = computed(() => {
-  const columns = props.jasTable.fields
+  const columns = props.tjTable.fields
     .map((item, index) => {
       if (item.isTable) {
         return {
@@ -131,7 +131,7 @@ console.log(gridOptions.value)
 </script>
 
 <style lang="scss" scoped>
-.jas-table-area {
+.tj-table-area {
   /* 样式定义 */
   // height: 300px;
   // min-height: 500px;

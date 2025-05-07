@@ -13,7 +13,7 @@ export const systemManagementMenus: Menu[] = [
     children: [
       // 用户管理菜单 - 通用表单类型
       new Menu({
-        id: nanoid(),
+        id: '1',
         name: '用户管理',
         type: MenuType.MENU,
         subType: SubMenuType.GENERAL_FORM,

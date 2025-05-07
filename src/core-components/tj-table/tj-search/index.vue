@@ -1,6 +1,6 @@
 <template>
   <div class="jas-search" ref="searchContainer">
-    <el-form :inline="true" :model="jasTable.searchParams" class="search-form">
+    <el-form :inline="true" :model="tjTable.searchParams" class="search-form">
       <el-row :gutter="20">
         <!-- 第一行字段（常用搜索条件）-->
         <el-col
@@ -9,7 +9,7 @@
           :span="layoutComputed.fieldSpan"
         >
           <el-form-item :label="field.label">
-            <component :is="field.component" :field="field" :jasTable="jasTable" />
+            <component :is="field.component" :field="field" :tjTable="tjTable" />
           </el-form-item>
         </el-col>
 
@@ -35,7 +35,7 @@
             :key="`more-${field.prop}`"
           >
             <el-form-item :label="field.label">
-              <component :is="field.component" :field="field" :jasTable="jasTable" />
+              <component :is="field.component" :field="field" :tjTable="tjTable" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -45,13 +45,13 @@
 </template>
 
 <script lang="ts" setup>
-import { type IJasTable } from '../index'
+import { type ITjTable } from '../index'
 import { type PropType, ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 
 const props = defineProps({
-  jasTable: {
-    type: Object as PropType<IJasTable>,
+  tjTable: {
+    type: Object as PropType<ITjTable>,
     required: true,
   },
 })
@@ -69,8 +69,8 @@ const layoutComputed = computed(() => {
 
   // 计算字段占用的span
   const fieldSpan = Math.floor(24 / (fieldsPerRow + 1)) // +1 为按钮区域预留空间
-  const firstRow = props.jasTable.fields.slice(0, fieldsPerRow - 1)
-  const moreFieldRows = props.jasTable.fields.slice(fieldsPerRow - 1)
+  const firstRow = props.tjTable.fields.slice(0, fieldsPerRow - 1)
+  const moreFieldRows = props.tjTable.fields.slice(fieldsPerRow - 1)
 
   return {
     fieldSpan, //单个字段所占span
@@ -91,12 +91,12 @@ function calculateContainerWidth() {
 
 // 查询方法
 function handleSearch() {
-  props.jasTable.search?.()
+  props.tjTable.search?.()
 }
 
 // 重置方法
 function handleReset() {
-  props.jasTable.reset?.()
+  props.tjTable.reset?.()
 }
 
 // 切换展开/收起状态

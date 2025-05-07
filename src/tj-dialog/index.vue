@@ -9,7 +9,7 @@
   >
     <component
       ref="dialogContentRef"
-      :jasTable="jasTable"
+      :tjTable="tjTable"
       :is="component ?? JasForm"
       @close="noCheckAndClose"
       @checkAndClose="checkAndClose"
@@ -35,7 +35,7 @@ update:modelValue触发，正式关闭。
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { type IJasTable } from '../jas-page'
+import { type IJasTable } from '../jas-table/jas-page'
 import { isFunction } from 'lodash-es'
 import { DialogSizeEnum, dialogSizeMapping } from './index'
 defineOptions({
@@ -48,7 +48,7 @@ const dialogVisible = ref(true)
 const dialogContentRef = ref()
 const props = defineProps({
   component: Object,
-  jasTable: {
+  tjTable: {
     type: Object as PropType<IJasTable>,
     required: true,
   },

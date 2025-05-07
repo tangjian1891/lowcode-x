@@ -10,14 +10,14 @@ const props = defineProps({
     type: Object as PropType<IJasButton>,
     required: true,
   },
-  jasTable: Object,
+  tjTable: Object,
 })
 const button = computed(() => {
   return { ...props.button, onClick: undefined }
 })
 
 function onClick() {
-  props.button.onClick(props.button, props.jasTable)
+  props.button.onClick(props.button, props.tjTable)
 }
 </script>
 

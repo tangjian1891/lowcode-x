@@ -1,9 +1,9 @@
 <template>
-  <el-form ref="formRef" :model="jasTable.form" label-width="auto">
+  <el-form ref="formRef" :model="tjTable.form" label-width="auto">
     <el-row :gutter="20">
-      <el-col :span="field.span" v-for="field in jasTable.fields" :key="field.id">
+      <el-col :span="field.span" v-for="field in tjTable.fields" :key="field.id">
         <el-form-item :label="field.label" :prop="field.id" :required="field.required">
-          <component :is="field.component" :field="field" :jasTable="jasTable" />
+          <component :is="field.component" :field="field" :tjTable="tjTable" />
         </el-form-item>
       </el-col>
     </el-row>
@@ -20,7 +20,7 @@ import type { IJasTable } from '../jas-page'
 import { ElMessage } from 'element-plus'
 const emit = defineEmits(['close', 'checkAndClose', 'confirm'])
 const props = defineProps({
-  jasTable: {
+  tjTable: {
     type: Object as PropType<IJasTable>,
     required: true,
   },
@@ -35,7 +35,7 @@ async function onConfirm(params: type) {
 function onClose(params: type) {
   emit('checkAndClose')
 }
-console.log('可以拿到', props.jasTable)
+console.log('可以拿到', props.tjTable)
 
 function handleClose(done) {
   // ElMessage.warning('就是不给关闭')

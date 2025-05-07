@@ -16,15 +16,15 @@ const props = defineProps({
     type: Object as PropType<IJasInput>,
     required: true,
   },
-  jasTable: Object,
+  tjTable: Object,
 })
 
 const value = computed(() => {
-  return props.jasTable.form[props.field.id]
+  return props.tjTable.form[props.field.id]
 })
 
 function update(e) {
-  props.jasTable.form[props.field.id] = e
+  props.tjTable.form[props.field.id] = e
 }
 </script>
 
