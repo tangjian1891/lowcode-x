@@ -1,9 +1,9 @@
 import { ElButton } from 'element-plus'
 import { nanoid } from 'nanoid'
 import JasButtonVue from './jas-button.vue'
-import type { IJasTable } from '../jas-page'
+import type { IJasTable } from '@/core-components/tj-table/tj-table.ts'
 import { createDialog } from '@/tj-dialog/index.ts'
-import JasImport from '../jas-import/index.vue'
+import JasImport from '../tj-import/index.vue'
 import JasForm from '@/core-components/tj-form/index.vue'
 class JasButton {
   id = nanoid()
@@ -46,7 +46,7 @@ export function createJasButton(label, params: Partial<IJasButton> = {}) {
 }
 
 // 新增
-export function createJasButtonAdd(...args) {
+function createJasButtonAdd(...args) {
   const button = createJasButton(...args)
   button.onClick = (button, tjTable) => {
     createDialog(tjTable, JasForm)
@@ -54,7 +54,7 @@ export function createJasButtonAdd(...args) {
   return button
 }
 // 编辑
-export function createJasButtonEdit(...args) {
+function createJasButtonEdit(...args) {
   const button = createJasButton(...args)
   button.onClick = (button, tjTable) => {
     createDialog(tjTable, JasForm)
@@ -62,7 +62,7 @@ export function createJasButtonEdit(...args) {
   return button
 }
 
-export function createJasButtonExport(...args) {
+function createJasButtonExport(...args) {
   const button = createJasButton(...args)
   button.onClick = (button, tjTable) => {
     console.log('点击触发')
@@ -71,7 +71,7 @@ export function createJasButtonExport(...args) {
 }
 
 // 导入
-export function createJasButtonImport(...args) {
+function createJasButtonImport(...args) {
   const button = createJasButton(...args)
   button.onClick = (button, tjTable) => {
     createDialog(tjTable, JasImport)
@@ -80,6 +80,15 @@ export function createJasButtonImport(...args) {
 }
 
 // 行内按钮
-export function createInlineJasButton(label, params = {}) {
+function createInlineJasButton(label, params = {}) {
   return { ElButton }
+}
+
+export const Button = {
+  JasButton,
+  createJasButtonAdd,
+  createJasButtonEdit,
+  createJasButtonExport,
+  createJasButtonImport,
+  createInlineJasButton,
 }

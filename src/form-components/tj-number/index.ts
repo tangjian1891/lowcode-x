@@ -1,7 +1,6 @@
-import { Parent } from '../parent'
 import JasNumberVue from './index.vue'
 
-export class JasNumber extends Parent {
+export class JasNumber {
   id: string = ''
   label: string = ''
   type: string = 'number'
@@ -21,7 +20,6 @@ export class JasNumber extends Parent {
   component = markRaw(JasNumberVue)
 
   constructor(params: Partial<JasNumber>) {
-    super()
     Object.assign(this, params)
   }
 

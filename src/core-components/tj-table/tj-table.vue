@@ -13,16 +13,9 @@
 <script lang="tsx" setup>
 import { getDefaultComponents } from '.'
 import { TjTable } from './tj-table'
-import { Field } from '@/jas-table/ui-component/index'
+import { Field, Button } from '@/form-components/index'
 import { nanoid } from 'nanoid'
-import {
-  createInlineJasButton,
-  createJasButton,
-  createJasButtonAdd,
-  createJasButtonEdit,
-  createJasButtonExport,
-  createJasButtonImport,
-} from '@/jas-table/ui-button/index'
+
 defineProps({
   // 渲染的组件。可以自行扩展，调整顺序
   components: {
@@ -46,10 +39,10 @@ const fields = [
     slots: {
       default: () => {
         return [
-          createJasButtonAdd('新增'),
-          createJasButtonEdit('编辑'),
-          createJasButtonEdit('编辑'),
-          createJasButtonEdit('编辑'),
+          Button.createJasButtonAdd('新增'),
+          Button.createJasButtonEdit('编辑'),
+          Button.createJasButtonEdit('编辑'),
+          Button.createJasButtonEdit('编辑'),
           // createJasButtonExport('导出'),
           // createJasButtonImport('导入'),
         ].map((button) => {
@@ -62,10 +55,10 @@ const fields = [
   },
 ]
 const buttons = [
-  createJasButtonAdd('新增'),
-  createJasButtonEdit('编辑'),
-  createJasButtonExport('导出'),
-  createJasButtonImport('导入'),
+  Button.createJasButtonAdd('新增'),
+  Button.createJasButtonEdit('编辑'),
+  Button.createJasButtonExport('导出'),
+  Button.createJasButtonImport('导入'),
 ]
 
 const tjTable = ref(new TjTable({ fields, buttons }))
