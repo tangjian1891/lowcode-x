@@ -1,4 +1,4 @@
-import { createTjButton, type ITjButton } from './tj-button'
+import TjButton, { type ITjButton, ButtonEnableCondition } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
 import { ElMessageBox } from 'element-plus'
 import { Permission } from '@/utils/permissions'
@@ -9,9 +9,11 @@ import { Permission } from '@/utils/permissions'
  * @param params 按钮参数
  */
 export function createBatchDeleteButton(label = '批量删除', params: Partial<ITjButton> = {}) {
-  const button = createTjButton(label, {
+  const button = new TjButton({
+    label,
     type: 'danger',
     permission: Permission.DELETE, // 默认使用通用删除权限
+    enableCondition: ButtonEnableCondition.ONE_ROW_SELECTED, // 至少选择一行才可用
     ...params,
   })
 

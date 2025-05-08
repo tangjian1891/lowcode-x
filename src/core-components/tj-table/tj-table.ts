@@ -2,6 +2,7 @@ import { Button } from '@/form-components'
 import { Permission } from '@/utils/permissions'
 
 export class TjTable {
+  oids = []
   fields = []
   form = {}
   toolbar = {
@@ -11,7 +12,7 @@ export class TjTable {
     refresh: true,
     fullscreen: true,
   }
-  grid = {}
+  grid = { buttons: [] }
   pagination = {
     pageSize: 50,
     pageSizes: [10, 20, 50, 100],

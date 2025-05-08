@@ -1,4 +1,4 @@
-import { createTjButton, type ITjButton } from './tj-button'
+import TjButton, { type ITjButton } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
 import { createDialog } from '@/tj-dialog/index'
 import JasImport from '../tj-import/index.vue'
@@ -10,7 +10,8 @@ import { Permission } from '@/utils/permissions'
  * @param params 按钮参数
  */
 export function createImportButton(label = '导入', params: Partial<ITjButton> = {}) {
-  const button = createTjButton(label, {
+  const button = new TjButton({
+    label,
     type: 'primary',
     permission: Permission.IMPORT, // 默认使用通用导入权限
     ...params,

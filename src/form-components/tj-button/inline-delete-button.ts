@@ -1,4 +1,4 @@
-import { createTjButton, type ITjButton } from './tj-button'
+import TjButton, { type ITjButton } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
 import { ElMessageBox } from 'element-plus'
 import { Permission } from '@/utils/permissions'
@@ -9,7 +9,8 @@ import { Permission } from '@/utils/permissions'
  * @param params 按钮参数
  */
 export function createDeleteButton(label = '删除', params: Partial<ITjButton> = {}) {
-  const button = createTjButton(label, {
+  const button = new TjButton({
+    label,
     type: 'danger',
     permission: Permission.DELETE, // 默认使用通用删除权限
     ...params,

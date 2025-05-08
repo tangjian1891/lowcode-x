@@ -1,11 +1,8 @@
 <template>
-  <el-button v-bind="buttonAttrs" :disabled="isDisabled" @click="handleClick">{{
-    button.label
-  }}</el-button>
+  <el-button :disabled="isDisabled" @click="handleClick">{{ button.label }}</el-button>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
 import type { PropType } from 'vue'
 import type { ITjButton } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
@@ -27,6 +24,9 @@ function handleClick() {
     props.button.onClick(props.button, props.tjTable)
   }
 }
+const isDisabled = computed(() => {
+  return props.button.isDisabled(props)
+})
 </script>
 
 <style lang="scss" scoped></style>

@@ -5,11 +5,12 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 // 定义表格区域的逻辑
 import { type PropType } from 'vue'
 import type { ITjTable } from '../tj-table'
 import type { VxeGridProps } from 'vxe-table'
+import { column } from 'element-plus/es/components/table-v2/src/common.mjs'
 const props = defineProps({
   tjTable: {
     type: Object as PropType<ITjTable>,
@@ -21,24 +22,24 @@ setTimeout(() => {
   i.value = 2
 }, 3000)
 const columns = computed(() => {
-  const columns = props.tjTable.fields
-    .map((item, index) => {
-      if (item.isTable) {
-        return {
-          field: item.id,
-          title: item.label,
-          visible: true,
-          fixed: item.fixed,
-          width: item.width || 200,
-          slots: item.slots,
-          cellRender: item.cellRender,
-          showOverflow: item.showOverflow || 'ellipsis',
-        }
-      }
-    })
-    .filter(Boolean)
-  console.log(columns)
+  const columns: any[] = [...props.tjTable.fields]
 
+  if (props.tjTable.grid.buttons.length > 0) {
+    columns.push({
+      isTable: true,
+      label: '操作',
+      showOverflow: false,
+      slots: {
+        default: () => {
+          return props.tjTable.grid.buttons.map((button) => {
+            const component = button.component
+            return <component button={button} tjTable={props.tjTable}></component>
+          })
+        },
+      },
+      width: '300px',
+    })
+  }
   return columns
 })
 const count = ref(0)

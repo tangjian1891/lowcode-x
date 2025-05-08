@@ -33,25 +33,6 @@ const fields = [
   Field.createJasNumber(nanoid(), '身份证号'),
   Field.createJasInput(nanoid(), '备注'),
   Field.createJasNumber(nanoid(), '分数', { fixed: 'left' }),
-  {
-    isTable: true,
-    label: '操作',
-    showOverflow: false,
-    slots: {
-      default: () => {
-        return [
-          Button.createAddButton('新增'),
-          Button.createEditButton('编辑'),
-          // createJasButtonExport('导出'),
-          // createJasButtonImport('导入'),
-        ].map((button) => {
-          const component = button.component
-          return <component button={button}></component>
-        })
-      },
-    },
-    width: '300px',
-  },
 ]
 
 const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.EXPORT]

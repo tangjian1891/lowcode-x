@@ -1,4 +1,4 @@
-import TjButton, { type ITjButton, createTjButton } from './tj-button'
+import TjButton, { type ITjButton } from './tj-button'
 import { createAddButton } from './add-button'
 import { createEditButton } from './inline-edit-button'
 import { createDeleteButton } from './inline-delete-button'
@@ -10,7 +10,6 @@ import { createImportButton } from './import-button'
 export {
   TjButton,
   type ITjButton,
-  createTjButton,
   createAddButton,
   createEditButton,
   createDeleteButton,
@@ -22,7 +21,6 @@ export {
 // 导出一个方便使用的对象，包含所有按钮
 export const Button = {
   TjButton,
-  createTjButton,
   createAddButton,
   createEditButton,
   createDeleteButton,

@@ -1,4 +1,4 @@
-import { createTjButton, type ITjButton } from './tj-button'
+import TjButton, { type ITjButton } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
 import { Permission } from '@/utils/permissions'
 
@@ -8,7 +8,8 @@ import { Permission } from '@/utils/permissions'
  * @param params 按钮参数
  */
 export function createExportButton(label = '导出', params: Partial<ITjButton> = {}) {
-  const button = createTjButton(label, {
+  const button = new TjButton({
+    label,
     type: 'primary',
     permission: Permission.EXPORT, // 默认使用通用导出权限
     ...params,
