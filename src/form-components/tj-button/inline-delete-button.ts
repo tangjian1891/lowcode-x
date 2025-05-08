@@ -1,4 +1,4 @@
-import TjButton, { type ITjButton } from './tj-button'
+import TjButton, { ButtonEnableCondition, type ITjButton } from './tj-button'
 import type { ITjTable } from '@/core-components/tj-table/tj-table'
 import { ElMessageBox } from 'element-plus'
 import { Permission } from '@/utils/permissions'
@@ -8,12 +8,12 @@ import { Permission } from '@/utils/permissions'
  * @param label 按钮文本
  * @param params 按钮参数
  */
-export function createDeleteButton(label = '删除', params: Partial<ITjButton> = {}) {
+export function createInlineDeleteButton(label = '删除') {
   const button = new TjButton({
     label,
     type: 'danger',
     permission: Permission.DELETE, // 默认使用通用删除权限
-    ...params,
+    enableCondition: ButtonEnableCondition.ALWAYS,
   })
 
   button.onClick = (button: ITjButton, tjTable: ITjTable) => {
@@ -36,4 +36,4 @@ export function createDeleteButton(label = '删除', params: Partial<ITjButton> 
   return button
 }
 
-export default createDeleteButton
+export default createInlineDeleteButton

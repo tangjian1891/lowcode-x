@@ -50,7 +50,7 @@ export class TjTable {
       buttons.push(Button.createEditButton())
     }
     if (permission.includes(Permission.DELETE)) {
-      buttons.push(Button.createBatchDeleteButton())
+      buttons.push(Button.createInlineDeleteButton())
     }
     buttons.push(...extraButtons)
     return buttons

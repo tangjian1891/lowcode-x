@@ -8,13 +8,12 @@ import { Permission } from '@/utils/permissions'
  * @param label 按钮文本
  * @param params 按钮参数
  */
-export function createBatchDeleteButton(label = '批量删除', params: Partial<ITjButton> = {}) {
+export function createBatchDeleteButton(label = '批量删除') {
   const button = new TjButton({
     label,
     type: 'danger',
     permission: Permission.DELETE, // 默认使用通用删除权限
     enableCondition: ButtonEnableCondition.ONE_ROW_SELECTED, // 至少选择一行才可用
-    ...params,
   })
 
   button.onClick = (button: ITjButton, tjTable: ITjTable) => {

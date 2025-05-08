@@ -25,8 +25,8 @@ defineProps({
   },
 })
 const fields = [
-  Field.createJasInput(nanoid(), '姓名', { fixed: 'left', required: true }),
-  Field.createJasNumber(nanoid(), '年龄'),
+  Field.createJasInput('1', '姓名', { fixed: 'left', required: true }),
+  Field.createJasNumber('2', '年龄'),
   Field.createJasInput(nanoid(), '地址'),
   Field.createJasNumber(nanoid(), '电话'),
   Field.createJasInput(nanoid(), '邮箱'),

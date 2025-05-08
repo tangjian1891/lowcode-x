@@ -10,17 +10,13 @@
 import { type PropType } from 'vue'
 import type { ITjTable } from '../tj-table'
 import type { VxeGridProps } from 'vxe-table'
-import { column } from 'element-plus/es/components/table-v2/src/common.mjs'
 const props = defineProps({
   tjTable: {
     type: Object as PropType<ITjTable>,
     required: true,
   },
 })
-const i = ref(0)
-setTimeout(() => {
-  i.value = 2
-}, 3000)
+
 const columns = computed(() => {
   const columns: any[] = [...props.tjTable.fields]
 

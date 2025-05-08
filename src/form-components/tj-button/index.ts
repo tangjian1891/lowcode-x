@@ -1,7 +1,7 @@
 import TjButton, { type ITjButton } from './tj-button'
 import { createAddButton } from './add-button'
 import { createEditButton } from './inline-edit-button'
-import { createDeleteButton } from './inline-delete-button'
+import { createInlineDeleteButton } from './inline-delete-button'
 import { createBatchDeleteButton } from './delete-button'
 import { createExportButton } from './export-button'
 import { createImportButton } from './import-button'
@@ -12,7 +12,7 @@ export {
   type ITjButton,
   createAddButton,
   createEditButton,
-  createDeleteButton,
+  createInlineDeleteButton,
   createBatchDeleteButton,
   createExportButton,
   createImportButton,
@@ -23,7 +23,7 @@ export const Button = {
   TjButton,
   createAddButton,
   createEditButton,
-  createDeleteButton,
+  createInlineDeleteButton,
   createBatchDeleteButton,
   createExportButton,
   createImportButton,

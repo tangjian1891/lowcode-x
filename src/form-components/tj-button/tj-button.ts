@@ -40,13 +40,9 @@ class TjButton {
 
   // 权限控制相关属性
   permission?: Permission // 按钮所需权限，可以是单个权限或权限数组
-  hideWhenNoPermission: boolean = true // 无权限时是否隐藏按钮，默认隐藏
-  disableWhenNoPermission: boolean = false // 无权限时是否禁用按钮，默认不禁用（因为默认是隐藏）
 
   // 按钮启用条件
   enableCondition: ButtonEnableCondition = ButtonEnableCondition.ALWAYS
-  // 自定义启用条件函数
-  customEnableCondition?: (selectedRows: any[], table: ITjTable) => boolean
 
   component = markRaw(JasButtonVue)
 
