@@ -11,6 +11,7 @@
 </template>
 
 <script lang="tsx" setup>
+import { Permission } from '@/utils/permissions'
 import { getDefaultComponents } from '.'
 import { TjTable } from './tj-table'
 import { Field, Button } from '@/form-components/index'
@@ -52,9 +53,18 @@ const fields = [
     width: '300px',
   },
 ]
-const buttons = [Button.createAddButton('新增'), Button.createEditButton('编辑')]
 
-const tjTable = ref(new TjTable({ fields, buttons }))
+const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.EXPORT]
+const tjTable = ref(
+  new TjTable({
+    fields,
+    permisson,
+    extraButtons: {
+      toolbar: [],
+      inline: [],
+    },
+  }),
+)
 console.log(tjTable.value)
 </script>
 
