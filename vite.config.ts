@@ -24,6 +24,7 @@ export default defineConfig({
         /\.vue\.[tj]sx?\?vue/, // .vue (vue-loader with experimentalInlineMatchResource enabled)
         /\.md$/, // .md
       ],
+      vueTemplate: true,
       imports: [
         'vue',
         'vue-router',

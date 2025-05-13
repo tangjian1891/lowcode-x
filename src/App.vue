@@ -1,10 +1,7 @@
 <template>
   <router-view></router-view>
 </template>
-<script setup lang="ts">
-console.log(dayjs().format('YYYY-MM-DD HH:mm:ss'))
-console.log(Haha.Haha)
-</script>
+<script setup lang="ts"></script>
 
 <!-- 满屏情况下：按高清屏幕1920*1080正常显示  Full HD-->
 <style>
