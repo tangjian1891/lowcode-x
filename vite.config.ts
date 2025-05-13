@@ -13,10 +13,10 @@ export default defineConfig({
     UnoCSS({}),
     vueJsx(),
     AutoImport({
+      eslintrc: {
+        enabled: true, // <-- this
+      },
       dts: true,
-      // eslintrc: {
-      //   enabled: true, // <-- this
-      // },
       include: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
         /\.vue$/,
@@ -24,7 +24,15 @@ export default defineConfig({
         /\.vue\.[tj]sx?\?vue/, // .vue (vue-loader with experimentalInlineMatchResource enabled)
         /\.md$/, // .md
       ],
-      imports: ['vue', 'vue-router'],
+      imports: [
+        'vue',
+        'vue-router',
+
+        {
+          '@/utils/dayjs': [['dayjs', 'dayjs']],
+          '@/enums/Haha': [['Haha']],
+        },
+      ],
     }),
   ],
   resolve: {
