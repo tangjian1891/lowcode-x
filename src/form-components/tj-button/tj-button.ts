@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import JasButtonVue from "./jas-button.vue";
 import type { ITjTable } from "@/core-components/tj-table/tj-table";
 import { Permission } from "@/utils/permissions";

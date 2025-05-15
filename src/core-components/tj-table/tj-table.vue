@@ -10,7 +10,6 @@ import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
 import { Field, Button } from "@/form-components/index";
-import { nanoid } from "nanoid";
 
 defineProps({
   // 渲染的组件。可以自行扩展，调整顺序

@@ -80,6 +80,7 @@
     "dayjs": true,
     "Haha": true,
     "Sex": true,
-    "SexEnum": true
+    "SexEnum": true,
+    "nanoid": true
   }
 }

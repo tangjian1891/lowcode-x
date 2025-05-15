@@ -1,5 +1,4 @@
 import { Menu, MenuType, SubMenuType } from "./index";
-import { nanoid } from "nanoid";
 
 // 系统管理模块的静态菜单数据
 export const systemManagementMenus: Menu[] = [

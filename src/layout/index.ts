@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import type { Router } from "vue-router";
 
 // 菜单类型枚举

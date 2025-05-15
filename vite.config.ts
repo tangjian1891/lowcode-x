@@ -30,7 +30,7 @@ export default defineConfig({
         "vue-router",
 
         {
-          // '@/utils/lib-export': [['dayjs']],
+          "@/utils/lib-export": [["dayjs"], ["nanoid"]],
           "@/enums/sex-enum": [["SexEnum"]],
         },
       ],
