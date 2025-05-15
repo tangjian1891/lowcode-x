@@ -7,11 +7,7 @@
     <!-- 中心常驻快捷按钮 -->
     <div class="resize-bar__toggle" @click.stop="toggleSections">
       <span
-        :class="[
-          'resize-bar__toggle-icon',
-          `resize-bar__toggle-icon--${direction}`,
-          { 'resize-bar__toggle-icon--collapsed': !panelSize },
-        ]"
+        :class="['resize-bar__toggle-icon', `resize-bar__toggle-icon--${direction}`, { 'resize-bar__toggle-icon--collapsed': !panelSize }]"
       ></span>
     </div>
     <div class="resize-bar__extra"></div>
@@ -27,17 +23,17 @@ const props = defineProps({
   panelSize: Number,
   direction: {
     type: String,
-    default: 'horizontal',
+    default: "horizontal",
   },
-})
+});
 
-const emit = defineEmits(['mousedown', 'toggle'])
+const emit = defineEmits(["mousedown", "toggle"]);
 
 // 处理快捷按钮点击事件
 const toggleSections = (event) => {
-  event.stopPropagation()
-  emit('toggle')
-}
+  event.stopPropagation();
+  emit("toggle");
+};
 </script>
 
 <style lang="scss" scoped>

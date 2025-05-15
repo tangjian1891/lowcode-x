@@ -1,6 +1,6 @@
-import { mergeAppContext } from '@/utils/merge-app-context'
-import JasDialog from './index.vue'
-import type { IJasTable } from '@/core-components/tj-table/types'
+import { mergeAppContext } from "@/utils/merge-app-context";
+import JasDialog from "./index.vue";
+import type { IJasTable } from "@/core-components/tj-table/types";
 
 // 弹窗尺寸，原则上不再需要外部穿透修改大小了
 export enum DialogSizeEnum {
@@ -15,47 +15,47 @@ export enum DialogSizeEnum {
 
 export const dialogSizeMapping = {
   [DialogSizeEnum.w320]: {
-    '--el-dialog-width': '320px',
-    '--min-height': '240px',
-    '--max-height': '600px',
+    "--el-dialog-width": "320px",
+    "--min-height": "240px",
+    "--max-height": "600px",
   },
   [DialogSizeEnum.w480]: {
-    '--el-dialog-width': '480px',
-    '--min-height': '240px',
-    '--max-height': '600px',
+    "--el-dialog-width": "480px",
+    "--min-height": "240px",
+    "--max-height": "600px",
   },
   [DialogSizeEnum.w640]: {
-    '--el-dialog-width': '640px',
-    '--min-height': '240px',
-    '--max-height': '600px',
+    "--el-dialog-width": "640px",
+    "--min-height": "240px",
+    "--max-height": "600px",
   },
   [DialogSizeEnum.w800]: {
-    '--el-dialog-width': '800px',
-    '--height': '600px',
+    "--el-dialog-width": "800px",
+    "--height": "600px",
   },
   [DialogSizeEnum.w960]: {
-    '--el-dialog-width': '960px',
-    '--height': '600px',
+    "--el-dialog-width": "960px",
+    "--height": "600px",
   },
   [DialogSizeEnum.max]: {
-    '--el-dialog-width': 'calc(100vw - 100px)',
-    '--height': 'calc(100vh - var(--heightAndFooter) - 100px)',
-    margin: '50px auto',
+    "--el-dialog-width": "calc(100vw - 100px)",
+    "--height": "calc(100vh - var(--heightAndFooter) - 100px)",
+    margin: "50px auto",
   },
-}
+};
 
 export function createDialog(tjTable: IJasTable, component: any) {
   let app = createApp(JasDialog, {
     tjTable,
     component,
     onClose() {
-      app.unmount()
-      document.body.removeChild(div)
-      app = div = null
+      app.unmount();
+      document.body.removeChild(div);
+      app = div = null;
     },
-  })
-  mergeAppContext(app)
-  let div = document.createElement('div')
-  document.body.appendChild(div)
-  app.mount(div)
+  });
+  mergeAppContext(app);
+  let div = document.createElement("div");
+  document.body.appendChild(div);
+  app.mount(div);
 }

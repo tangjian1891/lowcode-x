@@ -32,25 +32,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const activeMenu = ref('1') // 默认选中"首页"
+const activeMenu = ref("1"); // 默认选中"首页"
 
 // 定义一个emit，用于向父组件传递选中的菜单项
-const emit = defineEmits(['select'])
+const emit = defineEmits(["select"]);
 
 // 处理菜单选中事件
 const handleSelect = (index: string) => {
-  activeMenu.value = index
-  emit('select', index)
-}
+  activeMenu.value = index;
+  emit("select", index);
+};
 
 // 暴露给父组件的方法
 defineExpose({
   setActiveMenu: (index: string) => {
-    activeMenu.value = index
+    activeMenu.value = index;
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

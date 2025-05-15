@@ -1,11 +1,6 @@
 <template>
   <div style="height: 100%; min-height: 500px">
-    <el-upload
-      class="upload-demo"
-      drag
-      action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-      :auto-upload="false"
-    >
+    <el-upload class="upload-demo" drag action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" :auto-upload="false">
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
       <template #tip>
@@ -16,14 +11,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue'
-import type { IJasTable } from '../jas-page'
+import type { PropType } from "vue";
+import type { IJasTable } from "../jas-page";
 const props = defineProps({
   jasTable: {
     type: Object as PropType<IJasTable>,
     required: true,
   },
-})
+});
 </script>
 
 <style lang="scss" scoped></style>

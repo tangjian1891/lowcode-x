@@ -37,35 +37,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import JasTopMenu from './jas-top-menu.vue'
+import { ref } from "vue";
+import JasTopMenu from "./jas-top-menu.vue";
 
 // 公司名称
-const companyName = ref('某某科技有限公司')
+const companyName = ref("某某科技有限公司");
 
 // 用户信息
-const userName = ref('管理员')
-const userAvatar = ref('')
-const userInitials = ref('管')
+const userName = ref("管理员");
+const userAvatar = ref("");
+const userInitials = ref("管");
 
 // 处理菜单选择事件 - 转发自jas-top-menu组件
-const emit = defineEmits(['select'])
+const emit = defineEmits(["select"]);
 const handleMenuSelect = (index: string) => {
-  emit('select', index)
-}
+  emit("select", index);
+};
 
 // 处理用户下拉菜单命令
 const handleCommand = (command: string) => {
-  if (command === 'logout') {
+  if (command === "logout") {
     // 退出登录逻辑
-    console.log('用户退出登录')
+    console.log("用户退出登录");
     // 这里可以添加退出登录的实际逻辑，如清除token、跳转到登录页等
-  } else if (command === 'profile') {
-    console.log('查看个人信息')
-  } else if (command === 'settings') {
-    console.log('打开系统设置')
+  } else if (command === "profile") {
+    console.log("查看个人信息");
+  } else if (command === "settings") {
+    console.log("打开系统设置");
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

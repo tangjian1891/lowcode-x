@@ -1,12 +1,5 @@
 <template>
-  <el-dialog
-    v-model="dialogVisible"
-    title="Tips"
-    width="500"
-    :before-close="handleClose"
-    @close="onClose"
-    :style="{ ...styleVarComp }"
-  >
+  <el-dialog v-model="dialogVisible" title="Tips" width="500" :before-close="handleClose" @close="onClose" :style="{ ...styleVarComp }">
     <component
       ref="dialogContentRef"
       :tjTable="tjTable"
@@ -34,18 +27,18 @@ update:modelValue触发，正式关闭。
 -->
 
 <script lang="ts" setup>
-import type { PropType } from 'vue'
-import { type IJasTable } from '@/core-components/tj-table/types'
-import { isFunction } from 'lodash-es'
-import { DialogSizeEnum, dialogSizeMapping } from './index'
+import type { PropType } from "vue";
+import { type IJasTable } from "@/core-components/tj-table/types";
+import { isFunction } from "lodash-es";
+import { DialogSizeEnum, dialogSizeMapping } from "./index";
 defineOptions({
   inheritAttrs: false,
-  name: 'jas-dialog',
-})
+  name: "jas-dialog",
+});
 
-const emit = defineEmits(['close'])
-const dialogVisible = ref(true)
-const dialogContentRef = ref()
+const emit = defineEmits(["close"]);
+const dialogVisible = ref(true);
+const dialogContentRef = ref();
 const props = defineProps({
   component: Object,
   tjTable: {
@@ -55,19 +48,19 @@ const props = defineProps({
   size: {
     type: Number,
     default: () => {
-      return DialogSizeEnum.w960
+      return DialogSizeEnum.w960;
     },
   },
-})
+});
 
 /**
  * 关闭前的回调，直接调用业务组件
  */
 function handleClose(done: () => void) {
   if (isFunction(dialogContentRef.value?.handleClose)) {
-    dialogContentRef.value.handleClose(done)
+    dialogContentRef.value.handleClose(done);
   } else {
-    done()
+    done();
   }
 }
 
@@ -79,7 +72,7 @@ function onClose() {
  * 直接关闭
  */
 function noCheckAndClose() {
-  dialogVisible.value = false
+  dialogVisible.value = false;
 }
 /**
  * 检测并关闭
@@ -87,31 +80,31 @@ function noCheckAndClose() {
 function checkAndClose() {
   if (isFunction(dialogContentRef.value?.handleClose)) {
     dialogContentRef.value.handleClose(() => {
-      dialogVisible.value = false
-    })
+      dialogVisible.value = false;
+    });
   } else {
-    dialogVisible.value = false
+    dialogVisible.value = false;
   }
 }
 
 const styleVarComp = computed(() => {
-  const obj = dialogSizeMapping[props.size]
+  const obj = dialogSizeMapping[props.size];
   if (props.height) {
-    obj['--height'] = props.height
+    obj["--height"] = props.height;
   }
-  return obj
-})
+  return obj;
+});
 
 watch(
   () => dialogVisible.value,
   (newVal) => {
     if (!newVal) {
       setTimeout(() => {
-        emit('close')
-      }, 0)
+        emit("close");
+      }, 0);
     }
   },
-)
+);
 </script>
 
 <style lang="scss" scoped></style>

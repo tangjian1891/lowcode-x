@@ -6,9 +6,9 @@
 // }
 
 // 全局类型声明
-declare global {
-  const Sex: typeof Sex
-  type Sex = Sex
-
+export declare global {
+  interface Window {
+    dayjs: typeof import("dayjs");
+  }
   // const dayjs: typeof import('dayjs')
 }

@@ -34,64 +34,64 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from "vue";
 
-import { initSystemMenu } from '../menu-data'
-import { JasLayout, MenuType, SubMenuType } from '../index'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { initSystemMenu } from "../menu-data";
+import { JasLayout, MenuType, SubMenuType } from "../index";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 // 为initSystemMenu函数提供系统ID参数
-const menuData = computed(() => initSystemMenu('system-001'))
+const menuData = computed(() => initSystemMenu("system-001"));
 
 // 定义组件的props
 const props = defineProps({
   title: {
     type: String,
-    default: '系统模块',
+    default: "系统模块",
   },
-})
+});
 
-const activeMenu = ref('') // 默认不选中任何菜单项
+const activeMenu = ref(""); // 默认不选中任何菜单项
 
 // 初始化默认选中的菜单项(如果有菜单)
 if (menuData.value.length > 0 && menuData.value[0].children.length > 0) {
-  activeMenu.value = menuData.value[0].children[0].id
+  activeMenu.value = menuData.value[0].children[0].id;
 }
 
 // 定义emit事件
-const emit = defineEmits(['select'])
+const emit = defineEmits(["select"]);
 
 // 处理菜单选择事件
 const handleSelect = (index: string) => {
-  activeMenu.value = index
+  activeMenu.value = index;
   // 查找选中的菜单项
-  const selectedMenu = JasLayout.findMenuById(index, menuData.value)
-  JasLayout.goRoute(router, selectedMenu)
+  const selectedMenu = JasLayout.findMenuById(index, menuData.value);
+  JasLayout.goRoute(router, selectedMenu);
   // emit('select', selectedMenu)
-}
+};
 
 // 根据菜单的子类型获取对应的图标
 const getMenuIcon = (menu) => {
   // 只根据菜单子类型返回对应图标，不再考虑自定义图标
   if (menu.subType === SubMenuType.GENERAL_FORM) {
-    return 'Document'
+    return "Document";
   } else if (menu.subType === SubMenuType.INTERNAL) {
-    return 'Operation'
+    return "Operation";
   } else if (menu.subType === SubMenuType.EXTERNAL_MENU) {
-    return 'Link'
+    return "Link";
   }
 
   // 默认图标
-  return 'Menu'
-}
+  return "Menu";
+};
 
 // 暴露方法给父组件
 defineExpose({
   setActiveMenu: (index: string) => {
-    activeMenu.value = index
+    activeMenu.value = index;
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

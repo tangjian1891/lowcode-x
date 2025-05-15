@@ -15,35 +15,35 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue'
-import type { IJasTable } from '../tj-table/types'
-import { ElMessage } from 'element-plus'
-const emit = defineEmits(['close', 'checkAndClose', 'confirm'])
+import type { PropType } from "vue";
+import type { IJasTable } from "../tj-table/types";
+import { ElMessage } from "element-plus";
+const emit = defineEmits(["close", "checkAndClose", "confirm"]);
 const props = defineProps({
   tjTable: {
     type: Object as PropType<IJasTable>,
     required: true,
   },
-})
-const formRef = ref()
+});
+const formRef = ref();
 
 async function onConfirm() {
-  await formRef.value.validate()
-  emit('close')
+  await formRef.value.validate();
+  emit("close");
 }
 
 function onClose() {
-  emit('checkAndClose')
+  emit("checkAndClose");
 }
-console.log('可以拿到', props.tjTable)
+console.log("可以拿到", props.tjTable);
 
 function handleClose(done) {
   // ElMessage.warning('就是不给关闭')
-  done()
+  done();
 }
 defineExpose({
   handleClose,
-})
+});
 </script>
 
 <style lang="scss" scoped></style>

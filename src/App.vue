@@ -1,7 +1,13 @@
 <template>
   <router-view></router-view>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// console.log(dayjs().format())
+// window.dayjs
+// window.dayjs
+// console.log(SexEnum.);
+SexEnum.Man;
+</script>
 
 <!-- 满屏情况下：按高清屏幕1920*1080正常显示  Full HD-->
 <style>

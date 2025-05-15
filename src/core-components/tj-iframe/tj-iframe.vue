@@ -9,25 +9,25 @@
 </template>
 
 <script lang="ts" setup>
-import { Menu } from '@/layout/index'
+import { Menu } from "@/layout/index";
 
 // import { workApi } from '@/api/business/workbench'
 // https://juejin.cn/post/6991828558096105485#heading-0
 const props = defineProps({
   menu: Menu,
-})
-const outLinkToken = ''
+});
+const outLinkToken = "";
 onMounted(async () => {
   try {
   } finally {
   }
-})
+});
 const iframeSrc = computed(() => {
-  const url = props.menu?.value
+  const url = props.menu?.value;
   if (!url) {
-    return ''
+    return "";
   } else {
-    return decodeURIComponent(url)
+    return decodeURIComponent(url);
   }
-})
+});
 </script>
