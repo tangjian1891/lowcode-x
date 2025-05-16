@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/jas-layout/1231313/1231312312",
+      redirect: "/jas-layout/1231313/1",
     },
     {
       path: "/jas-layout/:systemId",

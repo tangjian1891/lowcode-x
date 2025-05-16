@@ -10,15 +10,23 @@
 import { type PropType } from "vue";
 import type { ITjTable } from "../tj-table";
 import type { VxeGridProps } from "vxe-table";
+import RenderTableHeader from "./render-table-header.vue";
 const props = defineProps({
   tjTable: {
     type: Object as PropType<ITjTable>,
     required: true,
   },
 });
+const slots = {
+  header: (data) => {
+    return h(RenderTableHeader, { data });
+  },
+};
 
 const columns = computed(() => {
-  const columns: any[] = [...props.tjTable.fields];
+  const columns: any[] = [...props.tjTable.fields].map((item) => {
+    return { ...item, field: item.id, title: item.label, slots };
+  });
 
   if (props.tjTable.grid.buttons.length > 0) {
     columns.push({
@@ -45,7 +53,12 @@ const gridOptions = computed<VxeGridProps>(() => {
     minHeight: "300px",
     columns: columns.value,
     cellConfig: {},
-    headerCellConfig: {},
+    headerCellConfig: {
+      padding: false,
+    },
+    showHeaderOverflow: "ellipsis",
+
+    headerCellClassName: "qwer",
     data: [
       {
         1: "还行",
@@ -116,9 +129,6 @@ const gridOptions = computed<VxeGridProps>(() => {
         2: "很好",
       },
     ],
-    cellClassName() {
-      return "wdqwdqwd";
-    },
   };
 });
 setInterval(() => {

@@ -9,7 +9,7 @@
 import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
-import { Field, Button } from "@/form-components/index";
+import { Field } from "@/form-components/index";
 
 defineProps({
   // 渲染的组件。可以自行扩展，调整顺序
@@ -18,8 +18,6 @@ defineProps({
     default: () => getDefaultComponents(),
   },
 });
-console.log(nanoid());
-window.nanoid = nanoid;
 
 const fields = [
   Field.createJasInput("1", "姓名", { fixed: "left", required: true }),
