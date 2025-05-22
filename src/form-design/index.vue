@@ -47,7 +47,7 @@ provide("provideData", provideData);
   width: 100%;
   height: 100%;
   min-height: 600px;
-  border: 1px solid #dcdfe6;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 </style>
