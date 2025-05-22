@@ -1,15 +1,15 @@
 <template>
-  <div class="form-design-container">
-    <ComponentList />
-    <DesignArea />
-    <PropertyPanel />
+  <div class="form-design-container flex">
+    <left-material class="min-w-200px" />
+    <design-area class="flex-1" />
+    <right-prop-panel class="min-w-200px" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import ComponentList from "./components/component-list.vue";
-import DesignArea from "./components/design-area.vue";
-import PropertyPanel from "./components/property-panel.vue";
+import LeftMaterial from "./layout/left-material.vue";
+import DesignArea from "./layout/design-area.vue";
+import RightPropPanel from "./layout/right-prop-panel.vue";
 import { ref, reactive, provide } from "vue";
 
 // 当前选中的组件

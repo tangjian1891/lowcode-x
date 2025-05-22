@@ -81,6 +81,7 @@
     "Haha": true,
     "Sex": true,
     "SexEnum": true,
-    "nanoid": true
+    "nanoid": true,
+    "MaterialEnum": true
   }
 }
