@@ -11,6 +11,8 @@ import LeftMaterial from "./layout/left-material.vue";
 import DesignArea from "./layout/design-area.vue";
 import RightPropPanel from "./layout/right-prop-panel.vue";
 import { ref, reactive, provide } from "vue";
+import type { SortableEvent } from "vue-draggable-plus";
+import type Sortable from "sortablejs";
 
 // 当前选中的组件
 const currentComponent = ref(null);
@@ -26,12 +28,22 @@ const formConfig = reactive({
 });
 const DRAG_NAME = Symbol("DRAG_NAME");
 const data = reactive({
-  leftGroup: { name: DRAG_NAME },
+  leftGroup: {
+    name: DRAG_NAME,
+    pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
+      return "clone";
+      // return true;
+    },
+  },
+  onClone(element: Record<"name" | "id", string>, arg2) {
+    console.log("查看一下", element, arg2);
+    return { id: "1231231231313" };
+  },
   centerGroup: { name: DRAG_NAME },
 });
 
 // 设置当前选中的组件
-const setCurrentComponent = (component) => {
+const setCurrentComponent = (component: any) => {
   currentComponent.value = component;
 };
 

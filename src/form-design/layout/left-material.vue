@@ -8,7 +8,7 @@
     <!-- 组件区 -->
     <div class="content-group">
       <!-- 组件列表区域 -->
-      <vue-draggable :group="data.leftGroup" class="component-list" v-model="filteredMaterials">
+      <vue-draggable :group="data.leftGroup" class="component-list" v-model="filteredMaterials" :clone="data.onClone">
         <li v-for="element in filteredMaterials" :key="element.id" class="material-item">
           <span>{{ element.name }}</span>
         </li>
@@ -107,23 +107,21 @@ const filteredMaterials = ref([
   color: #333;
   text-align: left;
 
-  a {
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    background: #fff;
-    border: 1px solid #d7d9dc;
-    padding: 0 10px;
-    user-select: none;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: #fff;
+  border: 1px solid #d7d9dc;
+  padding: 0 10px;
+  user-select: none;
+  cursor: pointer;
 
-    &:hover {
-      color: var(--el-color-primary);
-      border: 1px dashed var(--el-color-primary);
-    }
+  &:hover {
+    color: var(--el-color-primary);
+    border: 1px dashed var(--el-color-primary);
   }
 }
 </style>
