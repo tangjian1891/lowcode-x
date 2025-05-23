@@ -1,7 +1,7 @@
 <template>
   <div class="form-design-container flex">
-    <left-material class="min-w-200px" />
-    <design-area class="flex-1" />
+    <left-material class="min-w-200px" :data="data" />
+    <design-area class="flex-1" :data="data" />
     <right-prop-panel class="min-w-200px" />
   </div>
 </template>
@@ -23,6 +23,11 @@ const formConfig = reactive({
     labelPosition: "right",
     size: "default",
   },
+});
+const DRAG_NAME = Symbol("DRAG_NAME");
+const data = reactive({
+  leftGroup: { name: DRAG_NAME },
+  centerGroup: { name: DRAG_NAME },
 });
 
 // 设置当前选中的组件
