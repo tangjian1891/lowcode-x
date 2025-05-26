@@ -1,4 +1,5 @@
 export class TjInput {
+  type = MaterialEnum.TjInput;
   fieldProps = {
     // el-input 基本属性
     type: "text", // 输入框类型

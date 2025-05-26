@@ -13,7 +13,7 @@ import RightPropPanel from "./layout/right-prop-panel.vue";
 import { ref, reactive, provide } from "vue";
 import type { SortableEvent } from "vue-draggable-plus";
 import type Sortable from "sortablejs";
-
+import { materialList } from "./material";
 // 当前选中的组件
 const currentComponent = ref(null);
 
@@ -28,6 +28,8 @@ const formConfig = reactive({
 });
 const DRAG_NAME = Symbol("DRAG_NAME");
 const data = reactive({
+  materialList,
+  fields: [],
   leftGroup: {
     name: DRAG_NAME,
     pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
@@ -35,9 +37,9 @@ const data = reactive({
       // return true;
     },
   },
-  onClone(element: Record<"name" | "id", string>, arg2) {
-    console.log("查看一下", element, arg2);
-    return { id: "1231231231313" };
+  onClone(element: Record<"class" | "label", any>) {
+    console.log("查看一下", element);
+    return new element.class();
   },
   centerGroup: { name: DRAG_NAME },
 });

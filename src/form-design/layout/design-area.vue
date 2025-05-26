@@ -2,8 +2,8 @@
   <div class="center-form">
     <!-- 表单设计渲染-拖拽放入区 -->
     <el-form class="drag-form jas-scrollbar" ref="ruleFormRef" :model="designForm">
-      <vue-draggable class="drag-components-area" v-model="dragFrontFields" :group="data.centerGroup">
-        {{ dragFrontFields }}
+      <vue-draggable class="drag-components-area" v-model="data.fields" :group="data.centerGroup">
+        <component :field="field" :is="designComponentMap[field.type]" v-for="field in data.fields" :key="field.id"></component>
       </vue-draggable>
     </el-form>
   </div>
@@ -13,26 +13,19 @@
 import { ref, reactive, computed, watch, provide } from "vue";
 import { FieldModeEnum } from "../utils/enum";
 import { VueDraggable } from "vue-draggable-plus";
+import { designComponentMap } from "../material";
+
 const props = defineProps({
   data: Object,
 });
 // 提供字段模式上下文
 provide("fieldMode", FieldModeEnum.design);
 
-// 可被拖拽的字段
-const dragFrontFields = ref([]);
-const ignoreDragArr = [];
-
 // 表单实例
 const ruleFormRef = ref();
 
 // 表单数据
 const designForm = reactive({});
-
-// 获取完整的字段列表（包含系统字段）
-const completeFields = () => {
-  return [...dragFrontFields.value, ...ignoreDragArr];
-};
 
 // 添加组件回调
 const onAdd = (e) => {};

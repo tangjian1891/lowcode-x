@@ -8,9 +8,9 @@
     <!-- 组件区 -->
     <div class="content-group">
       <!-- 组件列表区域 -->
-      <vue-draggable :group="data.leftGroup" class="component-list" v-model="filteredMaterials" :clone="data.onClone">
-        <li v-for="element in filteredMaterials" :key="element.id" class="material-item">
-          <span>{{ element.name }}</span>
+      <vue-draggable :group="data.leftGroup" class="component-list" v-model="data.materialList" :clone="data.onClone">
+        <li v-for="element in data.materialList" :key="element.id" class="material-item">
+          <span>{{ element.label }}</span>
         </li>
       </vue-draggable>
       <!-- 无匹配数据 -->
@@ -29,24 +29,6 @@ const props = defineProps({
 });
 // 定义属性
 const searchValue = ref("");
-const filteredMaterials = ref([
-  {
-    name: "Joao",
-    id: "1",
-  },
-  {
-    name: "Jean",
-    id: "2",
-  },
-  {
-    name: "Johanna",
-    id: "3",
-  },
-  {
-    name: "Juan",
-    id: "4",
-  },
-]);
 </script>
 
 <style lang="scss" scoped>
