@@ -9,7 +9,7 @@
     <div class="content-group">
       <!-- 组件列表区域 -->
       <vue-draggable :group="data.leftGroup" class="component-list" v-model="data.materialList" :clone="data.onClone">
-        <li v-for="element in data.materialList" :key="element.id" class="material-item">
+        <li v-for="element in data.materialList" :key="element.id" class="material-item" @click="data.addFieldByClick(element)">
           <span>{{ element.label }}</span>
         </li>
       </vue-draggable>

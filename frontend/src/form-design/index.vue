@@ -41,6 +41,10 @@ const data = reactive({
     console.log("查看一下", element);
     return new element.class();
   },
+  addFieldByClick(element) {
+    const field = data.onClone(element);
+    data.fields.push(field);
+  },
   centerGroup: { name: DRAG_NAME },
 });
 
