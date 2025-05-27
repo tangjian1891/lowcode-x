@@ -6,7 +6,24 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      eslint:
+        specifier: ^9.22.0
+        version: 9.27.0(jiti@2.4.2)
+      prettier:
+        specifier: 3.5.3
+        version: 3.5.3
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
 
   backend:
     dependencies:
@@ -53,15 +70,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
-      '@types/node':
-        specifier: ^22.10.7
-        version: 22.15.21
       '@types/supertest':
         specifier: ^6.0.2
         version: 6.0.3
-      eslint:
-        specifier: ^9.18.0
-        version: 9.27.0(jiti@2.4.2)
       eslint-config-prettier:
         specifier: ^10.0.1
         version: 10.1.5(eslint@9.27.0(jiti@2.4.2))
@@ -74,9 +85,6 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.21)(ts-node@10.9.2(@swc/core@1.11.29)(@types/node@22.15.21)(typescript@5.8.3))
-      prettier:
-        specifier: ^3.4.2
-        version: 3.5.3
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -95,24 +103,18 @@ importers:
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
-      typescript:
-        specifier: ^5.7.3
-        version: 5.8.3
       typescript-eslint:
         specifier: ^8.20.0
         version: 8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
 
   frontend:
     dependencies:
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.13
+      '@element-plus/icons-vue':
+        specifier: ^2.3.1
+        version: 2.3.1(vue@3.5.15(typescript@5.8.3))
       element-plus:
         specifier: ^2.9.7
         version: 2.9.11(vue@3.5.15(typescript@5.8.3))
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
@@ -159,9 +161,6 @@ importers:
       '@vue/tsconfig':
         specifier: ^0.7.0
         version: 0.7.0(typescript@5.8.3)(vue@3.5.15(typescript@5.8.3))
-      eslint:
-        specifier: ^9.22.0
-        version: 9.27.0(jiti@2.4.2)
       eslint-plugin-oxlint:
         specifier: ^0.16.0
         version: 0.16.12
@@ -177,15 +176,9 @@ importers:
       oxlint:
         specifier: ^0.16.0
         version: 0.16.12
-      prettier:
-        specifier: 3.5.3
-        version: 3.5.3
       sass:
         specifier: ^1.86.3
         version: 1.89.0
-      typescript:
-        specifier: ~5.8.0
-        version: 5.8.3
       unocss:
         specifier: ^66.1.0-beta.12
         version: 66.1.2(postcss@8.5.3)(vite@6.3.5(@types/node@22.15.21)(jiti@2.4.2)(sass@1.89.0)(terser@5.39.2))(vue@3.5.15(typescript@5.8.3))
@@ -4592,7 +4585,7 @@ packages:
       vite: ^2.6.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-0 || ^6.0.0-0
 
   vite-plugin-inspect@0.8.9:
-    resolution: {integrity: sha512-22/8qn+LYonzibb1VeFZmISdVao5kC22jmEKm24vfFE8siEn47EpVcCLYMv6iKOYMJfjSvSJfueOwcFCkUnV3A==, tarball: https://packages.aliyun.com/672dafc2356ccaf8531a07c8/npm/repo-test/vite-plugin-inspect/-/vite-plugin-inspect-0.8.9.tgz}
+    resolution: {integrity: sha512-22/8qn+LYonzibb1VeFZmISdVao5kC22jmEKm24vfFE8siEn47EpVcCLYMv6iKOYMJfjSvSJfueOwcFCkUnV3A==}
     engines: {node: '>=14'}
     peerDependencies:
       '@nuxt/kit': '*'

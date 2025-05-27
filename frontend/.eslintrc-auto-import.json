@@ -9,10 +9,12 @@
     "ExtractPropTypes": true,
     "ExtractPublicPropTypes": true,
     "InjectionKey": true,
+    "MaterialEnum": true,
     "MaybeRef": true,
     "MaybeRefOrGetter": true,
     "PropType": true,
     "Ref": true,
+    "SexEnum": true,
     "Slot": true,
     "Slots": true,
     "VNode": true,
@@ -20,6 +22,7 @@
     "computed": true,
     "createApp": true,
     "customRef": true,
+    "dayjs": true,
     "defineAsyncComponent": true,
     "defineComponent": true,
     "effectScope": true,
@@ -32,6 +35,7 @@
     "isReadonly": true,
     "isRef": true,
     "markRaw": true,
+    "nanoid": true,
     "nextTick": true,
     "onActivated": true,
     "onBeforeMount": true,
@@ -76,12 +80,6 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true,
-    "dayjs": true,
-    "Haha": true,
-    "Sex": true,
-    "SexEnum": true,
-    "nanoid": true,
-    "MaterialEnum": true
+    "watchSyncEffect": true
   }
 }
