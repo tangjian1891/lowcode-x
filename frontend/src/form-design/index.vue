@@ -1,19 +1,20 @@
 <template>
   <div class="form-design-container flex">
     <left-material class="min-w-200px" :data="data" />
-    <design-area class="flex-1" :data="data" />
+    <center-area class="flex-1" :data="data" />
     <right-prop-panel class="min-w-200px" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import LeftMaterial from "./layout/left-material.vue";
-import DesignArea from "./layout/design-area.vue";
+import CenterArea from "./layout/center-area.vue";
 import RightPropPanel from "./layout/right-prop-panel.vue";
 import { ref, reactive, provide } from "vue";
 import type { SortableEvent } from "vue-draggable-plus";
 import type Sortable from "sortablejs";
 import { materialList } from "./material";
+import { keyBy } from "lodash-es";
 // 当前选中的组件
 const currentComponent = ref(null);
 
@@ -30,6 +31,7 @@ const DRAG_NAME = Symbol("DRAG_NAME");
 const data = reactive({
   materialList,
   fields: [],
+  activeField: null,
   leftGroup: {
     name: DRAG_NAME,
     pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
@@ -46,6 +48,22 @@ const data = reactive({
     data.fields.push(field);
   },
   centerGroup: { name: DRAG_NAME },
+  clickField(field) {
+    data.activeField = field;
+  },
+  deleteField(field) {
+    const index = data.fields.indexOf(field);
+    if (index > -1) {
+      data.fields.splice(index, 1);
+      data.activeField = null;
+    }
+  },
+  copyField(field) {
+    const mapping = keyBy(data.materialList, "type");
+    const element = mapping[field.type];
+    const newField = data.onClone(element);
+    data.fields.push(newField);
+  },
 });
 
 // 设置当前选中的组件

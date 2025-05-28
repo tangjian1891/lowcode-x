@@ -3,7 +3,7 @@
     <!-- 表单设计渲染-拖拽放入区 -->
     <el-form class="drag-form jas-scrollbar" ref="ruleFormRef" :model="designForm">
       <vue-draggable class="drag-components-area" v-model="data.fields" :group="data.centerGroup">
-        <component :field="field" :is="designComponentMap[field.type]" v-for="field in data.fields" :key="field.id"></component>
+        <component :field="field" :data="data" :is="designComponentMap[field.type]" v-for="field in data.fields" :key="field.id"></component>
       </vue-draggable>
     </el-form>
   </div>

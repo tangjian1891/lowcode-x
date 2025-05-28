@@ -1,12 +1,15 @@
 <template>
-  <div class="">
+  <design-container :field="field" :data="data">
     <el-input v-bind="field.fieldProps"></el-input>
-  </div>
+  </design-container>
 </template>
 
 <script lang="ts" setup>
+import DesignContainer from "@/form-design/components/design-container/design-container.vue";
+
 const props = defineProps({
   field: Object,
+  data: Object,
 });
 </script>
 
