@@ -1,3 +1,5 @@
+import { MaterialEnum } from "@/enums";
+
 export class TjInput {
   type = MaterialEnum.TjInput;
   label = "单行文本";
@@ -15,7 +17,7 @@ export class TjInput {
     size: "default", // 输入框尺寸
     prefixIcon: "", // 输入框头部图标
     suffixIcon: "", // 输入框尾部图标
-    rows: 2, // 输入框行数，只对 type="textarea" 有效
+    rows: 3, // 输入框行数，只对 type="textarea" 有效
     autosize: false, // 自适应内容高度，只对 type="textarea" 有效
     autocomplete: "off", // 原生autocomplete属性
     name: "", // 原生name属性
@@ -39,4 +41,12 @@ export class TjInput {
     required: false, // 是否必填
     rules: [], // 验证规则
   };
+}
+export class TjTextarea extends TjInput {
+  type = MaterialEnum.TjTextarea;
+  constructor() {
+    super();
+    this.fieldProps.type = "textarea"; // 设置为多行文本
+    this.formItemProps.label = "多行文本";
+  }
 }

@@ -1,8 +1,7 @@
 <template>
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
     <el-tab-pane label="组件属性" :disabled="!data.activeField" name="first">
-      <title-attr :field="activeField"></title-attr>
-      <description-attr :field="activeField"></description-attr>
+      <component v-for="item in attrList" :is="item" :field="activeField" :key="item._name"> </component>
     </el-tab-pane>
     <el-tab-pane label="表单属性" name="second">
       <tj-1 title="字段显隐规则" show-switch @change="onChange">
@@ -28,6 +27,7 @@ const props = defineProps({
   data: Object,
 });
 const activeName = ref("second");
+const componentKey = ref(0);
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
@@ -40,6 +40,20 @@ const activeField = computed(() => {
 function onChange(params: type) {
   console.log("变化了", params);
 }
+watch(
+  () => activeField.value,
+  () => {
+    componentKey.value++;
+  },
+);
+const attrList = computed(() => {
+  const el = activeField.value;
+  if (el.type === MaterialEnum.TjInput) {
+    return [TitleAttr, DescriptionAttr];
+  } else {
+    return [DescriptionAttr, TitleAttr];
+  }
+});
 </script>
 
 <style lang="scss" scoped></style>
