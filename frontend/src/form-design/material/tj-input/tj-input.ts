@@ -1,5 +1,6 @@
 export class TjInput {
   type = MaterialEnum.TjInput;
+  label = "单行文本";
   fieldProps = {
     // el-input 基本属性
     type: "text", // 输入框类型
@@ -31,7 +32,8 @@ export class TjInput {
     push: 0, // 栅格向右移动格数
     pull: 0, // 栅格向左移动格数
   };
-  extendProps = {
+  formItemProps = {
+    label: "单行文本",
     description: "", // 描述文本
     showDescription: false, // 是否显示描述
     required: false, // 是否必填

@@ -2,7 +2,7 @@
   <div class="form-design-container flex">
     <left-material class="min-w-200px" :data="data" />
     <center-area class="flex-1" :data="data" />
-    <right-prop-panel class="min-w-200px" />
+    <right-prop-panel class="min-w-400px" :data="data" />
   </div>
 </template>
 

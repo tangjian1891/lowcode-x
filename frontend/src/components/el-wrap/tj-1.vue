@@ -30,3 +30,10 @@ const emit = defineEmits(["change"]);
 const value = defineModel();
 console.log(value);
 </script>
+
+<style lang="scss" scoped>
+.tj-1 {
+  margin: 16px 0;
+  padding: 0 16px;
+}
+</style>
