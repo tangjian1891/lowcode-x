@@ -1,4 +1,4 @@
-import { MaterialEnum } from "@/enums";
+import { MaterialEnum, FieldWidthType } from "@/enums";
 
 export class TjInput {
   type = MaterialEnum.TjInput;
@@ -29,7 +29,7 @@ export class TjInput {
     autofocus: false, // 原生autofocus属性
   };
   layoutProps = {
-    type: LayoutTypeEnum.FixedPercentage,
+    type: FieldWidthType.FixedPercentage,
     value: 24,
   };
   formItemProps = {
