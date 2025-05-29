@@ -7,6 +7,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const LayoutTypeEnum: typeof import('@/enums/index')['LayoutTypeEnum']
   const MaterialEnum: typeof import('@/enums/index')['MaterialEnum']
   const SexEnum: typeof import('@/enums/sex-enum')['SexEnum']
   const computed: typeof import('vue')['computed']
@@ -56,6 +57,7 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
+  const undefined: typeof import('@/enums/index')['undefined']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
@@ -85,6 +87,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly LayoutTypeEnum: UnwrapRef<typeof import('@/enums/index')['LayoutTypeEnum']>
     readonly MaterialEnum: UnwrapRef<typeof import('@/enums/index')['MaterialEnum']>
     readonly SexEnum: UnwrapRef<typeof import('@/enums/sex-enum')['SexEnum']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>

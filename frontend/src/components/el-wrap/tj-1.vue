@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="tj-1-content mt-8px">
+    <div class="tj-1-content mt-6px">
       <slot></slot>
     </div>
   </div>

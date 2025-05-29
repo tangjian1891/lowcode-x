@@ -32,7 +32,7 @@ export default defineConfig({
         {
           "@/utils/lib-export": [["dayjs"], ["nanoid"]],
           "@/enums/sex-enum": [["SexEnum"]],
-          "@/enums/index": [["MaterialEnum"]],
+          "@/enums/index": [["MaterialEnum"], ["LayoutTypeEnum"]],
         },
       ],
     }),

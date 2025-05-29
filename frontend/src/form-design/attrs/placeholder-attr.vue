@@ -1,6 +1,6 @@
 <template>
-  <tj-1 title="标题" v-model="field.fieldProps.label">
-    <el-input v-model="field.formItemProps.label"></el-input>
+  <tj-1 title="提示">
+    <el-input v-model="field.fieldProps.placeholder"></el-input>
   </tj-1>
 </template>
 
@@ -9,7 +9,6 @@ import Tj1 from "@/components/el-wrap/tj-1.vue";
 const props = defineProps({
   field: Object,
 });
-console.log("是否重新执行title");
 </script>
 
 <style lang="scss" scoped></style>

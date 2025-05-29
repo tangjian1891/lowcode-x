@@ -29,10 +29,8 @@ export class TjInput {
     autofocus: false, // 原生autofocus属性
   };
   layoutProps = {
-    span: 24, // 栅格占据的列数
-    offset: 0, // 栅格左侧的间隔格数
-    push: 0, // 栅格向右移动格数
-    pull: 0, // 栅格向左移动格数
+    type: LayoutTypeEnum.FixedPercentage,
+    value: 24,
   };
   formItemProps = {
     label: "单行文本",
@@ -40,6 +38,10 @@ export class TjInput {
     showDescription: false, // 是否显示描述
     required: false, // 是否必填
     rules: [], // 验证规则
+  };
+  enabledProps = {
+    label: true,
+    description: false,
   };
 }
 export class TjTextarea extends TjInput {

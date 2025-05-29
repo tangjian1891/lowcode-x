@@ -1,5 +1,5 @@
 <template>
-  <tj-1 title="描述信息">
+  <tj-1 title="描述信息" v-model="field.formItemProps.description">
     <el-input type="textarea" v-model="field.formItemProps.description" :rows="3"></el-input>
   </tj-1>
 </template>
