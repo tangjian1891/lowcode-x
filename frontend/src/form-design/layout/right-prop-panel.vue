@@ -21,20 +21,19 @@ import type { TabsPaneContext } from "element-plus";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
 import { addRuleButton } from "@/components/add-rule-button/add-rule-button";
 import TitleAttr from "../attrs/title-attr.vue";
-import DescriptionAttr from "../attrs/description.attr.vue";
+import DescriptionAttr from "../attrs/description-attr.vue";
 
 const props = defineProps({
   data: Object,
 });
 const activeName = ref("second");
-const componentKey = ref(0);
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
-const hiddenField = new props.data.materialList[0].class();
+const HIDDEN_FIELD = new props.data.materialList[0].class();
 const activeField = computed(() => {
-  return props.data.activeField || hiddenField;
+  return props.data.activeField || HIDDEN_FIELD;
 });
 
 function onChange(params: type) {
@@ -42,8 +41,10 @@ function onChange(params: type) {
 }
 watch(
   () => activeField.value,
-  () => {
-    componentKey.value++;
+  (newVal, oldVal) => {
+    if (newVal !== HIDDEN_FIELD && newVal) {
+      activeName.value = "first";
+    }
   },
 );
 const attrList = computed(() => {

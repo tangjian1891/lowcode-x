@@ -11,7 +11,7 @@ import LeftMaterial from "./layout/left-material.vue";
 import CenterArea from "./layout/center-area.vue";
 import RightPropPanel from "./layout/right-prop-panel.vue";
 import { ref, reactive, provide } from "vue";
-import type { SortableEvent } from "vue-draggable-plus";
+import type { DraggableEvent, SortableEvent } from "vue-draggable-plus";
 import type Sortable from "sortablejs";
 import { materialList } from "./material";
 import { keyBy } from "lodash-es";
@@ -46,8 +46,15 @@ const data = reactive({
   addFieldByClick(element) {
     const field = data.onClone(element);
     data.fields.push(field);
+    data.clickField(field);
   },
-  centerGroup: { name: DRAG_NAME },
+  centerGroup: {
+    name: DRAG_NAME,
+  },
+  onAdd(event: DraggableEvent) {
+    const field = event.clonedData;
+    data.clickField(field);
+  },
   clickField(field) {
     data.activeField = field;
   },
