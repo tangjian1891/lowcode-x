@@ -2,6 +2,7 @@
 
 import { createApp, h } from "vue";
 import { createPinia } from "pinia";
+import "@/assets/scss/cover-element-plus/index.scss";
 
 import App from "./App.vue";
 import router from "./router";
@@ -14,9 +15,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import "virtual:uno.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import dayjs from "dayjs";
-window.dayjs = dayjs;
-
+import Tj1 from "@/components/el-wrap/tj-1.vue";
 import { mergeAppContext } from "./utils/merge-app-context";
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -63,6 +62,8 @@ VxeUI.renderer.add("MyTableFilterInput", {
     return h("span", {}, "表头");
   },
 });
+
+app.component("Tj1", Tj1);
 app.use(createPinia());
 app.use(router);
 app.use(VxeUITable);

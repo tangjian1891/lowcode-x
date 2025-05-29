@@ -17,7 +17,7 @@ import { materialList } from "./material";
 import { keyBy } from "lodash-es";
 // 当前选中的组件
 const currentComponent = ref(null);
-
+const ss = ref();
 // 表单配置数据
 const formConfig = reactive({
   components: [],
