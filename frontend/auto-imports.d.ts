@@ -7,10 +7,12 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const FieldWidthEnum: typeof import('@/enums/index')['FieldWidthEnum']
   const FieldWidthType: typeof import('@/enums/index')['FieldWidthType']
-  const LayoutTypeEnum: typeof import('@/enums/index')['LayoutTypeEnum']
+  const LayoutTypeEnum: (typeof import("@/enums/index"))["LayoutTypeEnum"]
   const MaterialEnum: typeof import('@/enums/index')['MaterialEnum']
   const SexEnum: typeof import('@/enums/sex-enum')['SexEnum']
+  const ValueEnum: typeof import('@/enums/index')['ValueEnum']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
@@ -58,7 +60,7 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
-  const undefined: typeof import('@/enums/index')['undefined']
+  const undefined: (typeof import("@/enums/index"))["undefined"]
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
@@ -88,9 +90,10 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly FieldWidthType: UnwrapRef<typeof import('@/enums/index')['FieldWidthType']>
+    readonly FieldWidthEnum: UnwrapRef<typeof import('@/enums/index')['FieldWidthEnum']>
     readonly MaterialEnum: UnwrapRef<typeof import('@/enums/index')['MaterialEnum']>
     readonly SexEnum: UnwrapRef<typeof import('@/enums/sex-enum')['SexEnum']>
+    readonly ValueEnum: UnwrapRef<typeof import('@/enums/index')['ValueEnum']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>

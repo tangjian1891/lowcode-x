@@ -1,2 +1,4 @@
 export { MaterialEnum } from "./material-enum";
-export { FieldWidthType } from "./field-width-type";
+export { FieldWidthEnum } from "./field-width-enum";
+
+export { ValueEnum } from "./value-enum";

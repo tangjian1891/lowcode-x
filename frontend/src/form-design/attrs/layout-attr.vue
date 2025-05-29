@@ -6,19 +6,19 @@
       </el-radio-button>
     </el-radio-group>
     <div class="mt-6px" v-if="field">
-      <el-radio-group v-model="field.layoutProps.value" v-if="field.layoutProps.type === FieldWidthType.FixedPercentage">
+      <el-radio-group v-model="field.layoutProps.value" v-if="field.layoutProps.type === FieldWidthEnum.FixedPercentage">
         <el-radio-button v-for="(item, index) in defaultOptions" :value="item.value" :key="index">
           {{ item.label }}
         </el-radio-button>
       </el-radio-group>
       <el-input-number
-        v-else-if="field.layoutProps.type === FieldWidthType.CustomPercentage"
+        v-else-if="field.layoutProps.type === FieldWidthEnum.CustomPercentage"
         v-model="field.layoutProps.value"
         :min="1"
         :max="100"
         :controls="false"
       />
-      <el-input-number v-else-if="field.layoutProps.type === FieldWidthType.Pixel" v-model="field.layoutProps.value" :min="0" :controls="false" />
+      <el-input-number v-else-if="field.layoutProps.type === FieldWidthEnum.Pixel" v-model="field.layoutProps.value" :min="0" :controls="false" />
     </div>
   </tj-1>
 </template>
@@ -31,15 +31,15 @@ const props = defineProps({
 const typeOptions = [
   {
     label: "单行列数",
-    value: FieldWidthType.FixedPercentage,
+    value: FieldWidthEnum.FixedPercentage,
   },
   {
     label: "固定宽度",
-    value: FieldWidthType.Pixel,
+    value: FieldWidthEnum.Pixel,
   },
   {
     label: "自定义百分比",
-    value: FieldWidthType.CustomPercentage,
+    value: FieldWidthEnum.CustomPercentage,
   },
 ];
 const defaultOptions = [
@@ -69,12 +69,12 @@ const defaultOptions = [
   },
 ];
 
-function onChange(e: FieldWidthType) {
-  if (e === FieldWidthType.FixedPercentage) {
+function onChange(e: FieldWidthEnum) {
+  if (e === FieldWidthEnum.FixedPercentage) {
     props.field!.layoutProps.value = 24;
-  } else if (e === FieldWidthType.Pixel) {
+  } else if (e === FieldWidthEnum.Pixel) {
     props.field!.layoutProps.value = 500;
-  } else if (e === FieldWidthType.CustomPercentage) {
+  } else if (e === FieldWidthEnum.CustomPercentage) {
     props.field!.layoutProps.value = 100;
   }
 }
