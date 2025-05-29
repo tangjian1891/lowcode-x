@@ -24,6 +24,8 @@ import DescriptionAttr from "../attrs/description-attr.vue";
 import PlaceholderAttr from "../attrs/placeholder-attr.vue";
 import LayoutAttr from "../attrs/layout-attr.vue";
 import ValueAttr from "../attrs/value-attr.vue";
+import ValidateAttr from "../attrs/validate-attr.vue";
+import AuthAttr from "../attrs/auth-attr.vue";
 
 const props = defineProps({
   data: Object,
@@ -53,7 +55,7 @@ const attrList = computed(() => {
   const el = activeField.value;
 
   if (el.type === MaterialEnum.TjInput) {
-    return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr];
+    return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr, ValidateAttr, AuthAttr];
   } else {
     return [];
   }

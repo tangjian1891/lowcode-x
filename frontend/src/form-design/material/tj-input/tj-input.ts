@@ -32,6 +32,14 @@ export class TjInput {
     type: ValueEnum.Default,
     value: "", // 默认值
   };
+  authProps = {
+    visible: true,
+    enabled: true,
+  };
+  validateProps = {
+    required: false,
+    unique: false,
+  };
   layoutProps = {
     type: FieldWidthEnum.FixedPercentage,
     value: 24,
@@ -39,9 +47,6 @@ export class TjInput {
   formItemProps = {
     label: "单行文本",
     description: "", // 描述文本
-    showDescription: false, // 是否显示描述
-    required: false, // 是否必填
-    rules: [], // 验证规则
   };
   enabledProps = {
     label: true,
