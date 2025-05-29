@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
     <el-tab-pane label="组件属性" :disabled="!data.activeField" name="first">
-      <component v-for="item in attrList" :is="item" :field="activeField" :key="item._name"> </component>
+      <component v-for="(item, index) in attrList" :is="item" :field="activeField" :key="index"> </component>
     </el-tab-pane>
     <el-tab-pane label="表单属性" name="second">
       <tj-1 title="字段显隐规则" show-switch @change="onChange">
@@ -19,7 +19,6 @@
 import { ref } from "vue";
 import type { TabsPaneContext } from "element-plus";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
-import { addRuleButton } from "@/components/add-rule-button/add-rule-button";
 import TitleAttr from "../attrs/title-attr.vue";
 import DescriptionAttr from "../attrs/description-attr.vue";
 import PlaceholderAttr from "../attrs/placeholder-attr.vue";
@@ -52,10 +51,11 @@ watch(
 );
 const attrList = computed(() => {
   const el = activeField.value;
+
   if (el.type === MaterialEnum.TjInput) {
     return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr];
   } else {
-    return [DescriptionAttr, TitleAttr];
+    return [];
   }
 });
 </script>

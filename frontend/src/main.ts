@@ -16,7 +16,9 @@ import "element-plus/dist/index.css";
 import "virtual:uno.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
+import { AddRuleButton } from "./components/add-rule-button/add-rule-button";
 import { mergeAppContext } from "./utils/merge-app-context";
+
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
@@ -64,6 +66,8 @@ VxeUI.renderer.add("MyTableFilterInput", {
 });
 
 app.component("Tj1", Tj1);
+app.component("AddRuleButton", AddRuleButton);
+
 app.use(createPinia());
 app.use(router);
 app.use(VxeUITable);

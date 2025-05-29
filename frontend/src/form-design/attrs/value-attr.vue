@@ -6,6 +6,7 @@
     <div class="mt-6px" v-if="field.valueProps.type === ValueEnum.Default">
       <el-input placeholder="请输入默认值" v-model="field.valueProps.value"></el-input>
     </div>
+    <add-rule-button v-else-if="field.valueProps.type === ValueEnum.LinkedField" class="mt-6px" subject="规则"> </add-rule-button>
   </tj-1>
 </template>
 
@@ -14,7 +15,6 @@ import Tj1 from "@/components/el-wrap/tj-1.vue";
 const props = defineProps({
   field: Object,
 });
-console.log("是否重新执行description");
 
 const valueOptions = [
   { label: "默认值", value: ValueEnum.Default },

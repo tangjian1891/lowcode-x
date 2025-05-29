@@ -1,4 +1,4 @@
-export const addRuleButton = defineComponent({
+export const AddRuleButton = defineComponent({
   props: {
     subject: String, //显隐规则
     length: [Number, Array], //条数
@@ -16,12 +16,7 @@ export const addRuleButton = defineComponent({
     });
     const buttonContext = computed(() => {
       const len = length.value;
-      const fix = ["数据范围", "排序", "自定义按钮", "设置"];
-      if (fix.includes(props.subject)) {
-        return !!len ? `已设置 ` : `设置`;
-      } else {
-        return !!len ? `已设置${props.subject}` : `${props.subject}设置`;
-      }
+      return !!len ? `已设置${props.subject}` : `设置${props.subject}`;
     });
     return { buttonContext, expose };
   },
