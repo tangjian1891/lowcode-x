@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { FormService } from "./form.service";
 
 @Controller("form")
@@ -20,5 +20,15 @@ export class FormController {
   @Post("update")
   async updateById(@Body() data: any) {
     return await this.formService.updateById(data);
+  }
+
+  // @Post("delete")
+  // deleteOne(@Body() data: any) {
+  //   return this.formService.deleteOne(data.id);
+  // }
+
+  @Post("batchDelete")
+  async deleteMany(@Body() data: { ids: string[] }) {
+    return await this.formService.deleteMany(data.ids);
   }
 }
