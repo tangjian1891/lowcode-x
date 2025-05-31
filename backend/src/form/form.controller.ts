@@ -1,34 +1,41 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { FormService } from "./form.service";
 
-@Controller("form")
+@Controller("forms") // 使用复数形式更符合RESTful规范
 export class FormController {
   constructor(private readonly formService: FormService) {}
+  // 获取表单列表，支持分页
+  @Get()
+  async findAll(@Query("page") page = 1, @Query("limit") limit = 10, @Query("keyword") keyword?: string) {
+    return await this.formService.findAll(+page, +limit, keyword);
+  }
 
+  // 根据ID获取单个表单
   @Get(":id")
-  async getDataById(@Param("id") id: string) {
-    return await this.formService.getById(id);
-    // return this.formService.getDataById();
+  async findById(@Param("id") id: string) {
+    return await this.formService.findById(id);
   }
 
-  @Post("save")
-  saveData(@Body() data: any) {
-    console.log("获取到数据 了", data);
-    return this.formService.save(data);
+  // 创建表单
+  @Post()
+  async create(@Body() data: any) {
+    return await this.formService.create(data);
+  }
+  // 更新表单
+  @Put(":id")
+  async update(@Param("id") id: string, @Body() data: any) {
+    return await this.formService.update(id, data);
   }
 
-  @Post("update")
-  async updateById(@Body() data: any) {
-    return await this.formService.updateById(data);
+  // 删除单个表单
+  @Delete(":id")
+  async remove(@Param("id") id: string) {
+    return await this.formService.remove(id);
   }
 
-  // @Post("delete")
-  // deleteOne(@Body() data: any) {
-  //   return this.formService.deleteOne(data.id);
-  // }
-
-  @Post("batchDelete")
-  async deleteMany(@Body() data: { ids: string[] }) {
-    return await this.formService.deleteMany(data.ids);
+  // 批量删除表单
+  @Delete()
+  async removeMany(@Body() data: { ids: string[] }) {
+    return await this.formService.removeMany(data.ids);
   }
 }
