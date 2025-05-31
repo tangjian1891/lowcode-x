@@ -30,6 +30,7 @@ import type Sortable from "sortablejs";
 import { materialList, type MaterialElement } from "./material";
 import { keyBy } from "lodash-es";
 import { ElMessage } from "element-plus";
+import { instance } from "@/api/request";
 
 // 当前选中的组件
 const currentComponent = ref<any>(null);
@@ -43,6 +44,15 @@ const formConfig = reactive({
     labelPosition: "right",
     size: "default",
   },
+});
+const id = "683b1836af11a9783c8644e1";
+onMounted(async () => {
+  let res = await instance.request({
+    url: "http://127.0.0.1:3000/forms/" + id,
+    method: "GET",
+  });
+  console.log("查看", res);
+  data.fields = res.data.fields;
 });
 
 // 清空表单
@@ -58,8 +68,20 @@ const previewForm = () => {
   // TODO: 实现表单预览功能
 };
 
-const saveForm = () => {
+const saveForm = async () => {
   console.log("保存表单", { formConfig, fields: data.fields });
+  const d = {
+    fields: data.fields,
+    id,
+  };
+  console.log(d);
+
+  await instance.request({
+    url: "http://127.0.0.1:3000/forms" + "/" + id,
+    method: "PUT",
+    data: d,
+  });
+
   ElMessage.success("表单已保存");
 };
 
