@@ -48,7 +48,7 @@ const formConfig = reactive({
 const id = "683b1836af11a9783c8644e1";
 onMounted(async () => {
   let res = await instance.request({
-    url: "http://127.0.0.1:3000/forms/" + id,
+    url: "/forms/" + id,
     method: "GET",
   });
   console.log("查看", res);
@@ -77,7 +77,7 @@ const saveForm = async () => {
   console.log(d);
 
   await instance.request({
-    url: "http://127.0.0.1:3000/forms" + "/" + id,
+    url: "/forms" + "/" + id,
     method: "PUT",
     data: d,
   });
