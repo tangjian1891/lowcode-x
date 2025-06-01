@@ -22,7 +22,7 @@
     </el-form-item>
     <div style="height: 20px"></div>
     <div class="mask">
-      <div class="jas_oper_btn">
+      <div class="jas_oper_btn" v-if="data.activeField === field">
         <el-icon @click="data.copyField(field)"><CopyDocument /></el-icon>
         <el-icon @click="data.deleteField(field)"><Delete /></el-icon>
       </div>

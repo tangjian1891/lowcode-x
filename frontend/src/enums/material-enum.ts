@@ -5,4 +5,5 @@ export enum MaterialEnum {
   TjDatetime = "TjDatetime",
   TjSelect = "TjSelect",
   TjMultiSelect = "TjMultiSelect",
+  TjCollapse = "TjCollapse",
 }
