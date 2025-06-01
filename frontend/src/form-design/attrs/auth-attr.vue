@@ -1,7 +1,7 @@
 <template>
   <tj-1 title="校验">
-    <el-checkbox v-model="field.authProps.visible">可见</el-checkbox>
-    <el-checkbox v-model="field.authProps.enabled">可编辑</el-checkbox>
+    <el-checkbox v-model="field.authProps.visible">可见</el-checkbox><br />
+    <el-checkbox v-model="field.authProps.enabled">可编辑</el-checkbox><br />
   </tj-1>
 </template>
 
