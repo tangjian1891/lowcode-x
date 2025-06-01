@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const DateTimeEnum: typeof import('@/enums/index')['DateTimeEnum']
   const EffectScope: typeof import('vue')['EffectScope']
   const FieldWidthEnum: typeof import('@/enums/index')['FieldWidthEnum']
   const FieldWidthType: typeof import('@/enums/index')['FieldWidthType']
@@ -89,6 +90,7 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly DateTimeEnum: UnwrapRef<typeof import('@/enums/index')['DateTimeEnum']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly FieldWidthEnum: UnwrapRef<typeof import('@/enums/index')['FieldWidthEnum']>
     readonly MaterialEnum: UnwrapRef<typeof import('@/enums/index')['MaterialEnum']>
