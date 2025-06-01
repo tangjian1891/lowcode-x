@@ -3,4 +3,6 @@ export enum MaterialEnum {
   TjTextarea = "TjTextarea",
   TjNumber = "TjNumber",
   TjDatetime = "TjDatetime",
+  TjSelect = "TjSelect",
+  TjMultiSelect = "TjMultiSelect",
 }
