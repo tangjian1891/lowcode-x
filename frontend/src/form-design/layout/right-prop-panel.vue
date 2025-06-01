@@ -56,6 +56,8 @@ const attrList = computed(() => {
 
   if (el.type === MaterialEnum.TjInput) {
     return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr, ValidateAttr, AuthAttr];
+  } else if (el.type === MaterialEnum.TjCollapse) {
+    return [TitleAttr];
   } else {
     return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr, ValidateAttr, AuthAttr];
   }

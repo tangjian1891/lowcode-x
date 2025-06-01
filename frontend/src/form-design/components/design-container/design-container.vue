@@ -1,5 +1,5 @@
 <template>
-  <div :class="['design-container', { active: data.activeField === field }]" @click="data.clickField(field)">
+  <div :class="['design-container', { active: data.activeField === field }]" @click.stop="data.clickField(field)">
     <el-form-item :label="label" :required="field.validateProps.required">
       <template #label="{ label }">
         <div>
@@ -21,7 +21,7 @@
       <p v-if="field.showDescription" class="field-description" v-html="description"></p>
     </el-form-item>
     <div style="height: 20px"></div>
-    <div class="mask">
+    <div class="mask" v-if="mask">
       <div class="jas_oper_btn" v-if="data.activeField === field">
         <el-icon @click="data.copyField(field)"><CopyDocument /></el-icon>
         <el-icon @click="data.deleteField(field)"><Delete /></el-icon>
@@ -34,6 +34,10 @@
 const props = defineProps({
   field: Object,
   data: Object,
+  mask: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const label = computed(() => {

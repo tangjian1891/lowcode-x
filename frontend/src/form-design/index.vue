@@ -98,7 +98,6 @@ const data = reactive({
     },
   },
   onClone(element: MaterialElement) {
-    console.log("查看一下", element);
     return new element.class();
   },
   addFieldByClick(element: MaterialElement) {
@@ -108,6 +107,16 @@ const data = reactive({
   },
   centerGroup: {
     name: DRAG_NAME,
+    // put(to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) {
+    //   console.log("外部", to, from, dragEl, event);
+    //   return true;
+    // },
+  },
+  collapseGroup: {
+    name: DRAG_NAME,
+    // put(to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) {
+    //   console.log("折叠", to, from, dragEl, event);
+    // },
   },
   onAdd(event: DraggableEvent) {
     const field = event.clonedData;
