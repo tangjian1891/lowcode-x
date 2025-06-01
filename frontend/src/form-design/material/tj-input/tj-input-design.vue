@@ -1,6 +1,6 @@
 <template>
   <design-container :field="field" :data="data">
-    <el-input v-bind="field.fieldProps"></el-input>
+    <el-input v-bind="field.fieldProps" :disabled="field.authProps.enabled"></el-input>
   </design-container>
 </template>
 

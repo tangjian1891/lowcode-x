@@ -1,6 +1,6 @@
 <template>
   <div :class="['design-container', { active: data.activeField === field }]" @click="data.clickField(field)">
-    <el-form-item :label="label" :required="field.required">
+    <el-form-item :label="label" :required="field.validateProps.required">
       <template #label="{ label }">
         <div>
           <!-- <label-before-mark v-if="field" :field="field"></label-before-mark> -->
@@ -37,7 +37,7 @@ const props = defineProps({
 });
 
 const label = computed(() => {
-  return props.field.showLabel ? props.field.label : "";
+  return props.field.enabledProps.label ? props.field.label : "";
 });
 const description = computed(() => {
   return unescape(props.field.description ?? "");

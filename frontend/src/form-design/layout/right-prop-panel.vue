@@ -19,7 +19,7 @@
 import { ref } from "vue";
 import type { TabsPaneContext } from "element-plus";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
-import TitleAttr from "../attrs/title-attr.vue";
+import TitleAttr from "../attrs/label-attr.vue";
 import DescriptionAttr from "../attrs/description-attr.vue";
 import PlaceholderAttr from "../attrs/placeholder-attr.vue";
 import LayoutAttr from "../attrs/layout-attr.vue";
