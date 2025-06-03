@@ -53,9 +53,6 @@ const emit = defineEmits(["click", "removeEle", "copyEle"]);
 <style lang="scss" scoped>
 .design-container {
   position: relative;
-  &:hover {
-    background-color: #f4f6f9;
-  }
   &.active {
     background: #e7f8fb;
   }

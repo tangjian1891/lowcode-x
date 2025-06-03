@@ -1,69 +1,42 @@
 <template>
-  <div class="group-list">
-    <!-- 快捷查询组件 -->
-    <div class="search-group">
-      <el-input v-model="searchValue" placeholder="搜索组件" prefix-icon="Search" clearable />
-    </div>
-
+  <div class="group-list pt-12px">
     <!-- 组件区 -->
-    <div class="content-group">
-      <!-- 组件列表区域 -->
-      <vue-draggable :group="data.leftGroup" class="component-list" v-model="data.materialList" :clone="data.onClone">
-        <li v-for="element in data.materialList" :key="element.id" class="material-item" @click="data.addFieldByClick(element)">
-          <span>{{ element.label }}</span>
-        </li>
-      </vue-draggable>
-      <!-- 无匹配数据 -->
-      <el-divider border-style="dashed" style="margin: 12px 0">
-        <span style="color: #b5b8be; font-size: 13px">暂无匹配组件</span>
-      </el-divider>
-    </div>
+    <vue-draggable :group="data.leftGroup" class="component-list" v-model="data.materialList" :clone="data.onClone">
+      <li
+        v-for="element in data.materialList"
+        :key="element.id"
+        class="material-item"
+        :class="{ highlight: element.highlight }"
+        @click="data.addFieldByClick(element)"
+      >
+        <i v-if="element.icon" class="material-icon" :class="element.icon"></i>
+        <span>{{ element.label }}</span>
+      </li>
+    </vue-draggable>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { MaterialEnum } from "@/enums/material-enum";
 import { VueDraggable } from "vue-draggable-plus";
 const props = defineProps({
   data: Object,
 });
-// 定义属性
-const searchValue = ref("");
 </script>
 
 <style lang="scss" scoped>
 .group-list {
   transition: width 0.8s;
-  padding: 0 1px;
   border-right: 1px solid #e6e6e6;
   overflow: hidden;
   height: 100%;
-
-  .search-group {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .content-group {
-    height: calc(100% - 57px);
-    overflow: auto;
-
-    .group-item .title {
-      padding: 8px 12px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #000;
-      text-align: left;
-    }
-
-    .component-list {
-      display: flex;
-      flex-wrap: wrap;
-      list-style: none;
-      padding: 0 10px 10px;
-      margin: 0;
-      overflow: hidden;
-    }
+  .component-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0 10px 10px;
+    margin: 0;
+    overflow: hidden;
+    gap: 10px;
   }
 
   // 滚动条样式
@@ -83,27 +56,38 @@ const searchValue = ref("");
 // 组件项样式
 .material-item {
   font-size: 12px;
-  width: 46%;
-  line-height: 26px;
-  padding: 4px;
+  width: 120px;
+  line-height: 32px;
   color: #333;
   text-align: left;
 
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   background: #fff;
-  border: 1px solid #d7d9dc;
+  border: 1px solid #e4e7ed;
   padding: 0 10px;
   user-select: none;
   cursor: pointer;
+  margin: 0;
 
   &:hover {
     color: var(--el-color-primary);
     border: 1px dashed var(--el-color-primary);
+  }
+
+  &.highlight {
+    background-color: #f0f8ff;
+    border: 1px dashed #91caff;
+  }
+
+  .material-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
   }
 }
 </style>

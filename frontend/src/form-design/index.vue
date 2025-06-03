@@ -13,9 +13,9 @@
     </div>
     <!-- 原有设计区域 -->
     <div class="form-design-container flex">
-      <left-material class="min-w-200px" :data="data" />
+      <left-material class="flex-basis-320px" :data="data" />
       <center-area class="flex-1" :data="data" />
-      <right-prop-panel class="min-w-400px" :data="data" />
+      <right-prop-panel class="flex-basis-400px" :data="data" />
     </div>
   </div>
 </template>
