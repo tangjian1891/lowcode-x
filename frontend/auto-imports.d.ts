@@ -9,8 +9,6 @@ declare global {
   const DateTimeEnum: typeof import('@/enums/index')['DateTimeEnum']
   const EffectScope: typeof import('vue')['EffectScope']
   const FieldWidthEnum: typeof import('@/enums/index')['FieldWidthEnum']
-  const FieldWidthType: typeof import('@/enums/index')['FieldWidthType']
-  const LayoutTypeEnum: (typeof import("@/enums/index"))["LayoutTypeEnum"]
   const MaterialEnum: typeof import('@/enums/index')['MaterialEnum']
   const SexEnum: typeof import('@/enums/sex-enum')['SexEnum']
   const ValueEnum: typeof import('@/enums/index')['ValueEnum']
@@ -61,7 +59,6 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
-  const undefined: (typeof import("@/enums/index"))["undefined"]
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
@@ -73,6 +70,7 @@ declare global {
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
+  const utils: typeof import('@/utils/utils')['utils']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
@@ -154,6 +152,7 @@ declare module 'vue' {
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly utils: UnwrapRef<typeof import('@/utils/utils')['utils']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>

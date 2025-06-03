@@ -1,6 +1,7 @@
 import { MaterialEnum, FieldWidthEnum } from "@/enums";
 
 export class TjInput {
+  id = nanoid();
   type = MaterialEnum.TjInput;
   label = "单行文本";
   fieldProps = {

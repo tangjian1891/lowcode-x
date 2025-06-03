@@ -80,6 +80,7 @@
     "useRouter": true,
     "useSlots": true,
     "useTemplateRef": true,
+    "utils": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,

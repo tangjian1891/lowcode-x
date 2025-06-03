@@ -28,7 +28,7 @@ import { ref, reactive, provide } from "vue";
 import type { DraggableEvent, SortableEvent } from "vue-draggable-plus";
 import type Sortable from "sortablejs";
 import { materialList, type MaterialElement } from "./material";
-import { keyBy } from "lodash-es";
+import { cloneDeep, keyBy } from "lodash-es";
 import { ElMessage } from "element-plus";
 import { instance } from "@/api/request";
 
@@ -87,8 +87,13 @@ const saveForm = async () => {
 
 const DRAG_NAME = Symbol("DRAG_NAME");
 const data = reactive({
+  fieldMapping: computed(() => {
+    console.log("jisuan l ");
+    return keyBy(data.fields, "id");
+  }),
   materialList,
   fields: [],
+  formTree: [],
   activeField: null,
   leftGroup: {
     name: DRAG_NAME,
@@ -120,6 +125,10 @@ const data = reactive({
   },
   onAdd(event: DraggableEvent) {
     const field = event.clonedData;
+    console.log("新增", field);
+    const newField = cloneDeep(field);
+    data.fields.push(newField);
+    utils.resetObjectProperties(field, ["id"]);
     data.clickField(field);
   },
   clickField(field: any) {

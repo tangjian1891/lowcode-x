@@ -2,8 +2,14 @@
   <div class="center-form">
     <!-- 表单设计渲染-拖拽放入区 -->
     <el-form class="drag-form jas-scrollbar" ref="ruleFormRef" :model="designForm">
-      <vue-draggable @remove="onRemove" class="drag-components-area" v-model="data.fields" :group="data.centerGroup" @add="data.onAdd">
-        <component :field="field" :data="data" :is="designComponentMap[field.type]" v-for="field in data.fields" :key="field.id"></component>
+      <vue-draggable @remove="onRemove" class="drag-components-area" v-model="data.formTree" :group="data.centerGroup" @add="data.onAdd">
+        <component
+          :field="data.fieldMapping[f.id]"
+          :data="data"
+          :is="designComponentMap[data.fieldMapping[f.id].type]"
+          v-for="f in data.formTree"
+          :key="f.id"
+        ></component>
       </vue-draggable>
     </el-form>
   </div>
@@ -26,9 +32,6 @@ const ruleFormRef = ref();
 
 // 表单数据
 const designForm = reactive({});
-
-// 添加组件回调
-const onAdd = (e) => {};
 
 // 更新组件回调
 const onUpdate = (e) => {
