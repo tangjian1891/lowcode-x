@@ -13,13 +13,21 @@ export class FormController {
   // 根据ID获取单个表单
   @Get(":id")
   async findById(@Param("id") id: string) {
-    return await this.formService.findById(id);
+    try {
+      return await this.formService.findById(id);
+    } catch (error) {
+      return null;
+    }
   }
 
   // 创建表单
   @Post()
   async create(@Body() data: any) {
-    return await this.formService.create(data);
+    if (data.id) {
+      return await this.formService.update(data.id, data);
+    } else {
+      return await this.formService.create(data);
+    }
   }
   // 更新表单
   @Put(":id")

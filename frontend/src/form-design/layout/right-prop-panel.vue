@@ -37,9 +37,9 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 };
 const HIDDEN_FIELD = new props.data.materialList[0].class();
 const activeField = computed(() => {
-  const activeField = props.data.activeField;
+  const active = props.data.activeField;
 
-  return activeField ? props.data.fieldMapping[activeField.id] : HIDDEN_FIELD;
+  return active ? props.data.fieldMapping[active.id] : HIDDEN_FIELD;
 });
 
 function onChange(params: type) {

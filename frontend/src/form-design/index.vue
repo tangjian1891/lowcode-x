@@ -45,20 +45,25 @@ const formConfig = reactive({
     size: "default",
   },
 });
-const id = "683b1836af11a9783c8644e1";
+const id = "683ed3b39286248d980640b5";
 onMounted(async () => {
   let res = await instance.request({
     url: "/forms/" + id,
     method: "GET",
   });
   console.log("查看", res);
-  data.fields = res.data.fields;
+  if (res.data) {
+    data.fields = res.data.fields;
+    data.formTree = res.data.formTree;
+    data.id = res.data.id;
+  }
 });
 
 // 清空表单
 const clearForm = () => {
   data.fields = [];
   data.activeField = null;
+  data.formTree = [];
 };
 
 // 预览表单
@@ -72,13 +77,15 @@ const saveForm = async () => {
   console.log("保存表单", { formConfig, fields: data.fields });
   const d = {
     fields: data.fields,
-    id,
+    formTree: data.formTree,
+    // id,
+    id: data.id,
   };
   console.log(d);
 
   await instance.request({
-    url: "/forms" + "/" + id,
-    method: "PUT",
+    url: "/forms",
+    method: "POST",
     data: d,
   });
 
@@ -135,9 +142,17 @@ const data = reactive({
     data.activeField = field;
   },
   deleteField(field: any) {
-    const index = data.fields.indexOf(field);
+    const parent = utils.findParentNode(data.formTree, field.id) as any[];
+    const index = parent.findIndex((item) => item.id === field.id);
     if (index > -1) {
-      data.fields.splice(index, 1);
+      // 从树中移除
+      parent.splice(index, 1);
+
+      // 移除fields
+      const idx = data.fields.indexOf(field);
+      if (idx > -1) {
+        data.fields.splice(idx, 1);
+      }
       data.activeField = null;
     }
   },

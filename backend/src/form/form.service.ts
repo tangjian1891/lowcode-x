@@ -45,11 +45,13 @@ export class FormService {
     const created = new this.model({
       ...data,
     });
+    this.patchAndUpdateCollection(data.fields, []);
     return await created.save();
   }
 
   // 更新表单
   async update(id: string, data: any) {
+    const form = await this.findById(id);
     const updated = await this.model.findByIdAndUpdate(
       id,
       {
@@ -58,6 +60,7 @@ export class FormService {
       { new: true },
     );
 
+    this.patchAndUpdateCollection(form.fields, data.fields);
     if (!updated) {
       throw new NotFoundException(`表单ID为 ${id} 的记录不存在`);
     }
@@ -77,5 +80,19 @@ export class FormService {
   // 批量删除表单
   async removeMany(ids: string[]): Promise<{ deletedCount: number }> {
     return await this.model.deleteMany({ _id: { $in: ids } });
+  }
+
+  /**
+   * 批量更新表单集合
+   */
+  patchAndUpdateCollection(newFields, oldFields) {
+    console.log(
+      "新",
+      newFields.map((item) => item.id),
+    );
+    console.log(
+      "旧",
+      oldFields.map((item) => item.id),
+    );
   }
 }
