@@ -7,8 +7,8 @@ import { FormModule } from "./form/form.module";
 // 导入全局 ID 插件
 import "./common/id-plugin";
 
-const password = "lafiTtbH3FufPR5c";
-const uri = `mongodb+srv://tangjian1891:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const password = "user1";
+const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 @Module({
   imports: [MongooseModule.forRoot(uri), CatsModule, FormModule],
