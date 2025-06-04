@@ -96,19 +96,21 @@ const DRAG_NAME = Symbol("DRAG_NAME");
 const HIDDEN_FIELD = new materialList[0].class();
 const data = reactive({
   HIDDEN_FIELD,
+  activeId: HIDDEN_FIELD.id,
   fieldMapping: computed(() => {
-    console.log("jisuan l ");
-    return keyBy(data.fields, "id");
+    const allFields = [...data.fields, data.HIDDEN_FIELD];
+    return keyBy(allFields, "id");
+  }),
+  activeField: computed(() => {
+    return data.fieldMapping[data.activeId];
   }),
   materialList,
   fields: [],
   formTree: [],
-  activeField: HIDDEN_FIELD,
   leftGroup: {
     name: DRAG_NAME,
     pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
       return "clone";
-      // return true;
     },
   },
   onClone(element: MaterialElement) {
@@ -116,8 +118,6 @@ const data = reactive({
   },
   addFieldByClick(element: MaterialElement) {
     const field = data.onClone(element);
-    console.log(cloneDeep(field));
-
     data.addField2Design(field);
   },
   centerGroup: {
@@ -130,7 +130,7 @@ const data = reactive({
     const field = event.clonedData;
     data.addField2Design(field);
   },
-
+  // 添加字段到设计区域
   addField2Design(field) {
     const newField = cloneDeep(field);
     data.fields.push(newField);
@@ -139,23 +139,24 @@ const data = reactive({
     data.formTree.push(field);
   },
 
-  clickField(field: any) {
-    data.activeField = field;
+  // 高亮
+  clickField(field: { id: string }) {
+    data.activeId = field.id;
   },
+  // 删除元素
   deleteField(field: any) {
     const parent = utils.findParentNode(data.formTree, field.id) as any[];
     const index = parent.findIndex((item) => item.id === field.id);
     if (index > -1) {
       // 从树中移除
       parent.splice(index, 1);
-
       // 从组件中移除fields
       const idx = data.fields.indexOf(field);
       if (idx > -1) {
         data.fields.splice(idx, 1);
       }
-      // 清空选中
-      data.activeField = HIDDEN_FIELD;
+      // 高亮
+      data.clickField(data.HIDDEN_FIELD);
     }
   },
   copyField(field: any) {

@@ -41,7 +41,7 @@ const props = defineProps({
 });
 
 const label = computed(() => {
-  return props.field.enabledProps.label ? props.field.label : "";
+  return props.field.enabledProps.label ? props.field.formItemProps.label : "";
 });
 const description = computed(() => {
   return unescape(props.field.description ?? "");

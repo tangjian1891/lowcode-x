@@ -3,7 +3,6 @@ import { MaterialEnum, FieldWidthEnum } from "@/enums";
 export class TjInput {
   id = nanoid();
   type = MaterialEnum.TjInput;
-  label = "单行文本";
   fieldProps = {
     // el-input 基本属性
     type: "text", // 输入框类型
