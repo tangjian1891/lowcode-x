@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import DesignContainer from "@/form-design/components/design-container/design-container.vue";
+import DesignContainer from "@/design/components/design-container/design-container.vue";
 
 const props = defineProps({
   field: Object,

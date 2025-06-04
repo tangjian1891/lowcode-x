@@ -25,9 +25,9 @@ const router = createRouter({
       ],
     },
     {
-      path: "/form-design",
-      name: "form-design",
-      component: () => import("@/form-design/index.vue"),
+      path: "/design",
+      name: "design",
+      component: () => import("@/design/index.vue"),
     },
   ],
 });
