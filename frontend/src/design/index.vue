@@ -62,7 +62,7 @@ onMounted(async () => {
 // 清空表单
 const clearForm = () => {
   data.fields = [];
-  data.activeField = null;
+  data.activeField = HIDDEN_FIELD;
   data.formTree = [];
 };
 
@@ -93,7 +93,9 @@ const saveForm = async () => {
 };
 
 const DRAG_NAME = Symbol("DRAG_NAME");
+const HIDDEN_FIELD = new materialList[0].class();
 const data = reactive({
+  HIDDEN_FIELD,
   fieldMapping: computed(() => {
     console.log("jisuan l ");
     return keyBy(data.fields, "id");
@@ -101,7 +103,7 @@ const data = reactive({
   materialList,
   fields: [],
   formTree: [],
-  activeField: null,
+  activeField: HIDDEN_FIELD,
   leftGroup: {
     name: DRAG_NAME,
     pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
@@ -114,30 +116,29 @@ const data = reactive({
   },
   addFieldByClick(element: MaterialElement) {
     const field = data.onClone(element);
-    data.fields.push(field);
-    data.clickField(field);
+    console.log(cloneDeep(field));
+
+    data.addField2Design(field);
   },
   centerGroup: {
     name: DRAG_NAME,
-    // put(to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) {
-    //   console.log("外部", to, from, dragEl, event);
-    //   return true;
-    // },
   },
   collapseGroup: {
     name: DRAG_NAME,
-    // put(to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) {
-    //   console.log("折叠", to, from, dragEl, event);
-    // },
   },
   onAdd(event: DraggableEvent) {
     const field = event.clonedData;
-    console.log("新增", field);
+    data.addField2Design(field);
+  },
+
+  addField2Design(field) {
     const newField = cloneDeep(field);
     data.fields.push(newField);
     utils.resetObjectProperties(field, ["id"]);
     data.clickField(field);
+    data.formTree.push(field);
   },
+
   clickField(field: any) {
     data.activeField = field;
   },
@@ -148,12 +149,13 @@ const data = reactive({
       // 从树中移除
       parent.splice(index, 1);
 
-      // 移除fields
+      // 从组件中移除fields
       const idx = data.fields.indexOf(field);
       if (idx > -1) {
         data.fields.splice(idx, 1);
       }
-      data.activeField = null;
+      // 清空选中
+      data.activeField = HIDDEN_FIELD;
     }
   },
   copyField(field: any) {

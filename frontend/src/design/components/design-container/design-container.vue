@@ -1,5 +1,5 @@
 <template>
-  <div :class="['design-container', { active: data.activeField === field }]" @click.stop="data.clickField(field)">
+  <div :class="['design-container', { active: data.activeField.id === field.id }]" @click.stop="data.clickField(field)">
     <el-form-item :label="label" :required="field.validateProps.required">
       <template #label="{ label }">
         <div>
