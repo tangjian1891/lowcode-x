@@ -45,7 +45,7 @@ export class FormService {
     const created = new this.model({
       ...data,
     });
-    this.patchAndUpdateCollection(data.fields, []);
+    this.patchAndUpdateCollection(created.id, data.fields, []);
     return await created.save();
   }
 
@@ -60,7 +60,7 @@ export class FormService {
       { new: true },
     );
 
-    this.patchAndUpdateCollection(form.fields, data.fields);
+    this.patchAndUpdateCollection(form.id, form.fields, data.fields);
     if (!updated) {
       throw new NotFoundException(`表单ID为 ${id} 的记录不存在`);
     }
@@ -85,7 +85,9 @@ export class FormService {
   /**
    * 批量更新表单集合
    */
-  patchAndUpdateCollection(newFields, oldFields) {
+  patchAndUpdateCollection(id, newFields, oldFields) {
+    console.log("表单ID:", id);
+
     console.log(
       "新",
       newFields.map((item) => item.id),
