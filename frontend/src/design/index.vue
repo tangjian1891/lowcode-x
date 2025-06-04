@@ -3,6 +3,7 @@
     <!-- 新增顶部区域 -->
     <div class="form-design-header flex items-center justify-between p-3 border-b">
       <div class="form-title flex items-center">
+        <el-button text icon="ArrowLeft" @click="$router.back()" class="mr-8px" />
         <el-input v-model="formConfig.title" placeholder="请输入表单名称" class="w-240px" />
       </div>
       <div class="form-actions flex gap-3">

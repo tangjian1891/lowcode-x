@@ -1,11 +1,15 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { Form } from "./form.schema";
-import { Model } from "mongoose";
+import mongoose, { Connection, Model } from "mongoose";
 
 @Injectable()
 export class FormService {
-  constructor(@InjectModel(Form.name) private model: Model<Form>) {}
+  private modelCache: Map<string, mongoose.Model<any>> = new Map();
+  constructor(
+    @InjectModel(Form.name) private model: Model<Form>,
+    @InjectConnection() private connection: Connection,
+  ) {}
 
   // 查询表单列表，支持分页和关键词搜索
   async findAll(page = 1, limit = 10, keyword?: string) {
@@ -85,16 +89,16 @@ export class FormService {
   /**
    * 批量更新表单集合
    */
-  patchAndUpdateCollection(id, newFields, oldFields) {
+  async patchAndUpdateCollection(id, newFields: any[], oldFields) {
     console.log("表单ID:", id);
+    const schemaObject = newFields.reduce((initVal, item) => {
+      initVal[item.id] = String;
+      return initVal;
+    }, {});
 
-    console.log(
-      "新",
-      newFields.map((item) => item.id),
-    );
-    console.log(
-      "旧",
-      oldFields.map((item) => item.id),
-    );
+    const model = this.connection.model(id, new mongoose.Schema(schemaObject));
+    this.modelCache.set(id, model);
+    console.log("查看一下模型", model);
+    const res = await model.create({ cqN35b1KVAXHQ1h_32VRkn: "测试数据", yKyxQ2hhPwDt4UY1CNVI_c: "测试数据" });
   }
 }
