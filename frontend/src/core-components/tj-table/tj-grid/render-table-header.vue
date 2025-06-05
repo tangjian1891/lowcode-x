@@ -19,7 +19,6 @@
 const props = defineProps({
   data: Object,
 });
-console.log("内部渲染多少次", props.data);
 
 function onClick() {
   console.log("点击了");

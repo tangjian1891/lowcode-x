@@ -39,6 +39,7 @@ const handleAddDirectory = () => {
 };
 
 const handleAddMenu = () => {
+  createDialog({}, qwer);
   emit("add-menu");
   ElMessage.success("即将创建新菜单");
 };
@@ -50,7 +51,16 @@ import { MenuType, SubMenuType } from "../index";
 import { instance } from "@/api/request";
 
 const qwer = defineComponent({
+  name: "add-menu-dialog",
   setup(props, ctx) {
+    const menuTree = ref([]);
+    onMounted(async () => {
+      const res = await instance.request({
+        url: "/menu",
+        method: "GET",
+      });
+      menuTree.value = res.data;
+    });
     const form = ref({
       name: "",
       type: MenuType.FOLDER,
@@ -99,6 +109,13 @@ const qwer = defineComponent({
         }
       });
     }
+
+    function foo(val) {
+      // (val) => ()
+      console.log("这是啥啊", val);
+
+      form.value.parentId = val;
+    }
     return () => {
       return (
         <el-form model={form.value} label-width="100px" style="max-width: 600px;" ref="formRef">
@@ -124,28 +141,38 @@ const qwer = defineComponent({
             </el-form-item>
           )}
 
-          <el-form-item label="菜单值" required prop="value">
-            <el-input
-              modelValue={form.value.value}
-              onUpdate:modelValue={(val) => (form.value.value = val)}
-              placeholder={
-                form.value.subType === SubMenuType.GENERAL_FORM
-                  ? "请输入表单ID"
-                  : form.value.subType === SubMenuType.INTERNAL
-                    ? "请输入路由名称"
-                    : form.value.subType === SubMenuType.EXTERNAL_MENU
-                      ? "请输入外部链接"
-                      : "请输入菜单值"
-              }
-            />
-          </el-form-item>
+          {form.value.type !== MenuType.FOLDER && (
+            <el-form-item label="菜单值" required prop="value">
+              <el-input
+                modelValue={form.value.value}
+                onUpdate:modelValue={(val) => (form.value.value = val)}
+                placeholder={
+                  form.value.subType === SubMenuType.GENERAL_FORM
+                    ? "请输入表单ID"
+                    : form.value.subType === SubMenuType.INTERNAL
+                      ? "请输入路由名称"
+                      : form.value.subType === SubMenuType.EXTERNAL_MENU
+                        ? "请输入外部链接"
+                        : "请输入菜单值"
+                }
+              />
+            </el-form-item>
+          )}
 
           <el-form-item label="菜单图标" prop="icon">
             <el-input modelValue={form.value.icon} onUpdate:modelValue={(val) => (form.value.icon = val)} placeholder="请输入图标名称或类名" />
           </el-form-item>
 
           <el-form-item label="父菜单ID" prop="parentId">
-            <el-input modelValue={form.value.parentId} onUpdate:modelValue={(val) => (form.value.parentId = val)} placeholder="留空表示根菜单" />
+            <el-tree-select
+              modelValue={form.value.parentId}
+              onUpdate:modelValue={foo}
+              data={menuTree.value}
+              node-key={"id"}
+              props={{ label: "name", children: "children" }}
+              highlight-current
+              accordion
+            ></el-tree-select>
           </el-form-item>
 
           <el-form-item>

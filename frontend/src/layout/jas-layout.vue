@@ -1,12 +1,12 @@
 <template>
   <div class="h-full w-full flex flex-col overflow-hidden">
     <div class="shrink-0 basis-50px">
-      <jas-top-layout @select="handleTopMenuSelect" />
+      <jas-top-layout :menuTree="menuTree" @select="handleTopMenuSelect" />
     </div>
     <div class="flex-1">
       <jas-resize span="300">
         <template #p1>
-          <jas-side-menu :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
+          <jas-side-menu :menuTree="menuTree" :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
         </template>
         <template #p2>
           <router-view #default="{ Component }">
@@ -32,7 +32,7 @@ import { instance } from "@/api/request";
 
 const route = useRoute();
 const systemId = route.params.systemId;
-
+const menuTree = ref([]);
 // 标签导航组件引用
 const tabNavRef = ref();
 
@@ -59,10 +59,10 @@ onMounted(() => {
 
 async function getMenuTree(params: type) {
   let res = await instance.request({
-    url: "menu",
+    url: "menu/tree",
     method: "GET",
   });
-  console.log("查看结果", res);
+  menuTree.value = res.data;
 }
 </script>
 

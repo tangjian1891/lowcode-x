@@ -46,10 +46,11 @@ const formConfig = reactive({
     size: "default",
   },
 });
-const id = "683ed3b39286248d980640b5";
+const route = useRoute();
+const formId = route.params.formId as string;
 onMounted(async () => {
   let res = await instance.request({
-    url: "/forms/" + id,
+    url: "/forms/relateId/" + formId,
     method: "GET",
   });
   console.log("查看", res);
@@ -81,6 +82,7 @@ const saveForm = async () => {
     formTree: data.formTree,
     // id,
     id: data.id,
+    relateId: formId,
   };
   console.log(d);
 

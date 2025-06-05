@@ -22,7 +22,8 @@ export class MenuService {
 
     // 构建树结构
     const tree: any[] = [];
-    menus.forEach((menu) => {
+    menus.forEach((menu: any) => {
+      menu.id = menu._id;
       if (menu.parentId) {
         const parent = menuMap.get(menu.parentId.toString());
         if (parent) {
@@ -32,7 +33,7 @@ export class MenuService {
         tree.push(menu);
       }
     });
-
+    console.log("查看一下", tree);
     return tree;
   }
   /**

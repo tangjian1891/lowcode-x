@@ -19,6 +19,15 @@ export class FormController {
       return null;
     }
   }
+  // 根据ID获取单个表单
+  @Get("relateId/:relateId")
+  async findByRelateId(@Param("relateId") relateId: string) {
+    try {
+      return await this.formService.findByRelateId(relateId);
+    } catch (error) {
+      return null;
+    }
+  }
 
   // 创建表单
   @Post()

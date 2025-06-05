@@ -10,7 +10,7 @@
       @select="handleSelect"
     >
       <!-- 动态渲染菜单项，替换原来的静态菜单 -->
-      <template v-for="folder in menuData" :key="folder.id">
+      <template v-for="folder in menuTree" :key="folder.id">
         <el-sub-menu v-if="folder.type === MenuType.FOLDER" :index="folder.id">
           <template #title>
             <el-icon><component :is="folder.icon || 'Folder'" /></el-icon>
@@ -20,11 +20,15 @@
           <!-- 渲染菜单项 -->
           <template v-for="menu in folder.children" :key="menu.id">
             <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
-              <el-icon>
-                <!-- 根据不同的子类型使用不同的图标 -->
-                <component :is="getMenuIcon(menu)" />
-              </el-icon>
-              <span>{{ menu.name }}</span>
+              <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+                <span style="display: flex; align-items: center">
+                  <el-icon>
+                    <component :is="getMenuIcon(menu)" />
+                  </el-icon>
+                  <span style="margin-left: 6px">{{ menu.name }}</span>
+                </span>
+                <el-button type="text" icon="Edit" size="small" @click.stop="JasLayout.goDesign(router, menu)" />
+              </div>
             </el-menu-item>
           </template>
         </el-sub-menu>
@@ -50,6 +54,7 @@ const props = defineProps({
     type: String,
     default: "系统模块",
   },
+  menuTree: Array,
 });
 
 const activeMenu = ref(""); // 默认不选中任何菜单项

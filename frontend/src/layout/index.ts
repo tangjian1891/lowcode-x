@@ -58,6 +58,17 @@ class JasLayout {
       path: `/jas-layout/${currentRoute.params.systemId}/${menu.id}`,
     });
   }
+
+  static goDesign(router: Router, menu: Menu) {
+    console.log(menu);
+
+    router.push({
+      name: "design",
+      params: {
+        formId: menu.id,
+      },
+    });
+  }
 }
 
 export { JasLayout };

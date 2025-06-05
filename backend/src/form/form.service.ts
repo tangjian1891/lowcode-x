@@ -43,6 +43,16 @@ export class FormService {
     }
     return form;
   }
+  // 根据relateId查询单个表单
+  async findByRelateId(relateId: string) {
+    const form = await this.model.findOne({ relateId });
+    console.log("产不到吗", form);
+    if (!form) {
+      throw new NotFoundException(`关联ID为 ${relateId} 的表单记录不存在`);
+    }
+
+    return form;
+  }
 
   // 创建表单
   async create(data: any) {
