@@ -13,18 +13,16 @@ enum MenuType {
 export class Menu {
   @Prop()
   name: string;
-  // @Prop({ type: String })
-  // type: MenuType;
-  // @Prop({ type: String })
-  // subType: SubMenuType;
+  @Prop({ type: String })
+  type: MenuType;
+  @Prop({ type: String })
+  subType: SubMenuType;
   @Prop()
   value: string;
   @Prop()
   icon?: string; // 菜单图标
   @Prop()
   parentId: string; // 父菜单ID
-  //   @Prop({ type: [{ type: String, ref: "Menu" }], default: [] })
-  //   children: Menu[]; // 子菜单列表
   @Prop({ default: 0 })
   order: number;
 }

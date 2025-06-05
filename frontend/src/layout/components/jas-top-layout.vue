@@ -3,17 +3,7 @@
     <!-- 左侧公司名 -->
     <div class="company-logo flex shrink-0 basis-200px items-center justify-center">
       <h1 class="text-lg font-bold">{{ companyName }}</h1>
-      <el-dropdown>
-        <span class="cursor-pointer ml-2" style="outline: none">
-          <el-icon><Plus /></el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>新增菜单</el-dropdown-item>
-            <el-dropdown-item>新增目录</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <el-button @click="$router.push({ name: 'jas-layout' })" class="ml-6px text-16px" circle icon="Plus"></el-button>
     </div>
 
     <!-- 中间菜单 -->
