@@ -40,7 +40,7 @@ const emit = defineEmits(["close"]);
 const dialogVisible = ref(true);
 const dialogContentRef = ref();
 const props = defineProps({
-  component: Object,
+  component: [Object, Function],
   tjTable: {
     type: Object as PropType<IJasTable>,
     required: true,

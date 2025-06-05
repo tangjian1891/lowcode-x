@@ -12,6 +12,7 @@ import VxeUIAll from "vxe-pc-ui";
 import "vxe-pc-ui/lib/style.css";
 
 import ElementPlus from "element-plus";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 import "element-plus/dist/index.css";
 import "virtual:uno.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
@@ -72,7 +73,9 @@ app.use(createPinia());
 app.use(router);
 app.use(VxeUITable);
 app.use(VxeUIAll);
-app.use(ElementPlus);
+app.use(ElementPlus, {
+  locale: zhCn,
+});
 app.mount("#app");
 
 mergeAppContext(app);
