@@ -28,6 +28,7 @@ import JasSideMenu from "./components/jas-side-menu.vue";
 import JasTabNav from "./components/jas-tab-nav.vue";
 import JasResize from "@/components/jas-resize/jas-resize.vue";
 import AddMenuAccess from "./components/add-menu-access.vue";
+import { instance } from "@/api/request";
 
 const route = useRoute();
 const systemId = route.params.systemId;
@@ -51,6 +52,18 @@ const handleSideMenuSelect = (index: string) => {
   console.log("左侧菜单选择:", index);
   // 这里可以添加路由导航逻辑
 };
+
+onMounted(() => {
+  getMenuTree();
+});
+
+async function getMenuTree(params: type) {
+  let res = await instance.request({
+    url: "menu",
+    method: "GET",
+  });
+  console.log("查看结果", res);
+}
 </script>
 
 <style lang="scss" scoped></style>
