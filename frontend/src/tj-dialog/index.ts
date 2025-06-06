@@ -44,10 +44,10 @@ export const dialogSizeMapping = {
   },
 };
 
-export function createDialog(tjTable: IJasTable, component: any) {
+export function createDialog(component: any, componentOptions: any) {
   let app = createApp(JasDialog, {
-    tjTable,
     component,
+    componentOptions,
     onClose() {
       app.unmount();
       document.body.removeChild(div);

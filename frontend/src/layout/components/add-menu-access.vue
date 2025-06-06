@@ -1,7 +1,19 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center">
+  <div class="w-full h-full flex items-center justify-center flex-col">
+    <div class="parent-menu" style="width: 100%; display: flex; justify-content: center; margin-bottom: 40px">
+      <el-tree-select
+        v-model="selectedParentId"
+        :data="menuTree"
+        node-key="id"
+        :props="{ label: 'name', children: 'children', disabled: (node) => node.type !== MenuType.FOLDER }"
+        placeholder="请选择父菜单"
+        style="width: 300px"
+        clearable
+        check-strictly
+      />
+    </div>
     <div class="menu-cards">
-      <div class="menu-card directory" @click="handleAddDirectory">
+      <div class="menu-card directory" @click="addMenu(MenuType.FOLDER)">
         <div class="icon-container">
           <el-icon color="#4CAF50" :size="32">
             <Folder />
@@ -10,7 +22,7 @@
         <div class="card-title">新增目录</div>
       </div>
 
-      <div class="menu-card menu" @click="handleAddMenu">
+      <div class="menu-card menu" @click="addMenu(MenuType.MENU)">
         <div class="icon-container">
           <el-icon color="#9575CD" :size="32">
             <Menu />
@@ -26,41 +38,39 @@
 import { ElMessage, type FormContext, type FormInstance, ElForm } from "element-plus";
 import { Folder, Menu } from "@element-plus/icons-vue";
 import { createDialog } from "@/tj-dialog";
-
-const emit = defineEmits(["add-directory", "add-menu"]);
-
-const handleAddDirectory = () => {
-  emit("add-directory");
-  console.log(qwer);
-
-  createDialog({}, qwer);
-
-  ElMessage.success("即将创建新目录");
-};
-
-const handleAddMenu = () => {
-  createDialog({}, qwer);
-  emit("add-menu");
-  ElMessage.success("即将创建新菜单");
-};
+const props = defineProps({
+  menuTree: Array,
+});
+const emit = defineEmits(["add-directory", "add-menu", "refreshMenu"]);
+const selectedParentId = ref("");
+function addMenu(type: MenuType) {
+  createDialog(addMenuComponent, {
+    menuTree: props.menuTree,
+    parentId: selectedParentId.value,
+    type: type,
+    onConfirm() {
+      emit("refreshMenu");
+    },
+  });
+}
 </script>
 
 <script lang="tsx">
 import { MenuType, SubMenuType } from "../index";
 import { instance } from "@/api/request";
 
-const qwer = defineComponent({
+const addMenuComponent = defineComponent({
   name: "add-menu-dialog",
+  props: ["menuTree", "parentId", "type"],
   data() {
     return {
-      menuTree: [] as any[],
       form: {
         name: "",
-        type: MenuType.FOLDER,
+        type: this.type || MenuType.FOLDER,
         subType: SubMenuType.GENERAL_FORM,
         value: "",
         icon: "",
-        parentId: "",
+        parentId: this.parentId || "",
         order: 0,
       },
       formResetter: utils.createSmartResetter(this.form),
@@ -75,13 +85,7 @@ const qwer = defineComponent({
       ],
     };
   },
-  async mounted() {
-    const res = await instance.request({
-      url: "/menu",
-      method: "GET",
-    });
-    this.menuTree = res.data;
-  },
+
   computed: {
     showValue() {
       return this.form.type === MenuType.MENU && [SubMenuType.EXTERNAL_MENU, SubMenuType.INTERNAL].includes(this.form.subType);
@@ -99,12 +103,12 @@ const qwer = defineComponent({
             data: this.form,
           });
           console.log("保存成功");
+          this.$emit("confirm");
           this.$emit("close");
         }
       });
     },
     handleParentSelect(val: string) {
-      console.log("这是啥啊", val);
       this.form.parentId = val;
     },
     getPlaceholder() {
@@ -118,7 +122,7 @@ const qwer = defineComponent({
       return "请输入菜单值";
     },
   },
-  emits: ["close"],
+  emits: ["close", "confirm"],
   render() {
     return (
       <el-form model={this.form} label-width="100px" style="max-width: 600px;" ref="formRef">
@@ -174,10 +178,9 @@ const qwer = defineComponent({
             onUpdate:modelValue={this.handleParentSelect}
             data={this.menuTree}
             node-key="id"
-            props={{ label: "name", children: "children" }}
-            highlight-current
-            accordion
+            props={{ label: "name", children: "children", disabled: (node) => node.type !== MenuType.FOLDER }}
             clearable
+            check-strictly
           />
         </el-form-item>
 
@@ -194,6 +197,9 @@ const qwer = defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.parent-menu {
+  transform: translateY(-140px);
+}
 .menu-cards {
   display: flex;
   gap: 30px;

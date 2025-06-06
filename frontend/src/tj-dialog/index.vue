@@ -1,12 +1,6 @@
 <template>
   <el-dialog v-model="dialogVisible" title="Tips" width="500" :before-close="handleClose" @close="onClose" :style="{ ...styleVarComp }">
-    <component
-      ref="dialogContentRef"
-      :tjTable="tjTable"
-      :is="component ?? JasForm"
-      @close="noCheckAndClose"
-      @checkAndClose="checkAndClose"
-    ></component>
+    <component ref="dialogContentRef" v-bind="componentOptions" :is="component" @close="noCheckAndClose" @checkAndClose="checkAndClose"></component>
   </el-dialog>
 </template>
 
@@ -27,8 +21,6 @@ update:modelValue触发，正式关闭。
 -->
 
 <script lang="ts" setup>
-import type { PropType } from "vue";
-import { type IJasTable } from "@/core-components/tj-table/types";
 import { isFunction } from "lodash-es";
 import { DialogSizeEnum, dialogSizeMapping } from "./index";
 defineOptions({
@@ -36,14 +28,13 @@ defineOptions({
   name: "jas-dialog",
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "confirm"]);
 const dialogVisible = ref(true);
 const dialogContentRef = ref();
 const props = defineProps({
   component: [Object, Function],
-  tjTable: {
-    type: Object as PropType<IJasTable>,
-    required: true,
+  componentOptions: {
+    type: Object,
   },
   size: {
     type: Number,

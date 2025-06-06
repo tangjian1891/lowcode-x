@@ -11,7 +11,7 @@
         <template #p2>
           <router-view #default="{ Component }">
             <keep-alive :include="cachedViews">
-              <component :is="Component ?? AddMenuAccess" />
+              <component :menuTree="menuTree" :is="Component ?? AddMenuAccess" @refreshMenu="getMenuTree" />
             </keep-alive>
           </router-view>
         </template>

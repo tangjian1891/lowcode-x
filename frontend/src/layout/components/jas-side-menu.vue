@@ -21,13 +21,16 @@
           <template v-for="menu in folder.children" :key="menu.id">
             <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
               <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
-                <span style="display: flex; align-items: center">
+                <span class="flex items-center flex-1">
                   <el-icon>
                     <component :is="getMenuIcon(menu)" />
                   </el-icon>
                   <span style="margin-left: 6px">{{ menu.name }}</span>
                 </span>
-                <el-button text icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
+                <span class="flex items-center">
+                  <el-link underline="never" icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
+                  <el-link underline="never" @click="$router.push({ name: 'jas-layout' })" class="ml-6px" icon="Plus" />
+                </span>
               </div>
             </el-menu-item>
           </template>
