@@ -6,7 +6,7 @@
     <div class="flex-1">
       <jas-resize span="300">
         <template #p1>
-          <jas-side-menu :menuTree="menuTree" :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" />
+          <jas-side-menu :menuTree="menuTree" :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" @refreshMenu="getMenuTree" />
         </template>
         <template #p2>
           <router-view #default="{ Component }">

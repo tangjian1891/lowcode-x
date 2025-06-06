@@ -18,8 +18,6 @@ export class MenuControll {
 
   @Post()
   async create(@Body() data: any) {
-    console.log("拿到了", data);
-
     if (data.id) {
       return await this.menuService.update(data.id, data);
     } else {

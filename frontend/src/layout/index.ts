@@ -1,3 +1,5 @@
+import { instance } from "@/api/request";
+import { ElMessage, ElMessageBox } from "element-plus";
 import type { Router } from "vue-router";
 
 // 菜单类型枚举
@@ -50,6 +52,30 @@ class JasLayout {
       }
     }
     return null;
+  }
+
+  static async removeMenu(menu: Menu) {
+    try {
+      await ElMessageBox.confirm("确认删除", "提示", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning",
+      });
+      let res = await instance.request({
+        url: "menu",
+        method: "DELETE",
+        data: { ids: [menu.id] },
+      });
+      ElMessage({
+        type: "success",
+        message: "Delete completed",
+      });
+    } catch (error) {
+      ElMessage({
+        type: "info",
+        message: "Delete canceled",
+      });
+    }
   }
 
   static goRoute(router: Router, menu: Menu) {

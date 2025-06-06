@@ -29,7 +29,7 @@
                 </span>
                 <span class="flex items-center">
                   <el-link underline="never" icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
-                  <el-link underline="never" @click="$router.push({ name: 'jas-layout' })" class="ml-6px" icon="Plus" />
+                  <el-link underline="never" icon="Delete" @click.stop="removeMenu(menu)" class="ml-6px" />
                 </span>
               </div>
             </el-menu-item>
@@ -44,7 +44,7 @@
 import { ref, computed } from "vue";
 
 import { initSystemMenu } from "../menu-data";
-import { JasLayout, MenuType, SubMenuType } from "../index";
+import { JasLayout, Menu, MenuType, SubMenuType } from "../index";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -68,7 +68,7 @@ if (menuData.value.length > 0 && menuData.value[0].children.length > 0) {
 }
 
 // 定义emit事件
-const emit = defineEmits(["select"]);
+const emit = defineEmits(["select", "refreshMenu"]);
 
 // 处理菜单选择事件
 const handleSelect = (index: string) => {
@@ -93,6 +93,10 @@ const getMenuIcon = (menu) => {
   // 默认图标
   return "Menu";
 };
+async function removeMenu(menu: Menu) {
+  await JasLayout.removeMenu(menu);
+  emit("refreshMenu");
+}
 
 // 暴露方法给父组件
 defineExpose({
