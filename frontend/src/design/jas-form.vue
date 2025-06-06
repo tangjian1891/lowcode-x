@@ -1,6 +1,13 @@
 <template>
   <el-form :model="form">
-    <component :field="fieldMapping[f.id]" :data="data" :is="runtimeComponentMap[fieldMapping[f.id].type]" v-for="f in formTree" :key="f.id" />
+    <component
+      :form="form"
+      :field="fieldMapping[f.id]"
+      :data="data"
+      :is="runtimeComponentMap[fieldMapping[f.id].type]"
+      v-for="f in formTree"
+      :key="f.id"
+    />
   </el-form>
 </template>
 
