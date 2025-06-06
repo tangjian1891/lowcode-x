@@ -4,7 +4,7 @@
     <el-menu
       :default-active="activeMenu"
       class="side-menu"
-      background-color="#f0f2f5"
+      background-color="#fff"
       text-color="#333"
       active-text-color="#1890ff"
       @select="handleSelect"
@@ -27,7 +27,7 @@
                   </el-icon>
                   <span style="margin-left: 6px">{{ menu.name }}</span>
                 </span>
-                <el-button type="text" icon="Edit" size="small" @click.stop="JasLayout.goDesign(router, menu)" />
+                <el-button text icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
               </div>
             </el-menu-item>
           </template>

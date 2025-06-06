@@ -46,144 +46,149 @@ const handleAddMenu = () => {
 </script>
 
 <script lang="tsx">
-import { ref, defineComponent, watch } from "vue";
 import { MenuType, SubMenuType } from "../index";
 import { instance } from "@/api/request";
 
 const qwer = defineComponent({
   name: "add-menu-dialog",
-  setup(props, ctx) {
-    const menuTree = ref([]);
-    onMounted(async () => {
-      const res = await instance.request({
-        url: "/menu",
-        method: "GET",
-      });
-      menuTree.value = res.data;
-    });
-    const form = ref({
-      name: "",
-      type: MenuType.FOLDER,
-      subType: null as SubMenuType | null,
-      value: "",
-      icon: "",
-      parentId: "",
-      order: 0,
-    });
-    const formRef = useTemplateRef<FormInstance>("formRef");
-
-    // 监听菜单类型变化，自动设置子类型
-    watch(
-      () => form.value.type,
-      (newType) => {
-        if (newType === MenuType.FOLDER || newType === MenuType.PERMISSION) {
-          form.value.subType = null;
-        } else if (newType === MenuType.MENU && !form.value.subType) {
-          form.value.subType = SubMenuType.INTERNAL;
-        }
+  data() {
+    return {
+      menuTree: [] as any[],
+      form: {
+        name: "",
+        type: MenuType.FOLDER,
+        subType: SubMenuType.GENERAL_FORM,
+        value: "",
+        icon: "",
+        parentId: "",
+        order: 0,
       },
-    );
-
-    const menuTypeOptions = [
-      { label: "目录", value: MenuType.FOLDER },
-      { label: "菜单", value: MenuType.MENU },
-    ];
-
-    const subMenuTypeOptions = [
-      { label: "通用表单", value: SubMenuType.GENERAL_FORM },
-      { label: "自定义表单", value: SubMenuType.INTERNAL },
-      { label: "外部菜单", value: SubMenuType.EXTERNAL_MENU },
-    ];
-
-    async function onConfirm() {
-      console.log(formRef.value);
-      formRef.value!.validate(async (flag) => {
+      formResetter: utils.createSmartResetter(this.form),
+      menuTypeOptions: [
+        { label: "目录", value: MenuType.FOLDER },
+        { label: "菜单", value: MenuType.MENU },
+      ],
+      subMenuTypeOptions: [
+        { label: "通用表单", value: SubMenuType.GENERAL_FORM },
+        { label: "自定义页面", value: SubMenuType.INTERNAL },
+        { label: "外部页面", value: SubMenuType.EXTERNAL_MENU },
+      ],
+    };
+  },
+  async mounted() {
+    const res = await instance.request({
+      url: "/menu",
+      method: "GET",
+    });
+    this.menuTree = res.data;
+  },
+  computed: {
+    showValue() {
+      return this.form.type === MenuType.MENU && [SubMenuType.EXTERNAL_MENU, SubMenuType.INTERNAL].includes(this.form.subType);
+    },
+  },
+  methods: {
+    async onConfirm() {
+      const formRef = this.$refs.formRef as FormInstance;
+      console.log(formRef);
+      formRef.validate(async (flag) => {
         if (flag) {
           const res = await instance.request({
             url: "/menu",
             method: "POST",
-            data: form.value,
+            data: this.form,
           });
           console.log("保存成功");
-          ctx.emit("close");
+          this.$emit("close");
         }
       });
-    }
-
-    function foo(val) {
-      // (val) => ()
+    },
+    handleParentSelect(val: string) {
       console.log("这是啥啊", val);
+      this.form.parentId = val;
+    },
+    getPlaceholder() {
+      if (this.form.subType === SubMenuType.GENERAL_FORM) {
+        return "请输入表单ID";
+      } else if (this.form.subType === SubMenuType.INTERNAL) {
+        return "请输入路由名称";
+      } else if (this.form.subType === SubMenuType.EXTERNAL_MENU) {
+        return "请输入外部链接";
+      }
+      return "请输入菜单值";
+    },
+  },
+  emits: ["close"],
+  render() {
+    return (
+      <el-form model={this.form} label-width="100px" style="max-width: 600px;" ref="formRef">
+        <el-form-item label="菜单名称" required prop="name">
+          <el-input modelValue={this.form.name} onUpdate:modelValue={(val: string) => (this.form.name = val)} placeholder="请输入菜单名称" />
+        </el-form-item>
 
-      form.value.parentId = val;
-    }
-    return () => {
-      return (
-        <el-form model={form.value} label-width="100px" style="max-width: 600px;" ref="formRef">
-          <el-form-item label="菜单名称" required prop="name">
-            <el-input modelValue={form.value.name} onUpdate:modelValue={(val) => (form.value.name = val)} placeholder="请输入菜单名称" />
-          </el-form-item>
+        <el-form-item label="菜单类型" required prop="type">
+          <el-select
+            modelValue={this.form.type}
+            onUpdate:modelValue={(val: MenuType) => (this.form.type = val)}
+            placeholder="请选择菜单类型"
+            onChange={() => this.formResetter(this.form, ["subType", "value"])}
+          >
+            {this.menuTypeOptions.map((option) => (
+              <el-option key={option.value} label={option.label} value={option.value} />
+            ))}
+          </el-select>
+        </el-form-item>
 
-          <el-form-item label="菜单类型" required prop="type">
-            <el-select modelValue={form.value.type} onUpdate:modelValue={(val) => (form.value.type = val)} placeholder="请选择菜单类型">
-              {menuTypeOptions.map((option) => (
+        {this.form.type === MenuType.MENU && (
+          <el-form-item label="菜单子类型" prop="subType">
+            <el-select
+              modelValue={this.form.subType}
+              onUpdate:modelValue={(val: SubMenuType) => (this.form.subType = val)}
+              placeholder="请选择菜单子类型"
+              onChange={() => this.formResetter(this.form, ["value"])}
+            >
+              {this.subMenuTypeOptions.map((option) => (
                 <el-option key={option.value} label={option.label} value={option.value} />
               ))}
             </el-select>
           </el-form-item>
+        )}
 
-          {form.value.type === MenuType.MENU && (
-            <el-form-item label="菜单子类型" prop="subType">
-              <el-select modelValue={form.value.subType} onUpdate:modelValue={(val) => (form.value.subType = val)} placeholder="请选择菜单子类型">
-                {subMenuTypeOptions.map((option) => (
-                  <el-option key={option.value} label={option.label} value={option.value} />
-                ))}
-              </el-select>
-            </el-form-item>
-          )}
-
-          {form.value.type !== MenuType.FOLDER && (
-            <el-form-item label="菜单值" required prop="value">
-              <el-input
-                modelValue={form.value.value}
-                onUpdate:modelValue={(val) => (form.value.value = val)}
-                placeholder={
-                  form.value.subType === SubMenuType.GENERAL_FORM
-                    ? "请输入表单ID"
-                    : form.value.subType === SubMenuType.INTERNAL
-                      ? "请输入路由名称"
-                      : form.value.subType === SubMenuType.EXTERNAL_MENU
-                        ? "请输入外部链接"
-                        : "请输入菜单值"
-                }
-              />
-            </el-form-item>
-          )}
-
-          <el-form-item label="菜单图标" prop="icon">
-            <el-input modelValue={form.value.icon} onUpdate:modelValue={(val) => (form.value.icon = val)} placeholder="请输入图标名称或类名" />
+        {this.showValue && (
+          <el-form-item label="菜单值" required prop="value">
+            <el-input
+              modelValue={this.form.value}
+              onUpdate:modelValue={(val: string) => (this.form.value = val)}
+              placeholder={this.getPlaceholder()}
+            />
           </el-form-item>
+        )}
 
-          <el-form-item label="父菜单ID" prop="parentId">
-            <el-tree-select
-              modelValue={form.value.parentId}
-              onUpdate:modelValue={foo}
-              data={menuTree.value}
-              node-key={"id"}
-              props={{ label: "name", children: "children" }}
-              highlight-current
-              accordion
-            ></el-tree-select>
-          </el-form-item>
+        <el-form-item label="菜单图标" prop="icon">
+          <el-input modelValue={this.form.icon} onUpdate:modelValue={(val: string) => (this.form.icon = val)} placeholder="请输入图标名称或类名" />
+        </el-form-item>
 
-          <el-form-item>
-            <el-button type="primary" onClick={onConfirm}>
-              确认
-            </el-button>
-            <el-button onClick={() => ctx.emit("close")}>取消</el-button>
-          </el-form-item>
-        </el-form>
-      );
-    };
+        <el-form-item label="父菜单ID" prop="parentId">
+          <el-tree-select
+            modelValue={this.form.parentId}
+            onUpdate:modelValue={this.handleParentSelect}
+            data={this.menuTree}
+            node-key="id"
+            props={{ label: "name", children: "children" }}
+            highlight-current
+            accordion
+            clearable
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" onClick={this.onConfirm}>
+            确认
+          </el-button>
+          <el-button onClick={() => this.$emit("close")}>取消</el-button>
+        </el-form-item>
+      </el-form>
+    );
   },
 });
 </script>
