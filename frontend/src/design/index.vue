@@ -32,6 +32,8 @@ import { materialList, type MaterialElement } from "./material";
 import { cloneDeep, keyBy } from "lodash-es";
 import { ElMessage } from "element-plus";
 import { instance } from "@/api/request";
+import { createDialog } from "@/tj-dialog";
+import JasForm from "./jas-form.vue";
 
 // 当前选中的组件
 const currentComponent = ref<any>(null);
@@ -73,6 +75,10 @@ const previewForm = () => {
   console.log("预览表单", { formConfig, fields: data.fields });
   // 这里可以实现预览逻辑，例如打开一个弹窗或者跳转到预览页面
   // TODO: 实现表单预览功能
+  createDialog(JasForm, {
+    fields: data.fields,
+    formTree: data.formTree,
+  });
 };
 
 const saveForm = async () => {

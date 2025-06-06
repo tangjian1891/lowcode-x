@@ -1,11 +1,15 @@
 import { TjCollapse } from "./tj-collapse";
 import TjCollapseDesign from "./tj-collapse/tj-collapse-design.vue";
+import { TjCollapseRuntime } from "./tj-collapse";
 import { TjDatetime } from "./tj-datetime/tj-datetime";
 import TjDatetimeDesign from "./tj-datetime/tj-datetime-design.vue";
-import { TjInput, TjTextarea, TjInputDesign } from "./tj-input";
+import { TjDatetimeRuntime } from "./tj-datetime";
+import { TjInput, TjTextarea, TjInputDesign, TjInputRuntime } from "./tj-input";
 import { TjNumber } from "./tj-number";
+import { TjNumberRuntime } from "./tj-number";
 import { TjMultiSelect, TjSelect } from "./tj-select";
 import TjSelectDesign from "./tj-select/tj-select-design.vue";
+import { TjSelectRuntime } from "./tj-select";
 
 // 定义字段类型
 interface FieldType {
@@ -41,4 +45,14 @@ const designComponentMap = {
   [MaterialEnum.TjCollapse]: TjCollapseDesign,
 };
 
-export { materialList, designComponentMap };
+const runtimeComponentMap = {
+  [MaterialEnum.TjInput]: TjInputRuntime,
+  [MaterialEnum.TjTextarea]: TjInputRuntime,
+  [MaterialEnum.TjNumber]: TjNumberRuntime,
+  [MaterialEnum.TjDatetime]: TjDatetimeRuntime,
+  [MaterialEnum.TjSelect]: TjSelectRuntime,
+  [MaterialEnum.TjMultiSelect]: TjSelectRuntime,
+  [MaterialEnum.TjCollapse]: TjCollapseRuntime,
+};
+
+export { materialList, designComponentMap, runtimeComponentMap };
