@@ -1,29 +1,28 @@
 import { CopyDocument, Delete, Hide } from "@element-plus/icons-vue";
 import styles from "./index.module.scss";
 
+function width() {
+  const { type, value } = this.field.layoutProps;
+  if (type === FieldWidthEnum.Pixel) {
+    return value + "px";
+  } else if (type === FieldWidthEnum.FixedPercentage) {
+    return (100 / 24) * value + "%";
+  } else if (type === FieldWidthEnum.CustomPercentage) {
+    return value + "%";
+  }
+}
+function label() {
+  return this.field.enabledProps.label ? this.field.formItemProps.label : "";
+}
 export const DesignWrap = defineComponent({
   name: "design-col",
   props: ["field", "data", "mask"],
   computed: {
-    label() {
-      return this.field.enabledProps.label ? this.field.formItemProps.label : "";
-    },
+    label,
+    width,
     active() {
       return this.data.activeField.id === this.field.id;
     },
-    width() {
-      const { type, value } = this.field.layoutProps;
-      if (type === FieldWidthEnum.Pixel) {
-        return value + "px";
-      } else if (type === FieldWidthEnum.FixedPercentage) {
-        return (100 / 24) * value + "%";
-      } else if (type === FieldWidthEnum.CustomPercentage) {
-        return value + "%";
-      }
-    },
-  },
-  mounted() {
-    console.log("这是什么", styles);
   },
   render() {
     return (
@@ -67,9 +66,8 @@ export const RuntimeWrap = defineComponent({
   name: "runtime-col",
   props: ["field"],
   computed: {
-    label() {
-      return this.field.enabledProps.label ? this.field.formItemProps.label : "";
-    },
+    label,
+    width,
   },
   render() {
     return (
