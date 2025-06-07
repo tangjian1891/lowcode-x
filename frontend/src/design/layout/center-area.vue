@@ -2,7 +2,7 @@
   <div class="center-form">
     <!-- 表单设计渲染-拖拽放入区 -->
     <el-form class="drag-form jas-scrollbar" ref="ruleFormRef" :model="designForm">
-      <vue-draggable @remove="onRemove" class="drag-components-area" v-model="data.formTree" :group="data.centerGroup" @add="data.onAdd">
+      <vue-draggable :tag="ElRow" @remove="onRemove" class="drag-components-area" v-model="data.formTree" :group="data.centerGroup" @add="data.onAdd">
         <component
           :field="data.fieldMapping[f.id]"
           :data="data"
@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ElRow } from "element-plus";
 import { ref, reactive, computed, watch, provide } from "vue";
 import { FieldModeEnum } from "../utils/enum";
 import { VueDraggable } from "vue-draggable-plus";
@@ -142,6 +143,8 @@ const copyEle = (field) => {};
     margin: 20px;
     box-shadow: 0px 6px 12px 1px rgba(12, 31, 80, 0.1);
     border-radius: 10px;
+    align-items: flex-start;
+    align-content: flex-start;
   }
 }
 </style>

@@ -1,5 +1,9 @@
 <template>
-  <div :class="['design-container', { active: data.activeField.id === field.id }]" @click.stop="data.clickField(field)">
+  <el-col
+    :style="{ '--width': width }"
+    :class="['design-container', { active: data.activeField.id === field.id }]"
+    @click.stop="data.clickField(field)"
+  >
     <el-form-item :label="label" :required="field.validateProps.required">
       <template #label="{ label }">
         <div>
@@ -27,7 +31,7 @@
         <el-icon @click.stop="data.deleteField(field)"><Delete /></el-icon>
       </div>
     </div>
-  </div>
+  </el-col>
 </template>
 
 <script lang="ts" setup>
@@ -47,11 +51,24 @@ const description = computed(() => {
   return unescape(props.field.description ?? "");
 });
 
+const width = computed(() => {
+  const { type, value } = props.field.layoutProps;
+  if (type === FieldWidthEnum.Pixel) {
+    return value + "px";
+  } else if (type === FieldWidthEnum.FixedPercentage) {
+    return (100 / 24) * value + "%";
+  } else if (type === FieldWidthEnum.CustomPercentage) {
+    return value + "%";
+  }
+});
+
 const emit = defineEmits(["click", "removeEle", "copyEle"]);
 </script>
 
 <style lang="scss" scoped>
 .design-container {
+  max-width: var(--width);
+  flex: 0 0 var(--width);
   position: relative;
   &.active {
     background: #e7f8fb;
