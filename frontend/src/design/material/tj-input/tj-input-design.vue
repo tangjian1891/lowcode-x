@@ -1,12 +1,11 @@
 <template>
-  <design-container :field="field" :data="data">
+  <design-wrap :field="field" :data="data">
     <el-input v-bind="field.fieldProps" :disabled="field.authProps.enabled"></el-input>
-  </design-container>
+  </design-wrap>
 </template>
 
 <script lang="ts" setup>
-import DesignContainer from "@/design/components/design-container/design-container.vue";
-
+import { DesignWrap } from "@/design/components/wrap-container";
 const props = defineProps({
   field: Object,
   data: Object,

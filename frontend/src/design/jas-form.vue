@@ -1,13 +1,15 @@
 <template>
   <el-form :model="form">
-    <component
-      :form="form"
-      :field="fieldMapping[f.id]"
-      :data="data"
-      :is="runtimeComponentMap[fieldMapping[f.id].type]"
-      v-for="f in formTree"
-      :key="f.id"
-    />
+    <el-row class="form-row">
+      <component
+        :form="form"
+        :field="fieldMapping[f.id]"
+        :data="data"
+        :is="runtimeComponentMap[fieldMapping[f.id].type]"
+        v-for="f in formTree"
+        :key="f.id"
+      />
+    </el-row>
   </el-form>
 </template>
 
@@ -27,4 +29,9 @@ const fieldMapping = computed(() => {
 const form = reactive({});
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form-row {
+  align-items: flex-start;
+  align-content: flex-start;
+}
+</style>
