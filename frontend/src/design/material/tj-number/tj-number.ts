@@ -1,10 +1,9 @@
 import { MaterialEnum, FieldWidthEnum } from "@/enums";
 
 export class TjNumber {
+  id = nanoid();
   type = MaterialEnum.TjNumber;
-  label = "数字";
   fieldProps = {
-    // el-input 基本属性
     type: "text", // 输入框类型
     modelValue: "", // 绑定值
     maxlength: undefined, // 最大输入长度
@@ -48,7 +47,7 @@ export class TjNumber {
     value: 24,
   };
   formItemProps = {
-    label: "单行文本",
+    label: "数字",
     description: "", // 描述文本
   };
   enabledProps = {

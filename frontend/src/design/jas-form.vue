@@ -11,6 +11,10 @@
       />
     </el-row>
   </el-form>
+  <div class="flex justify-end">
+    <el-button type="primary" @click="handleSave">保存</el-button>
+    <el-button @click="handleCancel">取消</el-button>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -27,6 +31,9 @@ const fieldMapping = computed(() => {
 });
 
 const form = reactive({});
+function handleSave(params: type) {}
+
+function handleCancel(params: type) {}
 </script>
 
 <style lang="scss" scoped>

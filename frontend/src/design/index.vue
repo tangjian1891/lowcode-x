@@ -127,6 +127,8 @@ const data = reactive({
   },
   addFieldByClick(element: MaterialElement) {
     const field = data.onClone(element);
+    console.log(cloneDeep(field));
+
     data.addField2Design(field);
   },
   centerGroup: {

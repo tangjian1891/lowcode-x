@@ -1,8 +1,8 @@
 import { MaterialEnum, FieldWidthEnum, DateTimeEnum, ValueEnum } from "@/enums";
 
 export class TjDatetime {
+  id = nanoid();
   type = MaterialEnum.TjDatetime;
-  label = "日期时间";
   fieldProps = {
     // el-date-picker 基本属性
     type: "datetime", // 日期时间类型

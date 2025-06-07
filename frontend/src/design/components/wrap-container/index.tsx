@@ -43,7 +43,7 @@ export const DesignWrap = defineComponent({
                 )}
               </>
             ),
-            default: () => <div>{this.$slots?.default()}</div>,
+            default: () => this.$slots?.default(),
           }}
         </el-form-item>
         <div></div>

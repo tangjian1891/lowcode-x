@@ -1,6 +1,6 @@
 <template>
   <design-wrap :field="field" :data="data">
-    <el-select></el-select>
+    <el-select :modelValue="[]"></el-select>
   </design-wrap>
 </template>
 

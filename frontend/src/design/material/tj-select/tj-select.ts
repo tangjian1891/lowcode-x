@@ -1,8 +1,8 @@
 import { MaterialEnum, FieldWidthEnum, ValueEnum } from "@/enums";
 
 export class TjSelect {
+  id = nanoid();
   type = MaterialEnum.TjSelect;
-  label = "下拉选择框";
   fieldProps = {
     // el-select 基本属性
     modelValue: "", // 绑定值
@@ -65,7 +65,7 @@ export class TjSelect {
     value: 24,
   };
   formItemProps = {
-    label: "下拉选择框",
+    label: "下拉单选",
     description: "", // 描述文本
   };
   enabledProps = {
@@ -80,11 +80,10 @@ export class TjSelect {
 export class TjMultiSelect extends TjSelect {
   constructor() {
     super();
-    this.label = "多选下拉框";
     this.fieldProps.multiple = true;
     this.fieldProps.collapseTags = true;
     this.fieldProps.collapseTagsTooltip = true;
     this.valueProps.value = []; // 多选时默认值为空数组
-    this.formItemProps.label = "多选下拉框";
+    this.formItemProps.label = "下拉多选";
   }
 }
