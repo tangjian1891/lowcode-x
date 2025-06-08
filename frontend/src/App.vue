@@ -2,11 +2,26 @@
   <router-view></router-view>
 </template>
 <script setup lang="ts">
-// console.log(dayjs().format())
-// window.dayjs
-// window.dayjs
-// console.log(SexEnum.);
-SexEnum.Man;
+import axios from "axios";
+
+onMounted(async () => {
+  let res = await axios.request({
+    url: "http://127.0.0.1:3000/test",
+    method: "GET",
+  });
+
+  console.log(res);
+  console.log(res);
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://127.0.0.1:3000/test", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log(xhr);
+    }
+  };
+  xhr.send();
+});
 </script>
 
 <!-- 满屏情况下：按高清屏幕1920*1080正常显示  Full HD-->
