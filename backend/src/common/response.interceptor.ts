@@ -6,7 +6,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => ({
-        code: 1,
+        code: 0,
         message: "success",
         data,
       })),

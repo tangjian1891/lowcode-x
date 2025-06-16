@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 axios.defaults.validateStatus = (status) => {
   return status === 200; //只认200
@@ -19,11 +20,18 @@ instance.interceptors.response.use(
   function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    return response.data;
+    if (response.data.code !== 0) {
+      ElMessage.error(response.data.message);
+      return Promise.reject(response);
+    }
+    return response.data.data;
   },
-  (error) => {
+  (response) => {
     // 超出 2xx 范围的状态码都会触发该函数。
-    // 对响应错误做点什么
+    if (response.status !== 200) {
+      ElMessage.error(response.message);
+    }
+
     return Promise.reject(error);
   },
 );

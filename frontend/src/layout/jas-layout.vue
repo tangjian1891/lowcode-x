@@ -58,11 +58,10 @@ onMounted(() => {
 });
 
 async function getMenuTree(params: type) {
-  let res = await instance.request({
+  menuTree.value = await instance.request({
     url: "menu/tree",
     method: "GET",
   });
-  menuTree.value = res.data;
 }
 </script>
 

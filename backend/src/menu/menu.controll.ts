@@ -13,8 +13,6 @@ export class MenuControll {
 
   @Get("tree")
   async findTree() {
-    // throw new Error("这是一个错误啊");
-
     return await this.menuService.findTree();
   }
 
