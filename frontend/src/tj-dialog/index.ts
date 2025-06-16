@@ -44,18 +44,22 @@ export const dialogSizeMapping = {
   },
 };
 
-export function createDialog(component: any, componentOptions: any) {
+export function createDialog(component: any, componentOptions: any, dialogOptions: any = {}) {
+  function close() {
+    app.unmount();
+    document.body.removeChild(div);
+    app = div = null;
+  }
   let app = createApp(JasDialog, {
     component,
     componentOptions,
-    onClose() {
-      app.unmount();
-      document.body.removeChild(div);
-      app = div = null;
-    },
+    dialogOptions,
+    onClose: close,
   });
   mergeAppContext(app);
   let div = document.createElement("div");
   document.body.appendChild(div);
   app.mount(div);
+  app.close = close;
+  return app;
 }

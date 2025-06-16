@@ -55,11 +55,10 @@ onMounted(async () => {
     url: "/forms/relateId/" + formId,
     method: "GET",
   });
-  console.log("查看", res);
-  if (res.data) {
-    data.fields = res.data.fields;
-    data.formTree = res.data.formTree;
-    data.id = res.data.id;
+  if (res) {
+    data.fields = res.fields;
+    data.formTree = res.formTree;
+    data.id = res.id;
   }
 });
 
@@ -72,13 +71,22 @@ const clearForm = () => {
 
 // 预览表单
 const previewForm = () => {
-  console.log("预览表单", { formConfig, fields: data.fields });
-  // 这里可以实现预览逻辑，例如打开一个弹窗或者跳转到预览页面
-  // TODO: 实现表单预览功能
-  createDialog(JasForm, {
-    fields: data.fields,
-    formTree: data.formTree,
-  });
+  const dialog = createDialog(
+    JasForm,
+    {
+      formId,
+      close() {
+        dialog.close();
+      },
+      confirm() {
+        dialog.close();
+      },
+    },
+    {
+      beforeClose() {},
+    },
+  );
+  console.log(dialog);
 };
 
 const saveForm = async () => {

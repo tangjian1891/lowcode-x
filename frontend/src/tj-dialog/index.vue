@@ -1,6 +1,13 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Tips" width="500" :before-close="handleClose" @close="onClose" :style="{ ...styleVarComp }">
-    <component ref="dialogContentRef" v-bind="componentOptions" :is="component" @close="noCheckAndClose" @checkAndClose="checkAndClose"></component>
+  <el-dialog
+    v-model="dialogVisible"
+    title="Tips"
+    width="500"
+    :before-close="dialogOptions.beforeClose"
+    @close="dialogOptions.close"
+    :style="{ ...styleVarComp }"
+  >
+    <component ref="dialogContentRef" :componentOptions="componentOptions" :is="component"></component>
   </el-dialog>
 </template>
 
@@ -8,20 +15,19 @@
 1.第一种情况
 用户点击关闭按钮/遮罩区域。  自动调用 before-close
 before-close
-close 关闭前的回调
+close 关闭前的回调  (before-close通过的情况下触发， 是关闭前 close竟然不是change事件)
 update:modelValue触发，正式关闭。
 
 2.第二种情况
-手动将 dialogVisible 设置false。随后触发触发 close 关闭前的回调。
+手动将 dialogVisible 设置false。随后触发触发 close 关闭前的回调。 （不要这么做，会造成逻辑不一致，虽然也会触发close。）
 
 总结：
-1.业务代码：不允许直接调用  dialogVisible=falsem只能通过暴露的close和checkAndClose方法来关闭。
-2.业务上需要校验handleClose，直接defineExpose暴露即可
+1.业务代码：不允许直接调用  dialogVisible=false 只能通过暴露的close和checkAndClose方法来关闭。
+2.业务上需要校验handleClose，直接 defineExpose 暴露即可
 
 -->
 
 <script lang="ts" setup>
-import { isFunction } from "lodash-es";
 import { DialogSizeEnum, dialogSizeMapping } from "./index";
 defineOptions({
   inheritAttrs: false,
@@ -36,6 +42,7 @@ const props = defineProps({
   componentOptions: {
     type: Object,
   },
+  dialogOptions: Object,
   size: {
     type: Number,
     default: () => {
@@ -43,40 +50,6 @@ const props = defineProps({
     },
   },
 });
-
-/**
- * 关闭前的回调，直接调用业务组件
- */
-function handleClose(done: () => void) {
-  if (isFunction(dialogContentRef.value?.handleClose)) {
-    dialogContentRef.value.handleClose(done);
-  } else {
-    done();
-  }
-}
-
-function onClose() {
-  //   console.log('虽然关闭都会触发，但是没什么用了')
-}
-
-/**
- * 直接关闭
- */
-function noCheckAndClose() {
-  dialogVisible.value = false;
-}
-/**
- * 检测并关闭
- */
-function checkAndClose() {
-  if (isFunction(dialogContentRef.value?.handleClose)) {
-    dialogContentRef.value.handleClose(() => {
-      dialogVisible.value = false;
-    });
-  } else {
-    dialogVisible.value = false;
-  }
-}
 
 const styleVarComp = computed(() => {
   const obj = dialogSizeMapping[props.size];
