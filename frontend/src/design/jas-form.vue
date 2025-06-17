@@ -42,7 +42,15 @@ const fieldMapping = computed(() => {
 });
 
 const form = reactive({});
-function handleSave() {
+async function handleSave() {
+  const res = await instance({
+    url: `/forms/${props.componentOptions.formId}/data`,
+    method: "POST",
+    data: form,
+  });
+
+  console.log("查看一下", res);
+
   ElMessage.success("保存成功");
   props.componentOptions.close();
 }

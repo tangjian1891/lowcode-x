@@ -46,7 +46,6 @@ export class FormService {
   // 根据relateId查询单个表单
   async findByRelateId(relateId: string) {
     const form = await this.model.findOne({ relateId });
-    console.log("产不到吗", form);
     if (!form) {
       throw new NotFoundException(`关联ID为 ${relateId} 的表单记录不存在`);
     }

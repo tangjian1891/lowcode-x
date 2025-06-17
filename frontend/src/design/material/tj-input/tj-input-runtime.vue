@@ -1,6 +1,6 @@
 <template>
   <runtime-wrap :field="field">
-    <el-input v-bind="field.fieldProps" v-model="form[field.id]" :disabled="field.authProps.enabled"></el-input>
+    <el-input v-bind="field.fieldProps" v-model="form[field.id]" :disabled="!field.authProps.enabled"></el-input>
   </runtime-wrap>
 </template>
 
