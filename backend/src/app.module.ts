@@ -7,12 +7,13 @@ import { FormModule } from "./form/form.module";
 // 导入全局 ID 插件
 import "./common/id-plugin";
 import { MenuModule } from "./menu/menu.module";
+import { UploadModule } from "./upload/upload.module";
 
 const password = "user1";
 const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 @Module({
-  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule],
+  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule, UploadModule],
   controllers: [AppController],
   providers: [AppService],
 })
