@@ -3,6 +3,15 @@
     <el-button type="primary" icon="Document" @click="upload">
       {{ field?.fieldProps?.accept?.includes("image") ? "上传图片" : "上传文件" }}
     </el-button>
+    <div v-if="form[field.id]?.length" class="img-list">
+      <div v-for="(img, idx) in form[field.id]" :key="img.id + idx" class="img-item">
+        <img v-if="img.id" :src="getImgUrl(img.id)" class="img-thumb" alt="图片" />
+        <div class="img-info">
+          <div class="img-name">{{ img.filename }}</div>
+          <div class="img-size">{{ (img.size / 1024).toFixed(2) }} KB</div>
+        </div>
+      </div>
+    </div>
   </runtime-wrap>
 </template>
 
@@ -24,8 +33,6 @@ function upload(params: type) {
   input.click();
   input.addEventListener("change", async (event: Event) => {
     const files = (event.target as HTMLInputElement).files;
-    console.log("选择的文件", files);
-
     let token = await instance.get("upload/certificate");
     const promiseList = [...files].map((file) => {
       return new Promise((resolve) => {
@@ -46,7 +53,6 @@ function upload(params: type) {
               size: file.size,
               type: file.type,
             });
-            // props.form[props.field.fieldProps.name] = res.key; // 假设返回的key是文件的唯一标识
           },
         });
         resolve;
@@ -62,6 +68,51 @@ function upload(params: type) {
     document.body.removeChild(input);
   });
 }
+
+function getImgUrl(id: string) {
+  // 这里根据你的实际图片存储路径调整
+  // 假设七牛云，返回完整图片访问地址
+  return `http://sxy244v5h.hd-bkt.clouddn.com/${id}` + "-thumb"; //缩略图
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.img-list {
+  line-height: initial;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+.img-item {
+  display: flex;
+  align-items: center;
+  width: 320px;
+  background: #fafbfc;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px 12px;
+  gap: 12px;
+}
+.img-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #f0f0f0;
+}
+.img-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.img-name {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 2px;
+}
+.img-size {
+  font-size: 12px;
+  color: #999;
+}
+</style>
