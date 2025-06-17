@@ -134,6 +134,8 @@ const data = reactive({
     return new element.class();
   },
   addFieldByClick(element: MaterialElement) {
+    console.log("触发了两次吗");
+
     const field = data.onClone(element);
     console.log(cloneDeep(field));
 

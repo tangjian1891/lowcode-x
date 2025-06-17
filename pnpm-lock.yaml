@@ -136,6 +136,9 @@ importers:
       pinia:
         specifier: ^3.0.1
         version: 3.0.2(typescript@5.8.3)(vue@3.5.15(typescript@5.8.3))
+      qiniu-js:
+        specifier: ^3.4.2
+        version: 3.4.2
       vue:
         specifier: ^3.5.13
         version: 3.5.15(typescript@5.8.3)
@@ -429,6 +432,10 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
+
+  '@babel/runtime-corejs2@7.27.6':
+    resolution: {integrity: sha512-WgvlQpGnm1rmvgrm+H+cVcAckEPlwURUCvv1ZVSFr9J9yixgFbNlu7+CjVKKAd4xQtMijPwxwcSi5SFFHKlmDw==}
+    engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
@@ -2428,6 +2435,10 @@ packages:
   copy-to@2.0.1:
     resolution: {integrity: sha512-3DdaFaU/Zf1AnpLiFDeNCD4TOWe3Zl2RZaTzUvWiIk5ERzcCodOE20Vqq4fzCbNoHURFHT4/us/Lfq+S2zyY4w==}
 
+  core-js@2.6.12:
+    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
+    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -4009,6 +4020,9 @@ packages:
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
+  qiniu-js@3.4.2:
+    resolution: {integrity: sha512-Gu94/4adN2FnM9VpTgLsgvS3KN+2ZV9gCxlmrKICMI7VqcAwTsy3+9eBLLk8WueMYwniyg8rELjdxNf0wABUHg==}
+
   qiniu@7.14.0:
     resolution: {integrity: sha512-3q7nIQQjqR69k7hbDPfM+hx52BmUxt8J/n9LrmjxypWVEeNK5PTaPS2pnxqaxs0tL9utNOPVfjFiBr18mHOFqQ==}
     engines: {node: '>= 6'}
@@ -4019,6 +4033,11 @@ packages:
 
   quansync@0.2.10:
     resolution: {integrity: sha512-t41VRkMYbkHyCYmOvx/6URnN80H7k4X0lLdBMGsz+maAwrJQYB1djpV6vHrQIBE0WBSGqhtEHrK9U3DWWH8v7A==}
+
+  querystring@0.2.1:
+    resolution: {integrity: sha512-wkvS7mL/JMugcup3/rMitHmd9ecIGd2lhFhK9N3UUQ450h66d1r3Y9nvXzQAW1Lq+wyx61k/1pfKS5KuKiyEbg==}
+    engines: {node: '>=0.4.x'}
+    deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -4270,6 +4289,9 @@ packages:
   source-map@0.7.4:
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
     engines: {node: '>= 8'}
+
+  spark-md5@3.0.2:
+    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
 
   sparse-bitfield@3.0.3:
     resolution: {integrity: sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==}
@@ -5189,6 +5211,10 @@ snapshots:
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.27.1)
     transitivePeerDependencies:
       - supports-color
+
+  '@babel/runtime-corejs2@7.27.6':
+    dependencies:
+      core-js: 2.6.12
 
   '@babel/template@7.27.2':
     dependencies:
@@ -7338,6 +7364,8 @@ snapshots:
 
   copy-to@2.0.1: {}
 
+  core-js@2.6.12: {}
+
   core-util-is@1.0.3: {}
 
   cors@2.8.5:
@@ -9053,6 +9081,12 @@ snapshots:
 
   pure-rand@6.1.0: {}
 
+  qiniu-js@3.4.2:
+    dependencies:
+      '@babel/runtime-corejs2': 7.27.6
+      querystring: 0.2.1
+      spark-md5: 3.0.2
+
   qiniu@7.14.0:
     dependencies:
       agentkeepalive: 4.6.0
@@ -9076,6 +9110,8 @@ snapshots:
       side-channel: 1.1.0
 
   quansync@0.2.10: {}
+
+  querystring@0.2.1: {}
 
   queue-microtask@1.2.3: {}
 
@@ -9361,6 +9397,8 @@ snapshots:
   source-map@0.6.1: {}
 
   source-map@0.7.4: {}
+
+  spark-md5@3.0.2: {}
 
   sparse-bitfield@3.0.3:
     dependencies:

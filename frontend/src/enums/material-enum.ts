@@ -6,4 +6,6 @@ export enum MaterialEnum {
   TjSelect = "TjSelect",
   TjMultiSelect = "TjMultiSelect",
   TjCollapse = "TjCollapse",
+  TjUploadImage = "TjUploadImage",
+  TjUploadFile = "TjUploadFile",
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 
 axios.defaults.validateStatus = (status) => {
-  return status === 200; //只认200
+  return status >= 200 && status < 300; // 200-299 都认为是成功
 };
 const instance = axios.create({
   baseURL: "http://127.0.0.1:3000/",

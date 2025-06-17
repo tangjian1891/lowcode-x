@@ -10,6 +10,9 @@ import { TjNumberRuntime } from "./tj-number";
 import { TjMultiSelect, TjSelect } from "./tj-select";
 import TjSelectDesign from "./tj-select/tj-select-design.vue";
 import { TjSelectRuntime } from "./tj-select";
+import { TjUploadFile, TjUploadImage } from "./tj-upload/tj-upload";
+import TjUploadRuntime from "./tj-upload/tj-upload-runtime.vue";
+import TjUploadDesign from "./tj-upload/tj-upload-design.vue";
 
 // 定义字段类型
 interface FieldType {
@@ -33,6 +36,8 @@ const materialList: MaterialElement[] = [
   { type: MaterialEnum.TjSelect, label: "下拉单选", class: TjSelect, id: nanoid() },
   { type: MaterialEnum.TjMultiSelect, label: "下拉多选", class: TjMultiSelect, id: nanoid() },
   { type: MaterialEnum.TjCollapse, label: "折叠面板", class: TjCollapse, id: nanoid() },
+  { type: MaterialEnum.TjUploadImage, label: "图片上传", class: TjUploadImage, id: nanoid() },
+  { type: MaterialEnum.TjUploadFile, label: "文件上传", class: TjUploadFile, id: nanoid() },
 ];
 
 const designComponentMap = {
@@ -43,6 +48,8 @@ const designComponentMap = {
   [MaterialEnum.TjSelect]: TjSelectDesign,
   [MaterialEnum.TjMultiSelect]: TjSelectDesign,
   [MaterialEnum.TjCollapse]: TjCollapseDesign,
+  [MaterialEnum.TjUploadImage]: TjUploadDesign,
+  [MaterialEnum.TjUploadFile]: TjUploadDesign,
 };
 
 const runtimeComponentMap = {
@@ -53,6 +60,8 @@ const runtimeComponentMap = {
   [MaterialEnum.TjSelect]: TjSelectRuntime,
   [MaterialEnum.TjMultiSelect]: TjSelectRuntime,
   [MaterialEnum.TjCollapse]: TjCollapseRuntime,
+  [MaterialEnum.TjUploadImage]: TjUploadRuntime,
+  [MaterialEnum.TjUploadFile]: TjUploadRuntime,
 };
 
 export { materialList, designComponentMap, runtimeComponentMap };
