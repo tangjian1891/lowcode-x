@@ -8,13 +8,22 @@ import { FormModule } from "./form/form.module";
 import "./common/id-plugin";
 import { MenuModule } from "./menu/menu.module";
 import { UploadModule } from "./upload/upload.module";
+import { UserModule } from "./user/user.module";
+import { APP_GUARD } from "@nestjs/core";
+import { AuthGuard } from "./common/auth.guard";
 
 const password = "user1";
 const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 @Module({
-  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule, UploadModule],
+  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule, UploadModule, UserModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -11,7 +11,7 @@ const instance = axios.create({
 
 // 添加请求拦截器
 instance.interceptors.request.use((config) => {
-  console.log("请求过来了", config);
+  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
 });
 
