@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cd frontend && npm run dev",
-    "nest": "cd backend && npm run dev"
+    "debug": "cd backend && npm run start:debug"
   },
   "keywords": [],
   "author": "",

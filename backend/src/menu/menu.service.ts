@@ -33,7 +33,6 @@ export class MenuService {
         tree.push(menu);
       }
     });
-    console.log("查看一下", tree);
     return tree;
   }
   /**

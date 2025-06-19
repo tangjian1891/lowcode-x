@@ -107,7 +107,6 @@ export class FormService {
 
     const model = this.connection.model(id, new mongoose.Schema(schemaObject));
     this.modelCache.set(id, model);
-    console.log("查看一下模型", model);
     const res = await model.create({ cqN35b1KVAXHQ1h_32VRkn: "测试数据", yKyxQ2hhPwDt4UY1CNVI_c: "测试数据" });
   }
 }
