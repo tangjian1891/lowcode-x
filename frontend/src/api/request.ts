@@ -49,22 +49,20 @@ instance.interceptors.response.use(
     return Promise.reject(error); //抛出，阻断后续
   },
 );
+// 防止在短时间内显示重复的错误提示
 const isSameError = (() => {
-  let error = null;
-  let timeSeed = null;
-  return (e) => {
-    clearTimeout(timeSeed);
-    timeSeed = null;
-    timeSeed = setTimeout(() => {
-      error = null; // 重置错误状态
-    }, 1000);
-    console.log(error && error.message === e.message);
-    if (error && error.message === e.message) {
-      return true;
-    } else {
-      error = e;
-      return false;
+  let lastError: Error | null = null;
+  let timer: number | null = null;
+
+  return (err: Error): boolean => {
+    const isDuplicate = Boolean(lastError && lastError.message === err.message);
+    if (timer) {
+      clearTimeout(timer);
     }
+    timer = window.setTimeout(() => ((lastError = null), (timer = null)), 1000);
+    if (!isDuplicate) lastError = err;
+
+    return isDuplicate;
   };
 })();
 export { instance };
