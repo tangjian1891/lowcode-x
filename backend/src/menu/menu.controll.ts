@@ -16,6 +16,11 @@ export class MenuControll {
     return await this.menuService.findTree();
   }
 
+  @Get(":id")
+  async findById(@Param("id") id: string) {
+    return await this.menuService.findById(id);
+  }
+
   @Post()
   async create(@Body() data: any) {
     if (data.id) {

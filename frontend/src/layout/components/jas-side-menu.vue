@@ -7,7 +7,7 @@
       background-color="#fff"
       text-color="#333"
       active-text-color="#1890ff"
-      @select="handleSelect"
+      @select="(menuId) => JasLayout.menuSelect(menuId, menuTree, router)"
     >
       <!-- 动态渲染菜单项，替换原来的静态菜单 -->
       <template v-for="folder in menuTree" :key="folder.id">

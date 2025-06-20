@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-import RuntimeContainer from "@/design/components/runtime-container/runtime-container.vue";
 import { RuntimeWrap } from "@/design/components/wrap-container";
 const props = defineProps({
   form: Object,

@@ -7,6 +7,7 @@ import { ref, shallowRef, defineAsyncComponent, onMounted } from "vue";
 import { Menu, SubMenuType, JasLayout } from "@/layout";
 import { systemManagementMenus } from "@/layout/menu-data";
 import { useRoute } from "vue-router";
+import { instance } from "@/api/request";
 
 const targetComp = shallowRef();
 const menu = ref();
@@ -14,6 +15,8 @@ const route = useRoute();
 
 // 根据菜单类型加载对应的组件
 const loadComponentByMenu = (menuItem: Menu) => {
+  console.log("拿到了嘛", menuItem);
+
   menu.value = menuItem;
   switch (menuItem.subType) {
     case SubMenuType.EXTERNAL_MENU:
@@ -39,7 +42,7 @@ const loadComponentByMenu = (menuItem: Menu) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   // 从路由参数中获取menuId
   const menuId = route.params.menuId as string;
 
@@ -47,9 +50,11 @@ onMounted(() => {
     console.error("菜单ID不存在");
     return;
   }
+  const menuItem = await instance({
+    url: `/menu/${menuId}`,
+  });
 
   // 使用 JasLayout 中的静态方法查找菜单项
-  const menuItem = JasLayout.findMenuById(menuId, systemManagementMenus);
   if (menuItem) {
     loadComponentByMenu(menuItem);
   } else {

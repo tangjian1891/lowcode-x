@@ -95,6 +95,16 @@ class JasLayout {
       },
     });
   }
+  static menuSelect(menuId, menuTree, router) {
+    const menu = JasLayout.findMenuById(menuId, menuTree);
+    console.log("找到了", menu);
+    router.push({
+      name: "menu",
+      params: {
+        menuId: menu.id,
+      },
+    });
+  }
 }
 
 export { JasLayout };
