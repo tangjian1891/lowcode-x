@@ -28,7 +28,7 @@ const loadComponentByMenu = (menuItem: Menu) => {
     case SubMenuType.INTERNAL:
       // 加载内部路由对应的组件
       targetComp.value = defineAsyncComponent(() => {
-        return import("@/views/a.vue");
+        return import("@/core-components/tj-table/tj-table.vue");
       });
       break;
     case SubMenuType.GENERAL_FORM:
