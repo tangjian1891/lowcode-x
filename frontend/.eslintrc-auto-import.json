@@ -22,6 +22,7 @@
     "VNode": true,
     "ValueEnum": true,
     "WritableComputedRef": true,
+    "api": true,
     "computed": true,
     "createApp": true,
     "customRef": true,

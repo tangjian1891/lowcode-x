@@ -12,6 +12,7 @@ declare global {
   const MaterialEnum: typeof import('@/enums/index')['MaterialEnum']
   const SexEnum: typeof import('@/enums/sex-enum')['SexEnum']
   const ValueEnum: typeof import('@/enums/index')['ValueEnum']
+  const api: typeof import('@/api/index')['api']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
@@ -94,6 +95,7 @@ declare module 'vue' {
     readonly MaterialEnum: UnwrapRef<typeof import('@/enums/index')['MaterialEnum']>
     readonly SexEnum: UnwrapRef<typeof import('@/enums/sex-enum')['SexEnum']>
     readonly ValueEnum: UnwrapRef<typeof import('@/enums/index')['ValueEnum']>
+    readonly api: UnwrapRef<typeof import('@/api/index')['api']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>

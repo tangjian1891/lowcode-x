@@ -4,4 +4,7 @@ export const menu = {
   getMenuById(id: string) {
     return instance.get(`/menu/${id}`);
   },
+  getMenuTree() {
+    return instance("/menu/tree");
+  },
 };

@@ -34,6 +34,7 @@ export default defineConfig({
           "@/enums/sex-enum": [["SexEnum"]],
           "@/enums/index": [["MaterialEnum"], ["FieldWidthEnum"], ["ValueEnum"], ["DateTimeEnum"]],
           "@/utils/utils": [["utils"]],
+          "@/api/index": [["api"]],
         },
       ],
     }),
