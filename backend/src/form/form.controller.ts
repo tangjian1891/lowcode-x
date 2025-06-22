@@ -94,10 +94,17 @@ export class FormController {
    */
   @Get(":formId/data")
   async getFormDataList(@Param("formId") formId: string, @Query("page") page = 1, @Query("limit") limit = 10) {
-    const Model = await getFormDataModel(formId, this.connection, this.formModel);
-    const skip = (Number(page) - 1) * Number(limit);
-    const list = await Model.find().skip(skip).limit(Number(limit)).lean();
-    const total = await Model.countDocuments();
-    return { list, total };
+    console.log("数据进来了", formId);
+    try {
+      const form: any = await this.formModel.findOne({ relateId: formId }).lean();
+      const Model = await getFormDataModel(form._id, this.connection, this.formModel);
+      const skip = (Number(page) - 1) * Number(limit);
+      const list = await Model.find().skip(skip).limit(Number(limit)).lean();
+      const total = await Model.countDocuments();
+      return { list, total, page, limit };
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
   }
 }

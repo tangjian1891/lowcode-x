@@ -25,7 +25,7 @@ const slots = {
 
 const columns = computed(() => {
   const columns: any[] = [...props.tjTable.fields].map((item) => {
-    return { ...item, field: item.id, title: item.label, slots };
+    return { ...item, field: item.id, title: item.formItemProps.label, slots };
   });
 
   if (props.tjTable.grid.buttons.length > 0) {
@@ -59,76 +59,7 @@ const gridOptions = computed<VxeGridProps>(() => {
     showHeaderOverflow: "ellipsis",
 
     headerCellClassName: "qwer",
-    data: [
-      {
-        1: "还行",
-        2: "很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-      {
-        1: "还行",
-        2: "很好",
-      },
-    ],
+    data: props.tjTable.data,
   };
 });
 setInterval(() => {

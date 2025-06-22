@@ -6,4 +6,10 @@ export const form = {
       url: `/forms/relateId/${menuId}`,
     });
   },
+
+  getList(formId: string) {
+    return instance({
+      url: `forms/${formId}/data`,
+    });
+  },
 };

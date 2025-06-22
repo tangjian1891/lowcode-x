@@ -1,6 +1,6 @@
 <template>
   <div class="tj-table">
-    <component :is="template" class="" v-for="template in components" :key="template.id" :tjTable="tjTable"></component>
+    <component v-if="tjTable" :is="template" class="" v-for="template in components" :key="template.id" :tjTable="tjTable"></component>
   </div>
 </template>
 
@@ -9,7 +9,6 @@ import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
 import { Field } from "@/form-components/index";
-import { instance } from "@/api/request";
 import { api } from "@/api";
 
 const props = defineProps({
@@ -35,20 +34,24 @@ const fields = [
 ];
 
 const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.EXPORT];
-const tjTable = ref(
-  new TjTable({
-    fields,
+const tjTable = ref();
+
+onMounted(async () => {
+  const res = await api.form.getDataByMenuId(props.menu.id);
+
+  const data = await api.form.getList(props.menu.id);
+  console.log("看下数据", data);
+
+  console.log("获取到菜单数据了", res);
+  tjTable.value = new TjTable({
+    fields: res.fields,
     permisson,
     extraButtons: {
       toolbar: [],
       inline: [],
     },
-  }),
-);
-
-onMounted(async () => {
-  const res = await api.form.getDataByMenuId(props.menu.id);
-  console.log("获取到菜单数据了");
+    data: data.list,
+  });
 });
 </script>
 
