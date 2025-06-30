@@ -18,7 +18,7 @@ export class TjTable {
   fields: any[] = [];
   form = {};
   data: any[] = [];
-  loading = false;
+  dataLoading = false;
   menuId: string | null = null;
   toolbar = {
     buttons: [] as any[],
@@ -53,12 +53,12 @@ export class TjTable {
    */
   async loadData(): Promise<void> {
     if (!this.menuId) {
-      console.warn("menuId is required for loading data");
+      console.warn("menuId is required for dataLoading data");
       return;
     }
 
     try {
-      this.loading = true;
+      this.dataLoading = true;
       const response = await api.form.getList(this.menuId);
       const data = response as any; // 临时处理类型
 
@@ -70,7 +70,7 @@ export class TjTable {
       this.data = [];
       this.pagination.total = 0;
     } finally {
-      this.loading = false;
+      this.dataLoading = false;
     }
   }
 
@@ -78,6 +78,8 @@ export class TjTable {
    * 刷新数据
    */
   async refresh(): Promise<void> {
+    console.log("这是撒");
+
     await this.loadData();
   }
 

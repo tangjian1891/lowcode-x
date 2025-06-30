@@ -1,6 +1,6 @@
 <template>
-  <div class="tj-table">
-    <component v-if="tjTable" v-for="(template, index) in components" :key="index" :is="template" :tjTable="tjTable" />
+  <div v-if="tjTable" class="tj-table" v-loading="tjTable.dataLoading">
+    <component v-for="(template, index) in components" :key="index" :is="template" :tjTable="tjTable" />
   </div>
 </template>
 

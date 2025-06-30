@@ -7,7 +7,7 @@
 
     <!-- 工具区域 (刷新、排序、全屏等) -->
     <div class="toolbar-tools">
-      <el-button v-if="tjTable.toolbar?.refresh" :icon="Refresh" @click="tjTable.refresh.bind(tjTable)" text />
+      <el-button v-if="tjTable.toolbar?.refresh" :icon="Refresh" @click="() => tjTable.refresh()" text />
       <el-button v-if="tjTable.toolbar?.sort" :icon="Sort" @click="handleSort" text />
       <el-button v-if="tjTable.toolbar?.fullscreen" :icon="isFullscreen ? CompressOutlined : ExpandOutlined" @click="toggleFullscreen" text />
     </div>
@@ -31,7 +31,6 @@ const isFullscreen = ref(false);
 // 压缩和展开图标
 const CompressOutlined = "CompressOutlined";
 const ExpandOutlined = "ExpandOutlined";
-console.log(props.tjTable.refresh);
 
 // 处理排序
 const handleSort = () => {
