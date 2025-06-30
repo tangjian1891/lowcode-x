@@ -1,5 +1,5 @@
 <template>
-  <div class="tj-toolbar">
+  <div class="tj-toolbar my-6px mx-20px">
     <!-- 按钮区域 -->
     <div class="toolbar-buttons">
       <component v-for="button in tjTable.toolbar?.buttons" :key="button.id" :is="button.component" :button="button" :tjTable="tjTable"></component>
@@ -57,11 +57,9 @@ const toggleFullscreen = () => {
 
 <style lang="scss" scoped>
 .tj-toolbar {
-  padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ebeef5;
 
   .toolbar-buttons {
     display: flex;

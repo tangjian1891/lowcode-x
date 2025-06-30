@@ -27,7 +27,7 @@ body {
   /* 最左侧100，导航300px,内容1000px */
   min-width: 1400px;
   /* 顶部100，内容区域400 */
-  min-height: 500px;
+  min-height: 1000px;
   position: relative;
 }
 </style>

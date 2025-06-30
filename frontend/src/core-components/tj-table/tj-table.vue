@@ -22,17 +22,6 @@ const props = defineProps({
   },
 });
 
-const fields = [
-  Field.createJasInput("1", "姓名", { fixed: "left", required: true }),
-  Field.createJasNumber("2", "年龄"),
-  Field.createJasInput(nanoid(), "地址"),
-  Field.createJasNumber(nanoid(), "电话"),
-  Field.createJasInput(nanoid(), "邮箱"),
-  Field.createJasNumber(nanoid(), "身份证号"),
-  Field.createJasInput(nanoid(), "备注"),
-  Field.createJasNumber(nanoid(), "分数", { fixed: "left" }),
-];
-
 const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.EXPORT];
 const tjTable = ref();
 

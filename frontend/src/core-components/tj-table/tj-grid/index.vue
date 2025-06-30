@@ -71,8 +71,8 @@ console.log(gridOptions.value);
 <style lang="scss" scoped>
 .tj-table-area {
   /* 样式定义 */
-  // height: 300px;
-  // min-height: 500px;
   overflow: hidden;
+  flex: 1;
+  padding: 0 20px;
 }
 </style>

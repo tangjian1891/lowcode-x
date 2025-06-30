@@ -1,5 +1,5 @@
 <template>
-  <div class="tj-pagination">
+  <div class="tj-pagination m[12px_20px]">
     <!-- 分页区域内容 -->
     <el-pagination
       v-if="tjTable.pagination"
@@ -41,7 +41,6 @@ const handleCurrentChange = (val: number) => {
 
 <style lang="scss" scoped>
 .tj-pagination {
-  padding: 16px 0;
   display: flex;
   justify-content: flex-end;
 }

@@ -1,7 +1,7 @@
 <template>
   <el-popover class="box-item" content="Top Left prompts info" placement="bottom" trigger="click" :persistent="false" :hide-after="0">
     <template #reference>
-      <div class="custom-table-header" @click="onClick">
+      <div class="custom-table-header p[0px_12px] box-border" @click="onClick">
         <span class="custom-slot-header-title">{{ title }} </span>
         <span class="custom-slot-header-icon1">
           <el-icon><SortDown /></el-icon>
