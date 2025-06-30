@@ -1,6 +1,6 @@
 <template>
   <div class="tj-table">
-    <component v-if="tjTable" :is="template" class="" v-for="template in components" :key="template.id" :tjTable="tjTable"></component>
+    <component v-if="tjTable" v-for="(template, index) in components" :key="index" :is="template" :tjTable="tjTable" />
   </div>
 </template>
 
@@ -8,7 +8,6 @@
 import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
-import { Field } from "@/form-components/index";
 import { api } from "@/api";
 
 const props = defineProps({
@@ -26,21 +25,41 @@ const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permissio
 const tjTable = ref();
 
 onMounted(async () => {
-  const res = await api.form.getDataByMenuId(props.menu.id);
+  if (!props.menu?.id) {
+    console.error("Menu ID is required");
+    return;
+  }
 
-  const data = await api.form.getList(props.menu.id);
-  console.log("看下数据", data);
+  try {
+    // 获取表单配置
+    const formConfigResponse = await api.form.getDataByMenuId(props.menu.id);
+    const formConfig = formConfigResponse as any; // 临时处理类型
+    console.log("获取到菜单数据了", formConfig);
 
-  console.log("获取到菜单数据了", res);
-  tjTable.value = new TjTable({
-    fields: res.fields,
-    permisson,
-    extraButtons: {
-      toolbar: [],
-      inline: [],
-    },
-    data: data.list,
-  });
+    // 初始化 TjTable 实例
+    tjTable.value = new TjTable({
+      fields: formConfig.fields || [],
+      permisson,
+      menuId: props.menu.id,
+      extraButtons: {
+        toolbar: [],
+        inline: [],
+      },
+    });
+
+    // 加载表格数据
+    await tjTable.value.loadData();
+    console.log("看下数据", tjTable.value.data);
+  } catch (error) {
+    console.error("初始化表格失败:", error);
+  }
+});
+
+// 暴露刷新方法供其他组件使用
+defineExpose({
+  refresh: () => tjTable.value?.refresh(),
+  reset: () => tjTable.value?.reset(),
+  loadData: () => tjTable.value?.loadData(),
 });
 </script>
 
