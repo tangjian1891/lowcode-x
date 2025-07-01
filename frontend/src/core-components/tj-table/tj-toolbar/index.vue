@@ -7,9 +7,9 @@
 
     <!-- 工具区域 (刷新、排序、全屏等) -->
     <div class="toolbar-tools">
-      <el-button v-if="tjTable.toolbar?.refresh" :icon="Refresh" @click="() => tjTable.refresh()" text />
-      <el-button v-if="tjTable.toolbar?.sort" :icon="Sort" @click="handleSort" text />
-      <el-button v-if="tjTable.toolbar?.fullscreen" :icon="isFullscreen ? CompressOutlined : ExpandOutlined" @click="toggleFullscreen" text />
+      <el-button v-if="tjTable.toolbar?.refresh" icon="Refresh" @click="() => tjTable.refresh()" text />
+      <el-button v-if="tjTable.toolbar?.sort" icon="Sort" @click="handleSort" text />
+      <el-button v-if="tjTable.toolbar?.fullscreen" icon="FullScreen" @click="() => tjTable.toggleFullscreen()" text />
     </div>
   </div>
 </template>
@@ -17,7 +17,6 @@
 <script lang="ts" setup>
 import { type PropType, ref } from "vue";
 import type { ITjTable } from "../tj-table";
-import { Refresh, Sort } from "@element-plus/icons-vue";
 
 const props = defineProps({
   tjTable: {

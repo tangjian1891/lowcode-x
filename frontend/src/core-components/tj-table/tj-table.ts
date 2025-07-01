@@ -19,6 +19,7 @@ export class TjTable {
   form = {};
   data: any[] = [];
   dataLoading = false;
+  isFullscreen = false;
   menuId: string | null = null;
   toolbar = {
     buttons: [] as any[],
@@ -107,6 +108,13 @@ export class TjTable {
     this.pagination.currentPage = 1;
     await this.loadData();
   }
+  /**
+   * 全屏切换
+   */
+  toggleFullscreen(): void {
+    this.isFullscreen = !this.isFullscreen;
+  }
+
   /**
    * 获取工具栏按钮
    */

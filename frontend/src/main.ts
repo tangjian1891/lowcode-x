@@ -3,6 +3,7 @@
 import { createApp, h } from "vue";
 import { createPinia } from "pinia";
 import "@/assets/scss/cover-element-plus/index.scss";
+import "@/assets/scss/tj-scss/index.scss";
 
 import App from "./App.vue";
 import router from "./router";

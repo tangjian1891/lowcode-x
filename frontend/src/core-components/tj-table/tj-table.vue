@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tjTable" class="tj-table" v-loading="tjTable.dataLoading">
+  <div v-if="tjTable" :class="['tj-table', { fullscreen: tjTable.isFullscreen }]" v-loading="tjTable.dataLoading">
     <component v-for="(template, index) in components" :key="index" :is="template" :tjTable="tjTable" />
   </div>
 </template>
@@ -65,6 +65,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .tj-table {
+  background: white;
   width: 100%;
   height: 100%;
   position: relative;
