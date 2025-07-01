@@ -1,6 +1,7 @@
 import { Button } from "@/form-components";
 import { Permission } from "@/utils/permissions";
 import { api } from "@/api";
+import RenderTableHeader from "./tj-grid/render-table-header.vue";
 
 interface TjTableParams {
   fields?: any[];
@@ -21,9 +22,12 @@ export class TjTable {
   dataLoading = false;
   isFullscreen = false;
   menuId: string | null = null;
+  columns: any[] = [];
+  gridRef = null;
   toolbar = {
     buttons: [] as any[],
     search: true,
+    visible: true,
     sort: true,
     refresh: true,
     fullscreen: true,
@@ -47,6 +51,44 @@ export class TjTable {
     // 处理权限，权限需要自动处理手动注入的按钮
     this.toolbar.buttons = this.processToolbarButtons(this.permisson, params.extraButtons?.toolbar);
     this.grid.buttons = this.processInlineButtons(this.permisson, params.extraButtons?.inline);
+
+    // 使用字段，初始化vxe-table的列配置
+    this.initColumns();
+  }
+
+  initColumns() {
+    const slots = {
+      header: (data: any) => {
+        return h(RenderTableHeader, { data });
+      },
+    };
+    const columns: any[] = this.fields.map((item) => {
+      return {
+        ...item,
+        field: item.id,
+        title: item.formItemProps.label,
+        slots,
+        visible: true, // 默认显示所有列
+      };
+    });
+    if (this.grid.buttons.length > 0) {
+      columns.push({
+        isTable: true,
+        field: "actions", // 给操作列一个field标识
+        label: "操作",
+        showOverflow: false,
+        visible: true, // 操作列默认显示
+        slots: {
+          default: () => {
+            return this.grid.buttons.map((button) => {
+              return <button.component button={button} tjTable={this}></button.component>;
+            });
+          },
+        },
+        width: "300px",
+      });
+    }
+    this.columns = columns;
   }
 
   /**

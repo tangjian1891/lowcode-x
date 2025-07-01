@@ -29,7 +29,6 @@ onMounted(async () => {
     console.error("Menu ID is required");
     return;
   }
-
   try {
     // 获取表单配置
     const formConfigResponse = await api.form.getDataByMenuId(props.menu.id);
