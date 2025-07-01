@@ -1,7 +1,7 @@
 import TjButton, { ButtonEnableCondition, type ITjButton } from "./tj-button";
 import type { ITjTable } from "@/core-components/tj-table/tj-table";
+import JasForm from "@/design/jas-form.vue";
 import { createDialog } from "@/tj-dialog/index";
-import JasForm from "@/core-components/tj-form/index.vue";
 import { Permission } from "@/utils/permissions";
 
 /**
@@ -18,7 +18,13 @@ export function createAddButton(label = "新增") {
   });
 
   button.onClick = (button: ITjButton, tjTable: ITjTable) => {
-    createDialog(tjTable, JasForm);
+    const dialog = createDialog(JasForm, {
+      formId: tjTable.menuId,
+      tjTable,
+      close() {
+        dialog.close();
+      },
+    });
   };
 
   return button;

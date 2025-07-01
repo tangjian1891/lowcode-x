@@ -121,8 +121,6 @@ export class TjTable {
    * 刷新数据
    */
   async refresh(): Promise<void> {
-    console.log("这是撒");
-
     await this.loadData();
   }
 

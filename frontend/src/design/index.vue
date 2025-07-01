@@ -78,9 +78,6 @@ const previewForm = () => {
       close() {
         dialog.close();
       },
-      confirm() {
-        dialog.close();
-      },
     },
     {
       beforeClose() {},

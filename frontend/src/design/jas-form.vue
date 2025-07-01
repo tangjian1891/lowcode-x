@@ -48,11 +48,11 @@ async function handleSave() {
     method: "POST",
     data: form,
   });
-
-  console.log("查看一下", res);
-
   ElMessage.success("保存成功");
   props.componentOptions.close();
+  if (props.componentOptions.tjTable) {
+    props.componentOptions.tjTable.refresh();
+  }
 }
 </script>
 
