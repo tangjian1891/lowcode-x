@@ -3,7 +3,7 @@
     <template #reference>
       <span>
         <el-tooltip content="列显示">
-          <el-button icon="View" text />
+          <el-button icon="View" text :type="isAllSelected ? '' : 'primary'" />
         </el-tooltip>
       </span>
     </template>
