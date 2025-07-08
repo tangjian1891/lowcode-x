@@ -2,7 +2,9 @@ import { Button } from "@/form-components";
 import { Permission } from "@/utils/permissions";
 import { api } from "@/api";
 import RenderTableHeader from "./tj-grid/render-table-header.vue";
-
+import { createAddButton } from "../components/button/create-add-button";
+import { createRemoveButton } from "../components/button/create-remove-button";
+import type { VxeGridInstance, VxeGridProps } from "vxe-table";
 interface TjTableParams {
   fields?: any[];
   permisson?: string[];
@@ -23,6 +25,7 @@ export class TjTable {
   isFullscreen = false;
   menuId: string | null = null;
   columns: any[] = [];
+  grid: VxeGridProps = {};
   gridRef = null;
   toolbar = {
     buttons: [] as any[],
@@ -49,14 +52,15 @@ export class TjTable {
     this.data = params.data || [];
 
     // 处理权限，权限需要自动处理手动注入的按钮
-    this.toolbar.buttons = this.processToolbarButtons(this.permisson, params.extraButtons?.toolbar);
+    this.toolbar.buttons = [createAddButton(this), createRemoveButton(this)];
+    // this.toolbar.buttons = this.processToolbarButtons(this.permisson, params.extraButtons?.toolbar);
     this.grid.buttons = this.processInlineButtons(this.permisson, params.extraButtons?.inline);
 
     // 使用字段，初始化vxe-table的列配置
-    this.initColumns();
+    this.initGrid();
   }
 
-  initColumns() {
+  initGrid() {
     const slots = {
       header: (data: any) => {
         return h(RenderTableHeader, { data });
@@ -80,15 +84,29 @@ export class TjTable {
         visible: true, // 操作列默认显示
         slots: {
           default: () => {
-            return this.grid.buttons.map((button) => {
-              return <button.component button={button} tjTable={this}></button.component>;
-            });
+            return [];
+            // return this.grid.buttons.map((button) => {
+            //   return <button.component button={button} tjTable={this}></button.component>;
+            // });
           },
         },
         width: "300px",
       });
     }
-    this.columns = columns;
+
+    this.grid = {
+      height: "auto",
+      minHeight: "300px",
+      columns, // 使用可见的列
+      cellConfig: {},
+      headerCellConfig: {
+        padding: false,
+      },
+      showHeaderOverflow: "ellipsis",
+
+      headerCellClassName: "qwer",
+      data: [],
+    };
   }
 
   /**
@@ -106,11 +124,11 @@ export class TjTable {
       const data = response as any; // 临时处理类型
 
       // 根据您的 API 返回结构调整
-      this.data = Array.isArray(data) ? data : data.list || [];
+      this.grid.data = Array.isArray(data) ? data : data.list || [];
       this.pagination.total = data.total || this.data.length;
     } catch (error) {
       console.error("Failed to load table data:", error);
-      this.data = [];
+      this.grid.data = [];
       this.pagination.total = 0;
     } finally {
       this.dataLoading = false;

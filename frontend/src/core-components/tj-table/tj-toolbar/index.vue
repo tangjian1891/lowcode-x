@@ -2,7 +2,7 @@
   <div class="tj-toolbar my-6px mx-20px">
     <!-- 按钮区域 -->
     <div class="toolbar-buttons">
-      <component v-for="button in tjTable.toolbar?.buttons" :key="button.id" :is="button.component" :button="button" :tjTable="tjTable"></component>
+      <component v-for="item in tjTable.toolbar?.buttons" :key="item.id" :is="item.component" :item="item" :tjTable="tjTable"></component>
     </div>
 
     <!-- 工具区域 (刷新、排序、全屏等) -->

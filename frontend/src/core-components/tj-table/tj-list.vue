@@ -9,6 +9,7 @@ import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
 import { api } from "@/api";
+import { Button } from "@/form-components";
 
 const props = defineProps({
   // 渲染的组件。可以自行扩展，调整顺序
@@ -34,7 +35,6 @@ onMounted(async () => {
     const formConfigResponse = await api.form.getDataByMenuId(props.menu.id);
     const formConfig = formConfigResponse as any; // 临时处理类型
     console.log("获取到菜单数据了", formConfig);
-
     // 初始化 TjTable 实例
     tjTable.value = new TjTable({
       fields: formConfig.fields || [],

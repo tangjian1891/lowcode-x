@@ -1,7 +1,7 @@
 <template>
   <div class="tj-table-area">
     <!-- 表格区域内容 -->
-    <vxe-grid ref="gridRef" v-bind="gridOptions"></vxe-grid>
+    <vxe-grid ref="gridRef" v-bind="tjTable.grid" :data="unref(tjTable.grid.data)"></vxe-grid>
   </div>
 </template>
 
@@ -10,7 +10,6 @@
 import { type PropType } from "vue";
 import type { ITjTable } from "../tj-table";
 import type { VxeGridInstance, VxeGridProps } from "vxe-table";
-import RenderTableHeader from "./render-table-header.vue";
 const props = defineProps({
   tjTable: {
     type: Object as PropType<ITjTable>,
@@ -20,25 +19,25 @@ const props = defineProps({
 const gridRef = ref<VxeGridInstance<any>>();
 props.tjTable.gridRef = gridRef; //
 const count = ref(0);
-const gridOptions = computed<VxeGridProps>(() => {
-  return {
-    height: "auto",
-    minHeight: "300px",
-    columns: props.tjTable.columns, // 使用可见的列
-    cellConfig: {},
-    headerCellConfig: {
-      padding: false,
-    },
-    showHeaderOverflow: "ellipsis",
+// const gridOptions = computed<VxeGridProps>(() => {
+//   return {
+//     height: "auto",
+//     minHeight: "300px",
+//     columns: props.tjTable.columns, // 使用可见的列
+//     cellConfig: {},
+//     headerCellConfig: {
+//       padding: false,
+//     },
+//     showHeaderOverflow: "ellipsis",
 
-    headerCellClassName: "qwer",
-    data: props.tjTable.data,
-  };
-});
+//     headerCellClassName: "qwer",
+//     data: props.tjTable.data,
+//   };
+// });
 setInterval(() => {
   count.value++;
 }, 2000);
-console.log(gridOptions.value);
+// console.log(gridOptions.value);
 </script>
 
 <style lang="scss" scoped>

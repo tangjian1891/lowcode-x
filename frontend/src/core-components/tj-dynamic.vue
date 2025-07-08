@@ -28,13 +28,13 @@ const loadComponentByMenu = (menuItem: Menu) => {
     case SubMenuType.INTERNAL:
       // 加载内部路由对应的组件
       targetComp.value = defineAsyncComponent(() => {
-        return import("@/core-components/tj-table/tj-table.vue");
+        return import("@/core-components/tj-table/tj-list.vue");
       });
       break;
     case SubMenuType.GENERAL_FORM:
       // 加载通用表单组件
       targetComp.value = defineAsyncComponent(() => {
-        return import("@/core-components/tj-table/tj-table.vue");
+        return import("@/core-components/tj-table/tj-list.vue");
       });
       break;
     default:
