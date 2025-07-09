@@ -61,19 +61,22 @@ export class TjTable {
   }
 
   initGrid() {
-    const slots = {
-      header: (data: any) => {
-        return h(RenderTableHeader, { data });
-      },
-    };
     const columns: any[] = this.fields.map((item) => {
       return {
         ...item,
         field: item.id,
         title: item.formItemProps.label,
-        slots,
+        slots: {
+          header: (data: any) => {
+            return h(RenderTableHeader, { data });
+          },
+        },
         visible: true, // 默认显示所有列
       };
+    });
+    columns.unshift({
+      type: "checkbox",
+      width: 60,
     });
     if (this.grid.buttons.length > 0) {
       columns.push({
@@ -104,7 +107,6 @@ export class TjTable {
       },
       showHeaderOverflow: "ellipsis",
 
-      headerCellClassName: "qwer",
       data: [],
     };
   }

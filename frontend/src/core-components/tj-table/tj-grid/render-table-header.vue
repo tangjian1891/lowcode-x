@@ -29,31 +29,38 @@ const title = computed(() => {
 </script>
 
 <style lang="scss">
-.qwer > .vxe-cell {
-  display: block;
-  & > .vxe-cell--wrapper {
+.vxe-header--row {
+  .vxe-header--column:not(.col--checkbox) > .vxe-cell {
     display: block;
-  }
-  .vxe-cell--wrapper {
-    height: 100%;
-    width: 100%;
-    display: block;
-    .vxe-cell--title {
+    & > .vxe-cell--wrapper {
+      display: block;
+    }
+    .vxe-cell--wrapper {
       height: 100%;
       width: 100%;
       display: block;
-      .custom-table-header {
-        cursor: pointer;
+      .vxe-cell--title {
         height: 100%;
         width: 100%;
-        display: flex;
-        align-items: center;
-        .custom-slot-header-title {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        display: block;
+        .custom-table-header {
+          cursor: pointer;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          .custom-slot-header-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
       }
+    }
+  }
+  .vxe-header--column.col--checkbox {
+    .vxe-cell--wrapper {
+      padding: 0px var(--vxe-ui-table-cell-padding-default);
     }
   }
 }

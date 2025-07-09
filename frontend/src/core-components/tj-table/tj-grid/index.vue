@@ -18,26 +18,6 @@ const props = defineProps({
 });
 const gridRef = ref<VxeGridInstance<any>>();
 props.tjTable.gridRef = gridRef; //
-const count = ref(0);
-// const gridOptions = computed<VxeGridProps>(() => {
-//   return {
-//     height: "auto",
-//     minHeight: "300px",
-//     columns: props.tjTable.columns, // 使用可见的列
-//     cellConfig: {},
-//     headerCellConfig: {
-//       padding: false,
-//     },
-//     showHeaderOverflow: "ellipsis",
-
-//     headerCellClassName: "qwer",
-//     data: props.tjTable.data,
-//   };
-// });
-setInterval(() => {
-  count.value++;
-}, 2000);
-// console.log(gridOptions.value);
 </script>
 
 <style lang="scss" scoped>
