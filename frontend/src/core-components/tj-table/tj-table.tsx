@@ -94,8 +94,8 @@ export class TjTable extends Reactive {
         showOverflow: false,
         visible: true, // 操作列默认显示
         slots: {
-          default: () => {
-            return h(RenderOperatorColumn, { tjTable: this });
+          default: (rowData) => {
+            return h(RenderOperatorColumn, { tjTable: this, rowData });
           },
         },
         width: "300px",
@@ -118,9 +118,11 @@ export class TjTable extends Reactive {
 
       onCheckboxChange: () => this.grid.getOids(),
       onCheckboxAll: () => this.grid.getOids(),
+      onCellClick: (e) => {
+        e.$event.stopPropagation();
+      },
       getOids: () => {
         const arr = unref(this.gridRef).getCheckboxRecords();
-        console.log("返回了", arr);
         this.oids = arr.map((item: any) => item._id);
       },
     };
