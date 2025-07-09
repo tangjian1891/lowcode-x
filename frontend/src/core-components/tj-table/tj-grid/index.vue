@@ -1,7 +1,7 @@
 <template>
   <div class="tj-table-area">
     <!-- 表格区域内容 -->
-    <vxe-grid ref="gridRef" v-bind="tjTable.grid" :data="unref(tjTable.grid.data)"></vxe-grid>
+    <vxe-grid ref="gridRef" v-bind="tjTable.grid" :data="tjTable.grid.data"></vxe-grid>
   </div>
 </template>
 

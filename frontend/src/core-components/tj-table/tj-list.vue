@@ -34,7 +34,6 @@ onMounted(async () => {
     // 获取表单配置
     const formConfigResponse = await api.form.getDataByMenuId(props.menu.id);
     const formConfig = formConfigResponse as any; // 临时处理类型
-    console.log("获取到菜单数据了", formConfig);
     // 初始化 TjTable 实例
     tjTable.value = new TjTable({
       fields: formConfig.fields || [],

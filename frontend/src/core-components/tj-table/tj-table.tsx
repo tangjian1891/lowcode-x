@@ -15,8 +15,13 @@ interface TjTableParams {
     inline?: any[];
   };
 }
+class Reactive {
+  constructor() {
+    return reactive(this);
+  }
+}
 
-export class TjTable {
+export class TjTable extends Reactive {
   oids: any[] = [];
   fields: any[] = [];
   form = {};
@@ -35,7 +40,6 @@ export class TjTable {
     refresh: true,
     fullscreen: true,
   };
-  grid = { buttons: [] as any[] };
   pagination = {
     pageSize: 50,
     pageSizes: [10, 20, 50, 100],
@@ -45,6 +49,7 @@ export class TjTable {
   permisson: string[] = [];
 
   constructor(params: TjTableParams = {}) {
+    super();
     Object.assign(this, params);
     this.fields = params.fields || [];
     this.permisson = params.permisson || []; // 权限列表
@@ -53,7 +58,6 @@ export class TjTable {
 
     // 处理权限，权限需要自动处理手动注入的按钮
     this.toolbar.buttons = [createAddButton(this), createRemoveButton(this)];
-    // this.toolbar.buttons = this.processToolbarButtons(this.permisson, params.extraButtons?.toolbar);
     this.grid.buttons = this.processInlineButtons(this.permisson, params.extraButtons?.inline);
 
     // 使用字段，初始化vxe-table的列配置
@@ -106,8 +110,18 @@ export class TjTable {
         padding: false,
       },
       showHeaderOverflow: "ellipsis",
-
+      checkboxConfig: {
+        trigger: "row",
+      },
       data: [],
+
+      onCheckboxChange: () => this.grid.getOids(),
+      onCheckboxAll: () => this.grid.getOids(),
+      getOids: () => {
+        const arr = unref(this.gridRef).getCheckboxRecords();
+        console.log("返回了", arr);
+        this.oids = arr.map((item: any) => item._id);
+      },
     };
   }
 
