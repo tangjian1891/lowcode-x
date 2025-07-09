@@ -90,6 +90,37 @@ export class FormController {
   }
 
   /**
+   * 查询某个表单的业务数据
+   */
+
+  @Get("get/:formId/:id")
+  async asyncGetFormData(@Param("formId") formId: string, @Param("id") id: string): Promise<any> {
+    // 通过relateId查找表单配置
+    const form: any = await this.formModel.findOne({ relateId: formId }).lean();
+    if (!form) throw new Error("表单配置不存在");
+
+    // 用表单_id获取动态模型
+    const Model = await getFormDataModel(form._id, this.connection, this.formModel);
+    const result = await Model.findOne({ _id: id });
+    return result;
+  }
+
+  /**
+   * 删除某个表单的业务数据
+   */
+  @Delete(":formId/:id")
+  async removeFormData(@Param("formId") formId: string, @Param("id") id: string): Promise<any> {
+    // 通过relateId查找表单配置
+    const form: any = await this.formModel.findOne({ relateId: formId }).lean();
+    if (!form) throw new Error("表单配置不存在");
+
+    // 用表单_id获取动态模型
+    const Model = await getFormDataModel(form._id, this.connection, this.formModel);
+    const result = await Model.deleteOne({ _id: id });
+    return result;
+  }
+
+  /**
    * 查询某表单的业务数据列表
    */
   @Get(":formId/data")

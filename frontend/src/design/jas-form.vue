@@ -30,11 +30,15 @@ const data = reactive({
   formTree: [],
 });
 onMounted(async () => {
+  const { formId, id } = props.componentOptions;
   let res = await instance.request({
-    url: "/forms/relateId/" + props.componentOptions.formId,
+    url: "/forms/relateId/" + formId,
     method: "GET",
   });
   Object.assign(data, res);
+  let res2 = await api.form.getDataById(formId, id);
+  console.log(res2);
+  Object.assign(form, res2);
 });
 
 const fieldMapping = computed(() => {

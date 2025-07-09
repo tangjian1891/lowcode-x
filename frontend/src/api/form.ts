@@ -12,4 +12,17 @@ export const form = {
       url: `forms/${formId}/data`,
     });
   },
+  removeById(formId: string, id: string) {
+    return instance({
+      url: `forms/${formId}/${id}`,
+      method: "DELETE",
+    });
+  },
+
+  getDataById(formId: string, id: string) {
+    return instance({
+      url: `forms/get/${formId}/${id}`,
+      method: "GET",
+    });
+  },
 };
