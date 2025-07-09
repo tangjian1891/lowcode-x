@@ -5,6 +5,8 @@ import RenderTableHeader from "./tj-grid/render-table-header.vue";
 import { createAddButton } from "../components/button/create-add-button";
 import { createRemoveButton } from "../components/button/create-remove-button";
 import type { VxeGridInstance, VxeGridProps } from "vxe-table";
+import { createInlineFactory } from "../components/button/create-inline-button";
+import RenderOperatorColumn from "./tj-grid/render-operator-column.vue";
 interface TjTableParams {
   fields?: any[];
   permisson?: string[];
@@ -34,6 +36,7 @@ export class TjTable extends Reactive {
   gridRef = null;
   toolbar = {
     buttons: [] as any[],
+    inlineButtons: [] as any[],
     search: true,
     visible: true,
     sort: true,
@@ -58,7 +61,8 @@ export class TjTable extends Reactive {
 
     // 处理权限，权限需要自动处理手动注入的按钮
     this.toolbar.buttons = [createAddButton(this), createRemoveButton(this)];
-    this.grid.buttons = this.processInlineButtons(this.permisson, params.extraButtons?.inline);
+    const inlineFactory = createInlineFactory(this);
+    this.toolbar.inlineButtons = [inlineFactory.edit(), inlineFactory.detail(), inlineFactory.delete()];
 
     // 使用字段，初始化vxe-table的列配置
     this.initGrid();
@@ -82,7 +86,7 @@ export class TjTable extends Reactive {
       type: "checkbox",
       width: 60,
     });
-    if (this.grid.buttons.length > 0) {
+    if (this.toolbar.inlineButtons.length > 0) {
       columns.push({
         isTable: true,
         field: "actions", // 给操作列一个field标识
@@ -91,10 +95,7 @@ export class TjTable extends Reactive {
         visible: true, // 操作列默认显示
         slots: {
           default: () => {
-            return [];
-            // return this.grid.buttons.map((button) => {
-            //   return <button.component button={button} tjTable={this}></button.component>;
-            // });
+            return h(RenderOperatorColumn, { tjTable: this });
           },
         },
         width: "300px",
