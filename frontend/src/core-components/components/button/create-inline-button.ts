@@ -1,6 +1,6 @@
 import { createButton } from "./button.tsx";
 
-export function createInlineFactory(tjTable) {
+export function createInlineButtonFactory(tjTable) {
   return {
     detail() {
       const button = createButton();

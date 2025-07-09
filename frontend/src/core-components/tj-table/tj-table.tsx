@@ -2,11 +2,10 @@ import { Button } from "@/form-components";
 import { Permission } from "@/utils/permissions";
 import { api } from "@/api";
 import RenderTableHeader from "./tj-grid/render-table-header.vue";
-import { createAddButton } from "../components/button/create-add-button";
-import { createRemoveButton } from "../components/button/create-remove-button";
 import type { VxeGridInstance, VxeGridProps } from "vxe-table";
-import { createInlineFactory } from "../components/button/create-inline-button";
+import { createInlineButtonFactory } from "../components/button/create-inline-button";
 import RenderOperatorColumn from "./tj-grid/render-operator-column.vue";
+import { createToolbarButtonFactory } from "../components/button/create-toolbar-button";
 interface TjTableParams {
   fields?: any[];
   permisson?: string[];
@@ -60,8 +59,9 @@ export class TjTable extends Reactive {
     this.data = params.data || [];
 
     // 处理权限，权限需要自动处理手动注入的按钮
-    this.toolbar.buttons = [createAddButton(this), createRemoveButton(this)];
-    const inlineFactory = createInlineFactory(this);
+    const buttonFactory = createToolbarButtonFactory(this);
+    this.toolbar.buttons = [buttonFactory.add(), buttonFactory.remove()];
+    const inlineFactory = createInlineButtonFactory(this);
     this.toolbar.inlineButtons = [inlineFactory.edit(), inlineFactory.detail(), inlineFactory.delete()];
 
     // 使用字段，初始化vxe-table的列配置
