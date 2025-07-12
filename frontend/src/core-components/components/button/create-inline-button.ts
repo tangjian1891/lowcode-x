@@ -21,6 +21,7 @@ export function createInlineButtonFactory(tjTable) {
             close() {
               dialog.close();
             },
+            mode: "detail",
           },
           {
             title: "详情",

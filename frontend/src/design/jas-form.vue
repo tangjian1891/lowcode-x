@@ -39,6 +39,13 @@ onMounted(async () => {
   let res2 = await api.form.getDataById(formId, id);
   console.log(res2);
   Object.assign(form, res2);
+
+  if (props.componentOptions.mode === "detail") {
+    // 详情模式下的逻辑
+    data.fields.forEach((field) => {
+      field.authProps.enabled = false;
+    });
+  }
 });
 
 const fieldMapping = computed(() => {
