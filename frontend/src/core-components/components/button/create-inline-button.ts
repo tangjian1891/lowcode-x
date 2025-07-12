@@ -9,9 +9,23 @@ export function createInlineButtonFactory(tjTable) {
       const button = createButton();
       button.props.label = "详情";
       button.props.text = true;
-      button.props.onClick = (event: Event) => {
-        console.log("获取到了详情", tjTable);
+      button.props.onClick = (event: Event, rowData) => {
         event.stopPropagation();
+        const dialog = createDialog(
+          JasForm,
+          {
+            formId: tjTable.menuId,
+            tjTable,
+            id: rowData.row._id,
+            showFooter: false,
+            close() {
+              dialog.close();
+            },
+          },
+          {
+            title: "详情",
+          },
+        );
       };
       return button;
     },

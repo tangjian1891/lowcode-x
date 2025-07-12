@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    :title="dialogOptions.title || ''"
     v-model="dialogVisible"
     title="Tips"
     width="500"

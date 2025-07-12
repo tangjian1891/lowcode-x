@@ -11,7 +11,7 @@
       />
     </el-row>
   </el-form>
-  <div class="flex justify-end">
+  <div class="flex justify-end" v-if="componentOptions.showFooter">
     <el-button type="primary" @click="handleSave">保存</el-button>
     <el-button @click="componentOptions.close">取消</el-button>
   </div>
