@@ -7,13 +7,19 @@ export function createToolbarButtonFactory(tjTable) {
       const button = createButton();
       button.props.label = "新增";
       button.props.onClick = () => {
-        const dialog = createDialog(JasForm, {
-          formId: tjTable.menuId,
-          tjTable,
-          close() {
-            dialog.close();
+        const dialog = createDialog(
+          JasForm,
+          {
+            formId: tjTable.menuId,
+            tjTable,
+            close() {
+              dialog.close();
+            },
           },
-        });
+          {
+            title: "新增",
+          },
+        );
       };
       return button;
     },
