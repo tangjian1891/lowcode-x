@@ -11,14 +11,14 @@
       />
     </el-row>
   </el-form>
-  <div class="flex justify-end" v-if="componentOptions.showFooter">
+  <div class="flex justify-end" v-if="isNil(componentOptions.showFooter) ? true : componentOptions.showFooter">
     <el-button type="primary" @click="handleSave">保存</el-button>
     <el-button @click="componentOptions.close">取消</el-button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { keyBy } from "lodash-es";
+import { isNil, keyBy } from "lodash-es";
 import { runtimeComponentMap } from "./material";
 import { ElMessage } from "element-plus";
 import { instance } from "@/api/request";
@@ -36,9 +36,11 @@ onMounted(async () => {
     method: "GET",
   });
   Object.assign(data, res);
-  let res2 = await api.form.getDataById(formId, id);
-  console.log(res2);
-  Object.assign(form, res2);
+  if (!isNil(id)) {
+    let res2 = await api.form.getDataById(formId, id);
+    console.log(res2);
+    Object.assign(form, res2);
+  }
 
   if (props.componentOptions.mode === "detail") {
     // 详情模式下的逻辑
