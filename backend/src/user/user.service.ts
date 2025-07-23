@@ -11,16 +11,14 @@ export class UserService {
   ) {}
 
   async getJwtToken(payload: { username: string; password: string }): Promise<string> {
-    if (payload.username === "admin" && payload.password === "123456") {
-      payload["role"] = "admin";
-      return await this.jwtService.signAsync({ username: payload.username });
-    } else {
-      throw new Error("账号或密码错误");
-    }
+    return await this.jwtService.signAsync({ username: payload.username });
   }
 
   async findAll(): Promise<User[]> {
     return await this.userModel.find().exec();
+  }
+  async find(query: Partial<User>): Promise<User[]> {
+    return await this.userModel.find(query).exec();
   }
 
   async findById(id: string): Promise<User | null> {

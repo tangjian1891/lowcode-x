@@ -14,7 +14,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
  * @property {string[]} roles 用户角色列表，决定用户权限，默认为空数组。
  */
 export class User {
-  @Prop()
+  @Prop({ unique: true })
   username: string;
   @Prop()
   password: string;

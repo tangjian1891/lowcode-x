@@ -11,12 +11,13 @@ import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./common/auth.guard";
+import { SystemModule } from "./system/system.module";
 
 const password = "user1";
 const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 @Module({
-  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule, UploadModule, UserModule],
+  imports: [MongooseModule.forRoot(uri), CatsModule, FormModule, MenuModule, UploadModule, UserModule, SystemModule],
   controllers: [AppController],
   providers: [
     AppService,

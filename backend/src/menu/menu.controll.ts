@@ -5,6 +5,14 @@ import { Menu } from "./menu.schema";
 @Controller("menu")
 export class MenuControll {
   constructor(private readonly menuService: MenuService) {}
+  @Post("create")
+  async create(@Body() data: Menu) {
+    if (data.id) {
+      return await this.menuService.update(data.id, data);
+    } else {
+      return await this.menuService.create(data);
+    }
+  }
 
   @Get()
   async findAll(@Query("page") page = 1, @Query("limit") limit = 10, @Query("keyword") keyword?: string) {
@@ -19,15 +27,6 @@ export class MenuControll {
   @Get(":id")
   async findById(@Param("id") id: string) {
     return await this.menuService.findById(id);
-  }
-
-  @Post()
-  async create(@Body() data: any) {
-    if (data.id) {
-      return await this.menuService.update(data.id, data);
-    } else {
-      return await this.menuService.create(data);
-    }
   }
 
   @Put(":id")

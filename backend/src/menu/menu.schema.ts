@@ -18,13 +18,15 @@ export class Menu {
   @Prop({ type: String })
   subType: SubMenuType;
   @Prop()
-  value: string;
+  value: any; //如果是 general,value就是整个表单配置. 如果是internal，value则是路由,external则是外部链接
   @Prop()
   icon?: string; // 菜单图标
   @Prop()
   parentId: string; // 父菜单ID
   @Prop({ default: 0 })
   order: number;
+  @Prop({ required: true })
+  systemId: string; //所属系统id
 }
 
 export const MenuSchema = SchemaFactory.createForClass(Menu);
