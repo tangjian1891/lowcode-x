@@ -5,8 +5,8 @@ import { System } from "./system.schema";
 export class SystemController {
   constructor(private systemService: SystemService) {}
 
-  @Get("findListByUserId")
-  async getSystemsByUserId(@Query("userId") userId: string) {
+  @Get("listByUserId")
+  async listByUserId(@Query("userId") userId: string) {
     return await this.systemService.findAll({ userId });
   }
 

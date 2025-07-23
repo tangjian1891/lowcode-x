@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import { instance } from "@/api/request";
+import { useUser } from "@/stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -56,10 +57,11 @@ const handleLogin = async () => {
       data: loginForm.value,
       url: "user/login",
     });
-    localStorage.setItem("token", res);
+    localStorage.setItem("token", res.token);
+    useUser().user = res.user;
 
     // 跳转到首页或其他页面
-    router.push("/");
+    router.push("/workbench");
   } finally {
     loading.value = false;
   }

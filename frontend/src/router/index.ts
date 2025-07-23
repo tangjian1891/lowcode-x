@@ -8,6 +8,11 @@ const router = createRouter({
       redirect: "/jas-layout/1231313/1",
     },
     {
+      path: "/workbench",
+      name: "workbench",
+      component: () => import("@/views/workbench/index.vue"),
+    },
+    {
       path: "/jas-layout/:systemId",
       name: "jas-layout",
       component: () => import("@/layout/jas-layout.vue"),

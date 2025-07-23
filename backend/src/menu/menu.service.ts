@@ -52,7 +52,7 @@ export class MenuService {
     return data;
   }
 
-  async create(data: Menu) {
+  async create(data: Menu & { id?: string }) {
     if (data.id) {
       return await this.menuService.findByIdAndUpdate(data.id, data).exec();
     } else {

@@ -6,9 +6,10 @@ import { Menu } from "./menu.schema";
 export class MenuControll {
   constructor(private readonly menuService: MenuService) {}
   @Post("create")
-  async create(@Body() data: Menu) {
-    if (data.id) {
-      return await this.menuService.update(data.id, data);
+  async create(@Body() data: Menu & { id?: string }) {
+    const id: any = data.id;
+    if (id) {
+      return await this.menuService.update(id, data);
     } else {
       return await this.menuService.create(data);
     }
