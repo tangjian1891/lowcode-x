@@ -3,12 +3,14 @@ import { FormService } from "./form.service";
 import { getFormDataModel } from "./dynamic-form-data.util";
 import { InjectModel, InjectConnection } from "@nestjs/mongoose";
 import { Form } from "./form.schema";
-import { Connection, Model } from "mongoose";
+import mongoose, { Connection, Model } from "mongoose";
+import { MenuService } from "src/menu/menu.service";
 
 @Controller("forms") // 使用复数形式更符合RESTful规范
 export class FormController {
   constructor(
     private readonly formService: FormService,
+    private readonly menuService: MenuService,
     @InjectModel(Form.name) private formModel: Model<Form>,
     @InjectConnection() private connection: Connection,
   ) {}
@@ -137,5 +139,34 @@ export class FormController {
       console.log(error);
       throw new Error(error);
     }
+  }
+
+  //
+  @Get(":menuId/list")
+  async list(@Param("menuId") menuId: string): Promise<any[]> {
+    const menu = await this.menuService.findById(menuId);
+    const modelName: string = `dynamic_form_${menu._id}`;
+    let model = this.connection.models[modelName];
+    if (!this.connection.models[modelName]) {
+      const schema = this.formService.getDynamicFormModel(menu);
+      model = this.connection.model(modelName, schema);
+    }
+    let res = await model.find();
+
+    return res;
+  }
+
+  @Post(":menuId/create")
+  async create2(@Param("menuId") menuId: string, @Body() data: any): Promise<any> {
+    const menu = await this.menuService.findById(menuId);
+    const modelName: string = `dynamic_form_${menu._id}`;
+    let model = this.connection.models[modelName];
+    if (!this.connection.models[modelName]) {
+      const schema = this.formService.getDynamicFormModel(menu);
+      model = this.connection.model(modelName, schema);
+    }
+
+    const res = model.create(data);
+    return res;
   }
 }

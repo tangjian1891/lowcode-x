@@ -25,4 +25,11 @@ export const form = {
       method: "GET",
     });
   },
+
+  list(menuId: string) {
+    return instance.get(`/forms/${menuId}/list`);
+  },
+  create(menuId: string, data: any) {
+    return instance.post(`/forms/${menuId}/create`, data);
+  },
 };

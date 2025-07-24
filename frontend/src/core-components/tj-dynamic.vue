@@ -15,8 +15,6 @@ const route = useRoute();
 
 // 根据菜单类型加载对应的组件
 const loadComponentByMenu = (menuItem: Menu) => {
-  console.log("拿到了嘛", menuItem);
-
   menu.value = menuItem;
   switch (menuItem.subType) {
     case SubMenuType.EXTERNAL_MENU:
@@ -50,13 +48,11 @@ onMounted(async () => {
     console.error("菜单ID不存在");
     return;
   }
-  const menuItem = await instance({
-    url: `/menu/${menuId}`,
-  });
+  const menuInfo = await api.menu.info(menuId);
 
   // 使用 JasLayout 中的静态方法查找菜单项
-  if (menuItem) {
-    loadComponentByMenu(menuItem);
+  if (menuInfo) {
+    loadComponentByMenu(menuInfo);
   } else {
     console.error("未找到ID为", menuId, "的菜单项");
   }

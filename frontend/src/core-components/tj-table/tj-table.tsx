@@ -69,6 +69,8 @@ export class TjTable extends Reactive {
   }
 
   initGrid() {
+    console.log(this);
+
     const columns: any[] = this.fields.map((item) => {
       return {
         ...item,
@@ -139,7 +141,7 @@ export class TjTable extends Reactive {
 
     try {
       this.dataLoading = true;
-      const response = await api.form.getList(this.menuId);
+      const response = await api.form.list(this.menuId);
       const data = response as any; // 临时处理类型
 
       // 根据您的 API 返回结构调整

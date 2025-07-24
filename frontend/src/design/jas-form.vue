@@ -31,11 +31,9 @@ const data = reactive({
 });
 onMounted(async () => {
   const { formId, id } = props.componentOptions;
-  let res = await instance.request({
-    url: "/forms/relateId/" + formId,
-    method: "GET",
-  });
-  Object.assign(data, res);
+  const menu = await api.menu.info(formId);
+
+  Object.assign(data, menu.value);
   if (!isNil(id)) {
     let res2 = await api.form.getDataById(formId, id);
     console.log(res2);
@@ -56,11 +54,7 @@ const fieldMapping = computed(() => {
 
 const form = reactive({});
 async function handleSave() {
-  const res = await instance({
-    url: `/forms/${props.componentOptions.formId}/data`,
-    method: "POST",
-    data: form,
-  });
+  await api.form.create(props.componentOptions.formId, form);
   ElMessage.success("保存成功");
   props.componentOptions.close();
   if (props.componentOptions.tjTable) {

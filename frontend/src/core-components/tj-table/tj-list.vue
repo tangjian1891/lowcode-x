@@ -9,7 +9,6 @@ import { Permission } from "@/utils/permissions";
 import { getDefaultComponents } from ".";
 import { TjTable } from "./tj-table";
 import { api } from "@/api";
-import { Button } from "@/form-components";
 
 const props = defineProps({
   // 渲染的组件。可以自行扩展，调整顺序
@@ -20,6 +19,7 @@ const props = defineProps({
   menu: {
     type: Object,
   },
+  menuId: String,
 });
 
 const permisson = [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.EXPORT];
@@ -31,23 +31,27 @@ onMounted(async () => {
     return;
   }
   try {
-    // 获取表单配置
-    const formConfigResponse = await api.form.getDataByMenuId(props.menu.id);
-    const formConfig = formConfigResponse as any; // 临时处理类型
     // 初始化 TjTable 实例
-    tjTable.value = new TjTable({
-      fields: formConfig.fields || [],
+    const config = {
+      fields: [],
       permisson,
       menuId: props.menu.id,
       extraButtons: {
         toolbar: [],
         inline: [],
       },
-    });
+    };
 
+    let menu = props.menu;
+    if (!props.menu && props.menuId) {
+      menu = await api.menu.info(props.menuId);
+    }
+
+    config.fields = menu.value.fields;
+    tjTable.value = new TjTable(config);
     // 加载表格数据
     await tjTable.value.loadData();
-    console.log("看下数据", tjTable.value.data);
+    console.log("看下数据", tjTable.value);
   } catch (error) {
     console.error("初始化表格失败:", error);
   }

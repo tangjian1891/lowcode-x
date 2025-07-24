@@ -4,7 +4,7 @@
     <div class="form-design-header flex items-center justify-between p-3 border-b">
       <div class="form-title flex items-center">
         <el-button text icon="ArrowLeft" @click="$router.back()" class="mr-8px" />
-        <el-input v-model="systemInfo.name" placeholder="请输入表单名称" class="w-240px" />
+        <el-input v-model="menuInfo.name" placeholder="请输入表单名称" class="w-240px" />
       </div>
       <div class="form-actions flex gap-3">
         <el-button @click="clearForm" type="warning">清空</el-button>
@@ -40,7 +40,7 @@ const currentComponent = ref<any>(null);
 const DRAG_NAME = Symbol("DRAG_NAME");
 const route = useRoute();
 const menuId = route.params.menuId as string;
-const systemInfo = ref({});
+const menuInfo = ref({});
 // 表单的配置
 const formConfig = ref({
   fields: [],
@@ -145,7 +145,7 @@ const data = reactive({
 
 onMounted(async () => {
   const res = await api.menu.info(menuId);
-  systemInfo.value = res;
+  menuInfo.value = res;
   if (res.value) {
     formConfig.value = res.value;
   }
@@ -177,20 +177,8 @@ const previewForm = () => {
 
 const saveForm = async () => {
   console.log("保存表单", { formConfig, fields: data.fields });
-  const d = {
-    fields: data.fields,
-    formTree: data.formTree,
-    // id,
-    id: data.id,
-    relateId: menuId,
-  };
-  console.log(d);
-
-  await instance.request({
-    url: "/forms",
-    method: "POST",
-    data: d,
-  });
+  menuInfo.value.value = data.formConfig;
+  await api.menu.create(menuInfo.value);
 
   ElMessage.success("表单已保存");
 };

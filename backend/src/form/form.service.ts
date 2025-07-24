@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { Form } from "./form.schema";
 import mongoose, { Connection, Model } from "mongoose";
+import { Menu } from "src/menu/menu.schema";
 
 @Injectable()
 export class FormService {
@@ -108,5 +109,25 @@ export class FormService {
     const model = this.connection.model(id, new mongoose.Schema(schemaObject));
     this.modelCache.set(id, model);
     const res = await model.create({ cqN35b1KVAXHQ1h_32VRkn: "测试数据", yKyxQ2hhPwDt4UY1CNVI_c: "测试数据" });
+  }
+
+  getDynamicFormModel(menu: Menu) {
+    // 类型保护，兼容 menu.fields 和 menu.value.fields
+    let fields: Array<{ id: string }> = [];
+    if (menu && typeof menu.value === "object" && Array.isArray(menu.value.fields)) {
+      fields = menu.value.fields;
+    }
+    if (fields.length > 0) {
+      const schemaObject = fields.reduce(
+        (obj, field) => {
+          obj[field.id] = { type: String };
+          return obj;
+        },
+        {} as Record<string, any>,
+      );
+      const schema = new mongoose.Schema(schemaObject, { timestamps: true });
+      return schema;
+    }
+    return new mongoose.Schema({}, { timestamps: true });
   }
 }
