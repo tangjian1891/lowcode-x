@@ -21,7 +21,7 @@ export const DesignWrap = defineComponent({
     label,
     width,
     active() {
-      return this.data.activeField.id === this.field.id;
+      return this.data.variables.activeField.id === this.field.id;
     },
   },
   render() {
@@ -29,7 +29,7 @@ export const DesignWrap = defineComponent({
       <el-col
         style={{ "--width": this.width }}
         class={[styles["wrap-container"], { [styles.active]: this.active }]}
-        onClick={() => this.data.clickField(this.field)}
+        onClick={() => this.data.methods.clickField(this.field)}
       >
         <el-form-item label={this.label} required={this.field.validateProps.required}>
           {{
@@ -49,10 +49,10 @@ export const DesignWrap = defineComponent({
         <div></div>
         <div class={[styles.mask]}>
           <div class={[styles["jas_oper_btn"]]}>
-            <el-icon onClick={() => this.$data.copyField(this.field)}>
+            <el-icon onClick={() => this.data.methods.copyField(this.field)}>
               <CopyDocument />
             </el-icon>
-            <el-icon onClick={() => this.$data.deleteField(this.field)}>
+            <el-icon onClick={() => this.data.methods.deleteField(this.field)}>
               <Delete />
             </el-icon>
           </div>

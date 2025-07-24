@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-    <el-tab-pane label="组件属性" :disabled="!data.activeField" name="first">
-      <component v-for="(item, index) in attrList" :is="item" :field="data.activeField" :key="index"> </component>
+    <el-tab-pane label="组件属性" :disabled="!data.variables.activeField" name="first">
+      <component v-for="(item, index) in attrList" :is="item" :field="data.variables.activeField" :key="index"> </component>
     </el-tab-pane>
     <el-tab-pane label="表单属性" name="second">
       <tj-1 title="字段显隐规则" show-switch @change="onChange">
@@ -40,15 +40,15 @@ function onChange(params: type) {
   console.log("变化了", params);
 }
 watch(
-  () => props.data.activeField,
+  () => props.data.variables.activeField,
   (newVal, oldVal) => {
-    if (newVal !== props.data.HIDDEN_FIELD && newVal) {
+    if (newVal !== props.data.variables.HIDDEN_FIELD && newVal) {
       activeName.value = "first";
     }
   },
 );
 const attrList = computed(() => {
-  const el = props.data.activeField;
+  const el = props.data.variables.activeField;
 
   if (el.type === MaterialEnum.TjInput) {
     return [TitleAttr, PlaceholderAttr, DescriptionAttr, LayoutAttr, ValueAttr, ValidateAttr, AuthAttr];

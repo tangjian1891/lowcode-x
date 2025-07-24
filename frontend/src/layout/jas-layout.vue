@@ -6,12 +6,12 @@
     <div class="flex-1">
       <jas-resize span="300">
         <template #p1>
-          <jas-side-menu :menuTree="menuTree" :title="`系统模块 - ${systemId || ''}`" @select="handleSideMenuSelect" @refreshMenu="getMenuTree" />
+          <jas-side-menu :menuTree="menuTree" :title="systemInfo.name" @select="handleSideMenuSelect" @refreshMenu="getMenuTree" />
         </template>
         <template #p2>
           <router-view #default="{ Component }">
             <keep-alive :include="cachedViews">
-              <component :menuTree="menuTree" :is="Component ?? AddMenuAccess" @refreshMenu="getMenuTree" />
+              <component :menuTree="menuTree" :systemInfo="systemInfo" :is="Component ?? AddMenuAccess" @refreshMenu="getMenuTree" />
             </keep-alive>
           </router-view>
         </template>
@@ -25,10 +25,8 @@ import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import JasTopLayout from "./components/jas-top-layout.vue";
 import JasSideMenu from "./components/jas-side-menu.vue";
-import JasTabNav from "./components/jas-tab-nav.vue";
 import JasResize from "@/components/jas-resize/jas-resize.vue";
 import AddMenuAccess from "./components/add-menu-access.vue";
-import { instance } from "@/api/request";
 
 const route = useRoute();
 const systemId = route.params.systemId;
@@ -52,8 +50,9 @@ const handleSideMenuSelect = (index: string) => {
   console.log("左侧菜单选择:", index);
   // 这里可以添加路由导航逻辑
 };
-
-onMounted(() => {
+const systemInfo = ref({});
+onMounted(async () => {
+  systemInfo.value = await api.system.info(route.params.systemId as string);
   getMenuTree();
 });
 

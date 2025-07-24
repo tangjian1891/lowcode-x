@@ -1,13 +1,13 @@
 <template>
   <div class="group-list pt-12px">
     <!-- 组件区 -->
-    <vue-draggable :group="data.leftGroup" class="component-list" v-model="data.materialList" :clone="data.onClone">
+    <vue-draggable :group="data.variables.leftGroup" class="component-list" v-model="data.variables.materialList" :clone="data.methods.onClone">
       <li
-        v-for="element in data.materialList"
+        v-for="element in data.variables.materialList"
         :key="element.id"
         class="material-item"
         :class="{ highlight: element.highlight }"
-        @click="data.addFieldByClick(element)"
+        @click="data.methods.addFieldByClick(element)"
       >
         <i v-if="element.icon" class="material-icon" :class="element.icon"></i>
         <span>{{ element.label }}</span>

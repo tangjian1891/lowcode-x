@@ -4,7 +4,7 @@
     <div class="form-design-header flex items-center justify-between p-3 border-b">
       <div class="form-title flex items-center">
         <el-button text icon="ArrowLeft" @click="$router.back()" class="mr-8px" />
-        <el-input v-model="formConfig.title" placeholder="请输入表单名称" class="w-240px" />
+        <el-input v-model="systemInfo.name" placeholder="请输入表单名称" class="w-240px" />
       </div>
       <div class="form-actions flex gap-3">
         <el-button @click="clearForm" type="warning">清空</el-button>
@@ -37,28 +37,117 @@ import JasForm from "./jas-form.vue";
 
 // 当前选中的组件
 const currentComponent = ref<any>(null);
-
-// 表单配置数据
-const formConfig = reactive({
-  title: "未命名表单", // 新增表单标题
-  components: [] as any[],
+const DRAG_NAME = Symbol("DRAG_NAME");
+const route = useRoute();
+const menuId = route.params.menuId as string;
+const systemInfo = ref({});
+// 表单的配置
+const formConfig = ref({
+  fields: [],
+  formTree: [],
   formProps: {
     labelWidth: "120px",
     labelPosition: "right",
     size: "default",
   },
 });
-const route = useRoute();
-const formId = route.params.formId as string;
+const HIDDEN_FIELD = new materialList[0].class();
+const data = reactive({
+  formConfig,
+  // ------------ 表单设计运用到的 ------------
+  variables: {
+    // 右侧配置，隐藏的那个字段
+    HIDDEN_FIELD,
+    // 设计区域的字段
+    materialList,
+    // 字段的映射
+    fieldMapping: computed(() => {
+      const allFields = [...data.formConfig.fields, data.variables.HIDDEN_FIELD];
+      return keyBy(allFields, "id");
+    }),
+    // 当前高亮的字段
+    activeId: HIDDEN_FIELD.id,
+    // 当前高亮的字段
+    activeField: computed(() => {
+      return data.variables.fieldMapping[data.variables.activeId];
+    }),
+    // 左侧拖拽组
+    leftGroup: {
+      name: DRAG_NAME,
+      pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
+        return "clone";
+      },
+    },
+    // 中间设计区域的拖拽组
+    centerGroup: {
+      name: DRAG_NAME,
+    },
+    // 折叠的拖拽组
+    collapseGroup: {
+      name: DRAG_NAME,
+    },
+  },
+  methods: {
+    // 克隆元素
+    onClone(element: MaterialElement) {
+      return new element.class();
+    },
+    // 添加字段到设计区域
+    addFieldByClick(element: MaterialElement) {
+      const field = data.onClone(element);
+      data.methods.addField2Design(field);
+    },
+    // 添加字段到设计区域
+    onAdd(event: DraggableEvent) {
+      const field = event.clonedData;
+      data.methods.addField2Design(field);
+    },
+    // 添加字段到设计区域
+    addField2Design(field) {
+      console.log("添加了 ", field);
+
+      const newField = cloneDeep(field);
+      data.formConfig.fields.push(newField);
+      utils.resetObjectProperties(field, ["id"]);
+      data.methods.clickField(field);
+    },
+    // 高亮
+    clickField(field: { id: string }) {
+      data.variables.activeId = field.id;
+    },
+    // 删除元素
+    deleteField(field: any) {
+      const parent = utils.findParentNode(data.formTree, field.id) as any[];
+      const index = parent.findIndex((item) => item.id === field.id);
+      if (index > -1) {
+        // 从树中移除
+        parent.splice(index, 1);
+        // 从组件中移除fields
+        const idx = data.fields.indexOf(field);
+        if (idx > -1) {
+          data.fields.splice(idx, 1);
+        }
+        // 高亮
+        data.clickField(data.HIDDEN_FIELD);
+      }
+    },
+    // 复制元素
+    copyField(field: any) {
+      console.log("复制元素", field);
+
+      const mapping = keyBy(data.variables.materialList, "type");
+      const element = mapping[field.type] as MaterialElement;
+      const newField = data.methods.onClone(element);
+      data.formConfig.fields.push(newField);
+    },
+  },
+});
+
 onMounted(async () => {
-  let res = await instance.request({
-    url: "/forms/relateId/" + formId,
-    method: "GET",
-  });
-  if (res) {
-    data.fields = res.fields;
-    data.formTree = res.formTree;
-    data.id = res.id;
+  const res = await api.menu.info(menuId);
+  systemInfo.value = res;
+  if (res.value) {
+    formConfig.value = res.value;
   }
 });
 
@@ -74,7 +163,7 @@ const previewForm = () => {
   const dialog = createDialog(
     JasForm,
     {
-      formId,
+      menuId,
       close() {
         dialog.close();
       },
@@ -93,7 +182,7 @@ const saveForm = async () => {
     formTree: data.formTree,
     // id,
     id: data.id,
-    relateId: formId,
+    relateId: menuId,
   };
   console.log(d);
 
@@ -105,85 +194,6 @@ const saveForm = async () => {
 
   ElMessage.success("表单已保存");
 };
-
-const DRAG_NAME = Symbol("DRAG_NAME");
-const HIDDEN_FIELD = new materialList[0].class();
-const data = reactive({
-  HIDDEN_FIELD,
-  activeId: HIDDEN_FIELD.id,
-  fieldMapping: computed(() => {
-    const allFields = [...data.fields, data.HIDDEN_FIELD];
-    return keyBy(allFields, "id");
-  }),
-  activeField: computed(() => {
-    return data.fieldMapping[data.activeId];
-  }),
-  materialList,
-  fields: [],
-  formTree: [],
-  leftGroup: {
-    name: DRAG_NAME,
-    pull: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
-      return "clone";
-    },
-  },
-  onClone(element: MaterialElement) {
-    return new element.class();
-  },
-  addFieldByClick(element: MaterialElement) {
-    console.log("触发了两次吗");
-
-    const field = data.onClone(element);
-    console.log(cloneDeep(field));
-
-    data.addField2Design(field);
-  },
-  centerGroup: {
-    name: DRAG_NAME,
-  },
-  collapseGroup: {
-    name: DRAG_NAME,
-  },
-  onAdd(event: DraggableEvent) {
-    const field = event.clonedData;
-    data.addField2Design(field);
-  },
-  // 添加字段到设计区域
-  addField2Design(field) {
-    const newField = cloneDeep(field);
-    data.fields.push(newField);
-    utils.resetObjectProperties(field, ["id"]);
-    data.clickField(field);
-    data.formTree.push(field);
-  },
-
-  // 高亮
-  clickField(field: { id: string }) {
-    data.activeId = field.id;
-  },
-  // 删除元素
-  deleteField(field: any) {
-    const parent = utils.findParentNode(data.formTree, field.id) as any[];
-    const index = parent.findIndex((item) => item.id === field.id);
-    if (index > -1) {
-      // 从树中移除
-      parent.splice(index, 1);
-      // 从组件中移除fields
-      const idx = data.fields.indexOf(field);
-      if (idx > -1) {
-        data.fields.splice(idx, 1);
-      }
-      // 高亮
-      data.clickField(data.HIDDEN_FIELD);
-    }
-  },
-  copyField(field: any) {
-    const mapping = keyBy(data.materialList, "type");
-    const element = mapping[field.type] as MaterialElement;
-    const newField = data.onClone(element);
-    data.fields.push(newField);
-  },
-});
 
 // 设置当前选中的组件
 const setCurrentComponent = (component: any) => {

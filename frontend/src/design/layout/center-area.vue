@@ -2,12 +2,19 @@
   <div class="center-form">
     <!-- 表单设计渲染-拖拽放入区 -->
     <el-form class="drag-form jas-scrollbar" ref="ruleFormRef" :model="designForm">
-      <vue-draggable :tag="ElRow" @remove="onRemove" class="drag-components-area" v-model="data.formTree" :group="data.centerGroup" @add="data.onAdd">
+      <vue-draggable
+        :tag="ElRow"
+        @remove="onRemove"
+        class="drag-components-area"
+        v-model="data.formConfig.formTree"
+        :group="data.variables.centerGroup"
+        @add="data.methods.onAdd"
+      >
         <component
-          :field="data.fieldMapping[f.id]"
+          :field="data.variables.fieldMapping[f.id]"
           :data="data"
-          :is="designComponentMap[data.fieldMapping[f.id].type]"
-          v-for="f in data.formTree"
+          :is="designComponentMap[data.variables.fieldMapping[f.id].type]"
+          v-for="f in data.formConfig.formTree"
           :key="f.id"
         ></component>
       </vue-draggable>

@@ -10,32 +10,7 @@
       @select="(menuId) => JasLayout.menuSelect(menuId, menuTree, router)"
     >
       <!-- 动态渲染菜单项，替换原来的静态菜单 -->
-      <template v-for="folder in menuTree" :key="folder.id">
-        <el-sub-menu v-if="folder.type === MenuType.FOLDER" :index="folder.id">
-          <template #title>
-            <el-icon><component :is="folder.icon || 'Folder'" /></el-icon>
-            <span>{{ folder.name }}</span>
-          </template>
-
-          <!-- 渲染菜单项 -->
-          <template v-for="menu in folder.children" :key="menu.id">
-            <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
-              <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
-                <span class="flex items-center flex-1">
-                  <el-icon>
-                    <component :is="getMenuIcon(menu)" />
-                  </el-icon>
-                  <span style="margin-left: 6px">{{ menu.name }}</span>
-                </span>
-                <span class="flex items-center">
-                  <el-link underline="never" icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
-                  <el-link underline="never" icon="Delete" @click.stop="removeMenu(menu)" class="ml-6px" />
-                </span>
-              </div>
-            </el-menu-item>
-          </template>
-        </el-sub-menu>
-      </template>
+      <JasSideMenuItem v-for="menu in menuTree" :key="menu.id" :menu="menu" />
     </el-menu>
   </div>
 </template>
@@ -46,6 +21,7 @@ import { ref, computed } from "vue";
 import { initSystemMenu } from "../menu-data";
 import { JasLayout, Menu, MenuType, SubMenuType } from "../index";
 import { useRouter } from "vue-router";
+import JasSideMenuItem from "./jas-side-menu-item.vue";
 const router = useRouter();
 
 // 为initSystemMenu函数提供系统ID参数

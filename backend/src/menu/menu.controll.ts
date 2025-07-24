@@ -15,6 +15,11 @@ export class MenuControll {
     }
   }
 
+  @Get("info")
+  async info(@Query("id") id: string) {
+    return await this.menuService.findById(id);
+  }
+
   @Get()
   async findAll(@Query("page") page = 1, @Query("limit") limit = 10, @Query("keyword") keyword?: string) {
     return await this.menuService.findAll();

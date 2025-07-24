@@ -48,6 +48,7 @@ interface SystemItem {
 
 const user = useUser();
 const loading = ref(false);
+const router = useRouter();
 
 const fetchSystems = async () => {
   try {
@@ -90,7 +91,7 @@ const handleCreateSystem = () => {
 const handleSystemClick = (system: SystemItem) => {
   ElMessage.info(`进入系统：${system.name}`);
   // 这里可以添加路由跳转逻辑
-  // router.push(`/system/${system.id}`);
+  router.push(`/jas-layout/${system.id}`);
 };
 
 const handleSettingClick = (system: SystemItem) => {

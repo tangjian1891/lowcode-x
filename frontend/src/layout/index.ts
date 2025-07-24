@@ -91,7 +91,7 @@ class JasLayout {
     router.push({
       name: "design",
       params: {
-        formId: menu.id,
+        menuId: menu.id,
       },
     });
   }

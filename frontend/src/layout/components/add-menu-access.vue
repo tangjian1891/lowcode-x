@@ -40,15 +40,18 @@ import { Folder, Menu } from "@element-plus/icons-vue";
 import { createDialog } from "@/tj-dialog";
 const props = defineProps({
   menuTree: Array,
+  systemInfo: Object,
 });
 const emit = defineEmits(["add-directory", "add-menu", "refreshMenu"]);
 const selectedParentId = ref("");
 function addMenu(type: MenuType) {
-  createDialog(addMenuComponent, {
+  const dialog = createDialog(addMenuComponent, {
     menuTree: props.menuTree,
     parentId: selectedParentId.value,
+    systemInfo: props.systemInfo,
     type: type,
     onConfirm() {
+      dialog.close();
       emit("refreshMenu");
     },
   });
@@ -57,21 +60,21 @@ function addMenu(type: MenuType) {
 
 <script lang="tsx">
 import { MenuType, SubMenuType } from "../index";
-import { instance } from "@/api/request";
 
 const addMenuComponent = defineComponent({
   name: "add-menu-dialog",
-  props: ["menuTree", "parentId", "type"],
+  props: ["componentOptions", "menuTree"],
   data() {
     return {
       form: {
         name: "",
-        type: this.type || MenuType.FOLDER,
+        type: this.componentOptions.type || MenuType.FOLDER,
         subType: SubMenuType.GENERAL_FORM,
         value: "",
         icon: "",
-        parentId: this.parentId || "",
+        parentId: this.componentOptions.parentId || "",
         order: 0,
+        systemId: this.componentOptions.systemInfo.id,
       },
       formResetter: utils.createSmartResetter(this.form),
       menuTypeOptions: [
@@ -97,14 +100,9 @@ const addMenuComponent = defineComponent({
       console.log(formRef);
       formRef.validate(async (flag) => {
         if (flag) {
-          const res = await instance.request({
-            url: "/menu",
-            method: "POST",
-            data: this.form,
-          });
-          console.log("保存成功");
-          this.$emit("confirm");
-          this.$emit("close");
+          await api.menu.create(this.form);
+          ElMessage.success("保存成功");
+          this.componentOptions.onConfirm();
         }
       });
     },
@@ -176,7 +174,7 @@ const addMenuComponent = defineComponent({
           <el-tree-select
             modelValue={this.form.parentId}
             onUpdate:modelValue={this.handleParentSelect}
-            data={this.menuTree}
+            data={this.componentOptions.menuTree}
             node-key="id"
             props={{ label: "name", children: "children", disabled: (node) => node.type !== MenuType.FOLDER }}
             clearable

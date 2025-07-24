@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/jas-layout/1231313/1",
+      redirect: "/workbench",
     },
     {
       path: "/workbench",
@@ -30,7 +30,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/design/:formId",
+      path: "/design/:menuId",
       name: "design",
       component: () => import("@/design/index.vue"),
     },
