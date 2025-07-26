@@ -9,7 +9,7 @@ export class MenuService {
   /**
    * 获取菜单树
    */
-  async findTree(): Promise<any[]> {
+  async tree(): Promise<any[]> {
     // 查询所有菜单
     const menus = await this.menuService.find().lean();
 
@@ -35,21 +35,9 @@ export class MenuService {
     });
     return tree;
   }
-  /**
-   * 查询所有菜单
-   * @returns
-   */
-  async findAll() {
-    const menus = await this.menuService.find();
-    return menus;
-  }
 
-  async findById(id: string) {
-    const data = await this.menuService.findById(id);
-    if (!data) {
-      throw new Error("菜单id不存在");
-    }
-    return data;
+  async info(id: string) {
+    return await this.menuService.findById(id);
   }
 
   async create(data: Menu & { id?: string }) {
@@ -60,18 +48,10 @@ export class MenuService {
     }
   }
 
-  async update(id: string, data: Menu) {
-    const updated = await this.menuService.findByIdAndUpdate(id, { ...data }, { new: true });
-    return updated;
-  }
-
-  async remove(id: string) {
-    await this.menuService.findByIdAndDelete(id);
-
-    return { success: true, id };
-  }
-
-  async removeMany(ids: string[]): Promise<{ deletedCount: number }> {
-    return await this.menuService.deleteMany({ _id: { $in: ids } });
+  async remove(id: string | string[]): Promise<any> {
+    if (!Array.isArray(id)) {
+      id = [id];
+    }
+    return await this.menuService.deleteMany({ _id: { $in: id } }).exec();
   }
 }

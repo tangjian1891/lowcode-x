@@ -6,42 +6,26 @@ import { Menu } from "./menu.schema";
 export class MenuControll {
   constructor(private readonly menuService: MenuService) {}
   @Post("create")
-  async create(@Body() data: Menu & { id?: string }) {
-    const id: any = data.id;
-    if (id) {
-      return await this.menuService.update(id, data);
-    } else {
-      return await this.menuService.create(data);
-    }
+  async create(@Body() data: Menu) {
+    return await this.menuService.create(data);
   }
 
   @Get("info")
   async info(@Query("id") id: string) {
-    return await this.menuService.findById(id);
+    return await this.menuService.info(id);
   }
 
-  @Get()
-  async findAll(@Query("page") page = 1, @Query("limit") limit = 10, @Query("keyword") keyword?: string) {
-    return await this.menuService.findAll();
+  @Post("remove")
+  async remove(@Body() data: { id?: string; ids?: string[] }): Promise<any> {
+    const id = data.id ?? data.ids;
+    if (!id) {
+      throw new Error("Missing id or ids");
+    }
+    return await this.menuService.remove(id);
   }
 
   @Get("tree")
-  async findTree() {
-    return await this.menuService.findTree();
-  }
-
-  @Get(":id")
-  async findById(@Param("id") id: string) {
-    return await this.menuService.findById(id);
-  }
-
-  @Put(":id")
-  async update(@Param("id") id: string, @Body() data: Menu) {
-    return await this.menuService.update(id, data);
-  }
-
-  @Delete()
-  async remove(@Body() data: { ids: string[] }) {
-    return await this.menuService.removeMany(data.ids);
+  async tree(): Promise<any[]> {
+    return await this.menuService.tree();
   }
 }
