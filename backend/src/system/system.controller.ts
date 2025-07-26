@@ -5,11 +5,6 @@ import { System } from "./system.schema";
 export class SystemController {
   constructor(private systemService: SystemService) {}
 
-  @Get("listByUserId")
-  async listByUserId(@Query("userId") userId: string) {
-    return await this.systemService.findAll({ userId });
-  }
-
   @Post("create")
   async save(@Body() data: System) {
     return await this.systemService.create(data);
@@ -17,6 +12,20 @@ export class SystemController {
 
   @Get("info")
   async info(@Query("id") id: string) {
-    return await this.systemService.findById(id);
+    return await this.systemService.info(id);
+  }
+
+  @Post("remove")
+  async async(@Body() data: { id?: string; ids?: string[] }): Promise<any> {
+    const id = data.id ?? data.ids;
+    if (!id) {
+      throw new Error("Missing id or ids");
+    }
+    return await this.systemService.remove(id);
+  }
+
+  @Post("list")
+  async list(@Body("query") query: any, @Body("page") page: number, @Body("pageSize") pageSize: number) {
+    return await this.systemService.page(query, page, pageSize);
   }
 }

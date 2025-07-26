@@ -7,37 +7,38 @@ import { Model } from "mongoose";
 export class SystemService {
   constructor(@InjectModel(System.name) private systemModel: Model<System>) {}
 
-  // 查询所有
-  async findAll(query: any): Promise<System[]> {
-    return await this.systemModel.find(query).exec();
-  }
-
-  // 根据ID查询
-  async findById(id: string): Promise<System | null> {
-    return await this.systemModel.findById(id).exec();
-  }
-
   // 创建新记录
-  async create(data: Partial<System>): Promise<System> {
-    return await this.systemModel.create(data);
+  async create(data: Partial<System> & { id?: string }): Promise<System> {
+    if (data.id) {
+      const system = await this.systemModel.findByIdAndUpdate(data.id, data).exec();
+      if (!system) {
+        throw new Error("数据不存在，更新失败");
+      }
+      return system;
+    } else {
+      return await this.systemModel.create(data);
+    }
   }
 
-  // 根据ID更新
-  async updateById(id: string, update: Partial<System>): Promise<System | null> {
-    return await this.systemModel.findByIdAndUpdate(id, update).exec();
+  async remove(id: string | string[]): Promise<any> {
+    if (!Array.isArray(id)) {
+      id = [id];
+    }
+    return await this.systemModel.deleteMany({ _id: { $in: id } }).exec();
   }
 
-  // 根据ID删除
-  async deleteById(id: string): Promise<any> {
-    return await this.systemModel.findByIdAndDelete(id).exec();
+  async info(id: string): Promise<System | null> {
+    return this.systemModel.findById(id);
   }
 
-  // 分页查询
-  async findPage(query: any, page: number, pageSize: number): Promise<{ data: System[]; total: number }> {
-    const skip = (page - 1) * pageSize;
+  async page(query: any, page: number, pageSize: number): Promise<{ data: System[]; total: number }> {
     const [data, total] = await Promise.all([
-      this.systemModel.find(query).skip(skip).limit(pageSize).exec(),
-      this.systemModel.countDocuments(query).exec(),
+      this.systemModel
+        .find(query)
+        .skip((page - 1) * pageSize)
+        .limit(pageSize)
+        .exec(),
+      this.systemModel.countDocuments(),
     ]);
     return { data, total };
   }
