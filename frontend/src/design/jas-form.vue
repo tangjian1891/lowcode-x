@@ -35,7 +35,7 @@ onMounted(async () => {
 
   Object.assign(data, menu.value);
   if (!isNil(id)) {
-    let res2 = await api.form.getDataById(formId, id);
+    let res2 = await api.form.info(formId, id);
     console.log(res2);
     Object.assign(form, res2);
   }

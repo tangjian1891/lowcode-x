@@ -49,4 +49,7 @@ export class UserService {
     ]);
     return { data, total };
   }
+  async find(query: any): Promise<User[]> {
+    return await this.userModel.find(query).exec();
+  }
 }

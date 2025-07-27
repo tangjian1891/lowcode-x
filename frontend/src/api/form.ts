@@ -19,15 +19,16 @@ export const form = {
     });
   },
 
-  getDataById(formId: string, id: string) {
+  info(menuId: string, id: string) {
     return instance({
-      url: `forms/get/${formId}/${id}`,
+      url: `forms/${menuId}/info`,
       method: "GET",
+      params: { id },
     });
   },
 
   list(menuId: string) {
-    return instance.get(`/forms/${menuId}/list`);
+    return instance.post(`/forms/${menuId}/list`);
   },
   create(menuId: string, data: any) {
     return instance.post(`/forms/${menuId}/create`, data);

@@ -31,10 +31,10 @@ export class SystemService {
     return this.systemModel.findById(id);
   }
 
-  async page(query: any, page: number, pageSize: number): Promise<{ data: System[]; total: number }> {
+  async page(userId: string, query: any, page: number, pageSize: number): Promise<{ data: System[]; total: number }> {
     const [data, total] = await Promise.all([
       this.systemModel
-        .find(query)
+        .find({ userId, ...query })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
         .exec(),

@@ -1,11 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { Menu } from "./menu.schema";
-import { Model } from "mongoose";
+import { Connection, Model } from "mongoose";
 
 @Injectable()
 export class MenuService {
-  constructor(@InjectModel(Menu.name) private menuService: Model<Menu>) {}
+  constructor(
+    @InjectModel(Menu.name) private menuService: Model<Menu>,
+    @InjectConnection() private connection: Connection,
+  ) {}
   /**
    * 获取菜单树
    */
@@ -36,16 +39,24 @@ export class MenuService {
     return tree;
   }
 
-  async info(id: string) {
+  async info(id: string): Promise<Menu | null> {
     return await this.menuService.findById(id);
   }
 
   async create(data: Menu & { id?: string }) {
+    let res;
     if (data.id) {
-      return await this.menuService.findByIdAndUpdate(data.id, data).exec();
+      res = await this.menuService.findByIdAndUpdate(data.id, data).exec();
+      // 移除已有模型
+      const modelName: string = `dynamic_form_${data.id}`;
+      if (this.connection.models[modelName]) {
+        this.connection.deleteModel(modelName);
+      }
     } else {
-      return await this.menuService.create(data);
+      res = await this.menuService.create(data);
     }
+
+    return res;
   }
 
   async remove(id: string | string[]): Promise<any> {

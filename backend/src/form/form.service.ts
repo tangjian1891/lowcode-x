@@ -19,6 +19,9 @@ export class FormService {
     let model = this.connection.models[modelName];
     if (!model) {
       const menu = await this.menuService.info(menuId);
+      if (!menu) {
+        throw new NotFoundException(`菜单ID为 ${menuId} 的记录不存在`);
+      }
       const schema = this.getModelByMenu(menu);
       model = this.connection.model(modelName, schema);
     }
@@ -48,9 +51,9 @@ export class FormService {
   async create(menuId: string, data: any) {
     const model = await this.getDynamicModel(menuId);
     if (data.id) {
-      return await model.create(data);
-    } else {
       return await model.findByIdAndUpdate(data.id, data);
+    } else {
+      return await model.create(data);
     }
   }
 
@@ -62,7 +65,7 @@ export class FormService {
     return await model.deleteMany({ _id: { $in: id } });
   }
 
-  async info(menuId: striin, id: string) {
+  async info(menuId: string, id: string) {
     const model = await this.getDynamicModel(menuId);
     return await model.findById(id);
   }
@@ -120,15 +123,6 @@ export class FormService {
     }
 
     return form;
-  }
-
-  // 创建表单
-  async create(data: any) {
-    const created = new this.model({
-      ...data,
-    });
-    this.patchAndUpdateCollection(created.id, data.fields, []);
-    return await created.save();
   }
 
   // 更新表单

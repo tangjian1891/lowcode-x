@@ -7,7 +7,11 @@ export const system = {
   info(id: string) {
     return instance.get("/system/info", { params: { id } });
   },
-  listByUserId(userId: string) {
-    return instance.get("/system/listByUserId", { params: { userId } });
+  page(userId: string) {
+    return instance.request({
+      url: "/system/page",
+      method: "post",
+      params: { userId },
+    });
   },
 };

@@ -58,10 +58,10 @@ const fetchSystems = async () => {
       ElMessage.error("用户信息获取失败");
       return;
     }
-    const res = await api.system.listByUserId(currentUser.id);
+    const res = await api.system.page(currentUser.id);
     console.log("没有", res);
 
-    list.value = res || [];
+    list.value = res.data || [];
   } catch (error) {
     console.error("获取系统列表失败:", error);
     ElMessage.error("获取系统列表失败");

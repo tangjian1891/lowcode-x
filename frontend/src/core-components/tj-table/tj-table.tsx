@@ -145,8 +145,8 @@ export class TjTable extends Reactive {
       const data = response as any; // 临时处理类型
 
       // 根据您的 API 返回结构调整
-      this.grid.data = Array.isArray(data) ? data : data.list || [];
-      this.pagination.total = data.total || this.data.length;
+      this.grid.data = data.data;
+      this.pagination.total = data.total;
     } catch (error) {
       console.error("Failed to load table data:", error);
       this.grid.data = [];

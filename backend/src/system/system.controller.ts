@@ -24,8 +24,8 @@ export class SystemController {
     return await this.systemService.remove(id);
   }
 
-  @Post("list")
-  async list(@Body("query") query: any, @Body("page") page: number, @Body("pageSize") pageSize: number) {
-    return await this.systemService.page(query, page, pageSize);
+  @Post("page")
+  async page(@Query("userId") userId: string, @Body("query") query = {}, @Body("page") page = 1, @Body("pageSize") pageSize = 10) {
+    return await this.systemService.page(userId, query, page, pageSize);
   }
 }

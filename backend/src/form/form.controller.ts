@@ -41,25 +41,10 @@ export class FormController {
     }
   }
 
-  // 创建表单
-  @Post()
-  async create(@Body() data: any) {
-    if (data.id) {
-      return await this.formService.update(data.id, data);
-    } else {
-      return await this.formService.create(data);
-    }
-  }
   // 更新表单
   @Put(":id")
   async update(@Param("id") id: string, @Body() data: any) {
     return await this.formService.update(id, data);
-  }
-
-  // 删除单个表单
-  @Delete(":id")
-  async remove(@Param("id") id: string) {
-    return await this.formService.remove(id);
   }
 
   // 批量删除表单
@@ -141,32 +126,21 @@ export class FormController {
     }
   }
 
-  //
-  @Get(":menuId/list")
-  async list(@Param("menuId") menuId: string): Promise<any[]> {
-    const menu = await this.menuService.findById(menuId);
-    const modelName: string = `dynamic_form_${menu._id}`;
-    let model = this.connection.models[modelName];
-    if (!this.connection.models[modelName]) {
-      const schema = this.formService.getDynamicFormModel(menu);
-      model = this.connection.model(modelName, schema);
-    }
-    let res = await model.find();
-
-    return res;
-  }
-
   @Post(":menuId/create")
-  async create2(@Param("menuId") menuId: string, @Body() data: any): Promise<any> {
-    const menu = await this.menuService.findById(menuId);
-    const modelName: string = `dynamic_form_${menu._id}`;
-    let model = this.connection.models[modelName];
-    if (!this.connection.models[modelName]) {
-      const schema = this.formService.getDynamicFormModel(menu);
-      model = this.connection.model(modelName, schema);
-    }
-
-    const res = model.create(data);
-    return res;
+  async create(@Body() data: any, @Param("menuId") menuId: string) {
+    return this.formService.create(menuId, data);
+  }
+  @Get(":menuId/info")
+  async info(@Query("id") id: string, @Param("menuId") menuId: string) {
+    return this.formService.info(menuId, id);
+  }
+  @Post(":menuId/remove")
+  async remove(@Body() data: { id?: string; ids?: string[] }, @Param("menuId") menuId: string) {
+    const id: string | string[] = data.id ?? data.ids ?? "";
+    return await this.formService.remove(menuId, id);
+  }
+  @Post(":menuId/list")
+  async list(@Param("menuId") menuId: string, @Body("query") query: any, @Body("page") page: number, @Body("pageSize") pageSize: number) {
+    return await this.formService.page(menuId, query, page, pageSize);
   }
 }
