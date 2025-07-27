@@ -5,6 +5,7 @@
       <el-icon><component :is="menu.icon || 'Folder'" /></el-icon>
       <span>{{ menu.name }}</span>
     </template>
+    <jas-side-menu-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu" @select="handleSelect" />
   </el-sub-menu>
 
   <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
