@@ -12,10 +12,11 @@ export const form = {
       url: `forms/${formId}/data`,
     });
   },
-  removeById(formId: string, id: string) {
+  remove(menuId: string, id: string) {
     return instance({
-      url: `forms/${formId}/${id}`,
-      method: "DELETE",
+      url: `forms/${menuId}/remove`,
+      method: "post",
+      data: { id },
     });
   },
 

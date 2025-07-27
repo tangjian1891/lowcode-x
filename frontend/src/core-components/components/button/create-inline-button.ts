@@ -55,7 +55,7 @@ export function createInlineButtonFactory(tjTable) {
       button.props.onClick = async (event: Event, rowData: any) => {
         event.stopPropagation();
         console.log("获取到了", tjTable);
-        let res = await api.form.removeById(tjTable.menuId, rowData.row._id);
+        let res = await api.form.remove(tjTable.menuId, rowData.row._id);
         ElMessage.success("删除成功");
         await tjTable.loadData();
         console.log(res);
