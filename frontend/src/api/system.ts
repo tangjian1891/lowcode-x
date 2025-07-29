@@ -14,4 +14,7 @@ export const system = {
       params: { userId },
     });
   },
+  remove(data: anya) {
+    return instance.post("/system/remove", data);
+  },
 };

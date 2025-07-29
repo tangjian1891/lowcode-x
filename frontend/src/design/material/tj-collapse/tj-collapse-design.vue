@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import DesignContainer from "@/design/components/design-container/design-container.vue";
 import { VueDraggable } from "vue-draggable-plus";
 import { designComponentMap } from "..";
 import CollapseDesignContainer from "@/design/components/design-container/collapse-design-container.vue";

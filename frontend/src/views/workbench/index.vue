@@ -14,7 +14,18 @@
         <div class="workbench-item" v-for="item in filteredList" :key="item.id" @click="handleSystemClick(item)">
           <div class="workbench-item-icon">
             <el-avatar :size="40" style="background: #409eff" icon="el-icon-setting" />
-            <el-button class="workbench-item-setting" icon="el-icon-setting" circle size="small" @click.stop="handleSettingClick(item)" />
+            <div class="workbench-item-actions">
+              <el-button class="workbench-item-action" icon="Edit" circle size="small" @click.stop="handleEditClick(item)" title="编辑" />
+              <el-button
+                class="workbench-item-action"
+                icon="Delete"
+                circle
+                size="small"
+                type="danger"
+                @click.stop="handleDeleteClick(item)"
+                title="删除"
+              />
+            </div>
           </div>
           <div class="workbench-item-content">
             <div class="workbench-item-title">{{ item.name }}</div>
@@ -33,11 +44,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { useUser } from "@/stores/user";
 import { ref, computed, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import { ElForm, ElMessage, ElMessageBox } from "element-plus";
 import { api } from "@/api";
+import { createDialog } from "@/tj-dialog";
+import { useRouter } from "vue-router";
 
 interface SystemItem {
   id: string;
@@ -85,7 +98,11 @@ const formatDate = (dateStr?: string) => {
 };
 
 const handleCreateSystem = () => {
-  ElMessage.info("创建子系统功能开发中...");
+  const dialog = createDialog(addDialog, {
+    close() {
+      (dialog as any).close();
+    },
+  });
 };
 
 const handleSystemClick = (system: SystemItem) => {
@@ -98,6 +115,76 @@ const handleSettingClick = (system: SystemItem) => {
   ElMessage.info(`设置系统：${system.name}`);
   // 这里可以添加设置相关逻辑
 };
+
+const handleEditClick = (system: SystemItem) => {
+  const dialog = createDialog(addDialog, {
+    system,
+    close() {
+      (dialog as any).close();
+    },
+  });
+};
+
+const handleDeleteClick = (system: SystemItem) => {
+  ElMessageBox.confirm(`确定要删除子系统"${system.name}"吗？此操作不可恢复。`, "删除确认", {
+    confirmButtonText: "确定删除",
+    cancelButtonText: "取消",
+    type: "warning",
+    confirmButtonClass: "el-button--danger",
+  })
+    .then(async () => {
+      try {
+        await api.system.remove({ id: system.id });
+        ElMessage.success("删除成功");
+        await fetchSystems();
+      } catch (error) {
+        console.error("删除失败:", error);
+        ElMessage.error("删除失败");
+      }
+    })
+    .catch(() => {
+      // 用户取消删除
+    });
+};
+
+const addDialog = defineComponent({
+  name: "AddDialog",
+  props: ["componentOptions"],
+  data() {
+    return {
+      form: this.componentOptions.system ?? {
+        name: name,
+        userId: (useUser().user as any)?.id || "",
+      },
+    };
+  },
+  methods: {
+    async onSubmit() {
+      const res = await api.system.create(this.form);
+      fetchSystems();
+      this.onClose();
+    },
+    onClose() {
+      this.componentOptions.close();
+    },
+  },
+  render() {
+    return (
+      <ElForm>
+        <el-form-item label="子系统名称">
+          <el-input modelValue={this.form.name} onUpdate:modelValue={(v: string) => (this.form.name = v)} placeholder="请输入子系统名称" />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" onclick={this.onSubmit}>
+            提交
+          </el-button>
+          <el-button onClick={this.onClose}>取消</el-button>
+        </el-form-item>
+      </ElForm>
+    );
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -189,19 +276,43 @@ const handleSettingClick = (system: SystemItem) => {
     color: #fff;
     margin-right: 8px;
   }
-  .workbench-item-setting {
+  .workbench-item-actions {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #f5f7fa;
-    color: #409eff;
-    border: none;
+    display: flex;
+    gap: 4px;
     opacity: 0;
     transition: opacity 0.2s ease;
+
+    .workbench-item-action {
+      background: #f5f7fa;
+      border: 1px solid #dcdfe6;
+
+      &:first-child {
+        color: #409eff;
+      }
+
+      &.el-button--danger {
+        color: #f56c6c;
+        border-color: #f56c6c;
+
+        &:hover {
+          background: #f56c6c;
+          color: #fff;
+        }
+      }
+
+      &:hover:not(.el-button--danger) {
+        background: #409eff;
+        color: #fff;
+        border-color: #409eff;
+      }
+    }
   }
 }
 
-.workbench-item:hover .workbench-item-setting {
+.workbench-item:hover .workbench-item-actions {
   opacity: 1;
 }
 .workbench-item-content {
