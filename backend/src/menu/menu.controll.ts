@@ -25,7 +25,7 @@ export class MenuControll {
   }
 
   @Get("tree")
-  async tree(): Promise<any[]> {
-    return await this.menuService.tree();
+  async tree(@Query("systemId") systemId: string): Promise<any[]> {
+    return await this.menuService.tree(systemId);
   }
 }

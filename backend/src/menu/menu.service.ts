@@ -12,9 +12,9 @@ export class MenuService {
   /**
    * 获取菜单树
    */
-  async tree(): Promise<any[]> {
+  async tree(systemId: string): Promise<any[]> {
     // 查询所有菜单
-    const menus = await this.menuService.find().lean();
+    const menus = await this.menuService.find({ systemId }).lean();
 
     // 构建id到菜单的映射
     const menuMap = new Map<string, any>();

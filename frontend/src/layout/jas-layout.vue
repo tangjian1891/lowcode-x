@@ -56,8 +56,8 @@ onMounted(async () => {
   getMenuTree();
 });
 
-async function getMenuTree(params: type) {
-  menuTree.value = await api.menu.getMenuTree();
+async function getMenuTree() {
+  menuTree.value = await api.menu.tree(systemInfo.value.id);
 }
 </script>
 
