@@ -4,6 +4,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: "/amap",
+      name: "amap",
+      component: () => import("@/views/amap/index.vue"),
+    },
+    {
       path: "/",
       redirect: "/workbench",
     },

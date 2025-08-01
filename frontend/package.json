@@ -15,6 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.9.0",
     "element-plus": "^2.9.7",
@@ -29,6 +30,7 @@
     "vxe-table": "^4.12.5"
   },
   "devDependencies": {
+    "@amap/amap-jsapi-types": "^0.0.15",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.14.0",
     "@unocss/eslint-config": "^66.1.0-beta.12",
