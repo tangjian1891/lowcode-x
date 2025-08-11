@@ -39,6 +39,7 @@ import * as Layer from "ol/layer";
 import * as Source from "ol/source";
 import * as Style from "ol/style";
 import * as Interaction from "ol/interaction";
+import { Measure } from "./measure";
 
 const props = defineProps({
   map: {
@@ -62,6 +63,10 @@ onMounted(() => {
     props.map.addLayer(measureLayer);
   }, 0);
 });
+
+const layerAndOverlay: { measureLayer: Measure[] } = {
+  measureLayer: [],
+};
 // 树形控制结构
 const controlTree = reactive([
   {
@@ -123,36 +128,8 @@ const controlTree = reactive([
         visible: true,
         active: false,
         onClick: () => {
-          if (draw) {
-            props.map.removeInteraction(draw);
-            draw = null;
-          }
-          draw = new Interaction.Draw({
-            source: measureSource,
-            type: "LineString",
-          });
-
-          draw.on("drawend", (e) => {
-            console.log("绘制结束", e);
-            const geom = e.feature.getGeometry();
-            const length = Sphere.getLength(geom);
-            console.log(length);
-            e.feature.setStyle(
-              new Style.Style({
-                stroke: new Style.Stroke({ color: "red", width: 2 }),
-                text: new Style.Text({
-                  text: length + "m",
-                  placement: "line",
-                  font: "12px sans-serif",
-                  fill: new Style.Fill({ color: "#fff" }),
-                  backgroundFill: new Style.Fill({ color: "rgba(0,0,0,0.6)" }),
-                  padding: [2, 4, 2, 4],
-                }),
-              }),
-            );
-          });
-
-          props.map.addInteraction(draw);
+          const measure = new Measure(props.map);
+          layerAndOverlay.measureLayer.push(measure);
         },
       },
       {
@@ -170,7 +147,9 @@ const controlTree = reactive([
         visible: true,
         active: false,
         onClick: () => {
-          console.log("开启清空测量");
+          layerAndOverlay.measureLayer.forEach((layer: Measure) => {
+            layer.clear();
+          });
         },
       },
     ],
@@ -502,5 +481,43 @@ defineExpose({
     bottom: 10px;
     width: 140px;
   }
+}
+</style>
+
+<style lang="scss">
+.ol-tooltip {
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  color: white;
+  padding: 4px 8px;
+  opacity: 0.7;
+  white-space: nowrap;
+  font-size: 12px;
+  cursor: default;
+  user-select: none;
+}
+.ol-tooltip-measure {
+  opacity: 1;
+  font-weight: bold;
+}
+.ol-tooltip-static {
+  background-color: #ffcc33;
+  color: black;
+  border: 1px solid white;
+}
+.ol-tooltip-measure:before,
+.ol-tooltip-static:before {
+  border-top: 6px solid rgba(0, 0, 0, 0.5);
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  margin-left: -7px;
+  left: 50%;
+}
+.ol-tooltip-static:before {
+  border-top-color: #ffcc33;
 }
 </style>
