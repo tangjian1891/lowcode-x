@@ -9,6 +9,16 @@ const router = createRouter({
       component: () => import("@/views/amap/index.vue"),
     },
     {
+      path: "/amap2",
+      name: "amap2",
+      component: () => import("@/views/amap/amap2.vue"),
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: () => import("@/views/test/index.vue"),
+    },
+    {
       path: "/",
       redirect: "/workbench",
     },

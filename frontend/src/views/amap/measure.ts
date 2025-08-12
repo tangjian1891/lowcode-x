@@ -105,20 +105,52 @@ export class Measure {
       const segmentStyleList = [];
       geom.forEachSegment((a, b) => {
         const segmentLine = new LineString([a, b]);
-        const length = Sphere.getLength(segmentLine);
+        const length = this.formatLength(segmentLine);
         const segmentStyle = _that.segmentStyle.clone();
         const segmentPoint = new Point(segmentLine.getCoordinateAt(0.5));
-        segmentStyle.getText()?.setText(length + "m");
+        segmentStyle.getText()?.setText(length);
         segmentStyle.setGeometry(segmentPoint);
         segmentStyleList.push(segmentStyle);
       });
-      const total = Sphere.getLength(geom);
-      _that.totalStyle.getText().setText("总距离为" + total + "m");
+      const total = this.formatLength(geom);
+
+      _that.totalStyle.getText().setText("总距离为" + total);
       _that.totalStyle.setGeometry(new Point(geom.getLastCoordinate()));
       return [_that.layerStyle, _that.totalStyle, ...segmentStyleList];
+    } else if (geom instanceof Point) {
+      return new Style.Style({
+        fill: new Style.Fill({
+          color: "rgba(255, 255, 255, 0.2)",
+        }),
+        stroke: new Style.Stroke({
+          color: "rgba(0, 0, 0, 0.5)",
+          lineDash: [10, 10],
+          width: 2,
+        }),
+        image: new Style.Circle({
+          radius: 5,
+          stroke: new Style.Stroke({
+            color: "rgba(0, 0, 0, 0.7)",
+          }),
+          fill: new Style.Fill({
+            color: "rgba(255, 255, 255, 0.2)",
+          }),
+        }),
+      });
     }
     return [];
   }
+  formatLength = function (line: LineString): string {
+    const length = Sphere.getLength(line);
+    let output;
+    if (length > 100) {
+      output = Math.round((length / 1000) * 100) / 100 + " " + "km";
+    } else {
+      output = Math.round(length * 100) / 100 + " " + "m";
+    }
+    return output;
+  };
+
   //   清空当前图层
   clear() {
     this.map.removeLayer(this.layer);
