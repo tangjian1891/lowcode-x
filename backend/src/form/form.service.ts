@@ -30,14 +30,19 @@ export class FormService {
   // 根据菜单转换为model
   getModelByMenu(menu: Menu) {
     // 类型保护，兼容 menu.fields 和 menu.value.fields
-    let fields: Array<{ id: string }> = [];
+    type Field = { id: string; type?: string };
+    let fields: Field[] = [];
     if (menu && typeof menu.value === "object" && Array.isArray(menu.value.fields)) {
       fields = menu.value.fields;
     }
     if (fields.length > 0) {
       const schemaObject = fields.reduce(
         (obj, field) => {
-          obj[field.id] = { type: String };
+          if (field.type === "TjUploadImage") {
+            obj[field.id] = { type: mongoose.Schema.Types.Mixed };
+          } else {
+            obj[field.id] = { type: String };
+          }
           return obj;
         },
         {} as Record<string, any>,

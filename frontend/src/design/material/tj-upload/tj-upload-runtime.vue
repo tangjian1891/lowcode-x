@@ -72,7 +72,7 @@ function upload(params: type) {
 function getImgUrl(id: string) {
   // 这里根据你的实际图片存储路径调整
   // 假设七牛云，返回完整图片访问地址
-  return `http://sxy244v5h.hd-bkt.clouddn.com/${id}` + "-thumb"; //缩略图
+  return `${import.meta.env.VITE_QINIU_DOMAIN}/${id}` + "-thumb"; //缩略图
 }
 </script>
 
