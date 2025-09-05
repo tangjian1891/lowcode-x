@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "cd frontend && npm run dev",
-    "debug": "cd backend && npm run start:debug"
+    "debug": "cd backend && npm run start:debug",
+    "docs": "cd docs && npm run docs:dev"
   },
   "keywords": [],
   "author": "",

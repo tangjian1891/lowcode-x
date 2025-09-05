@@ -31,3 +31,4 @@ dist
 dist-ssr
 *.local
 frontend/.eslintrc-auto-import.json
+cache
