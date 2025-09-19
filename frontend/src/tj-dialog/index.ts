@@ -1,6 +1,5 @@
 import { mergeAppContext } from "@/utils/merge-app-context";
-import JasDialog from "./index.vue";
-import type { IJasTable } from "@/core-components/tj-table/types";
+import type { App, Component } from "vue";
 
 // 弹窗尺寸，原则上不再需要外部穿透修改大小了
 export enum DialogSizeEnum {
@@ -43,6 +42,41 @@ export const dialogSizeMapping = {
     margin: "50px auto",
   },
 };
+let JasDialog: Component | null = null;
+export class TjDialog {
+  static Size = DialogSizeEnum;
+  static sizeMapping = dialogSizeMapping;
+  size = DialogSizeEnum.w960;
+  component: Component | null = null;
+  componentProps: any = {};
+  app: App | null = null;
+  mountedDiv: null | Element = document.createElement("div");
+  constructor(component: Component, componentProps: any) {
+    this.component = component;
+    this.componentProps = componentProps;
+  }
+  open() {
+    if (!this.component || !JasDialog) {
+      return;
+    }
+    this.app = createApp(JasDialog, {
+      component: this.component,
+      componentProps: this.componentProps,
+      dialogInstance: this,
+    });
+    mergeAppContext(this.app);
+    this.app.mount(this.mountedDiv);
+    document.body.appendChild(this.mountedDiv!);
+  }
+  close() {
+    if (!this.app || !this.mountedDiv) {
+      return;
+    }
+    this.app.unmount();
+    document.body.removeChild(this.mountedDiv);
+    this.app = this.mountedDiv = null;
+  }
+}
 
 export function createDialog(component: any, componentOptions: any, dialogOptions: any = {}) {
   function close() {
@@ -63,3 +97,7 @@ export function createDialog(component: any, componentOptions: any, dialogOption
   app.close = close;
   return app;
 }
+
+(async () => {
+  JasDialog = (await import("./index.vue")).default;
+})();

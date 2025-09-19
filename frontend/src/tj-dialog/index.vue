@@ -1,14 +1,13 @@
 <template>
   <el-dialog
-    :title="dialogOptions.title || ''"
+    :title="dialogInstance.title || ''"
     v-model="dialogVisible"
-    title="Tips"
     width="500"
-    :before-close="dialogOptions.beforeClose"
-    @close="dialogOptions.close"
+    :before-close="dialogInstance.beforeClose"
+    @close="dialogInstance.close()"
     :style="{ ...styleVarComp }"
   >
-    <component ref="dialogContentRef" :componentOptions="componentOptions" :is="component"></component>
+    <component ref="dialogContentRef" v-bind="componentProps" :dialogInstance="dialogInstance" :is="component"></component>
   </el-dialog>
 </template>
 
@@ -29,47 +28,27 @@ update:modelValue触发，正式关闭。
 -->
 
 <script lang="ts" setup>
-import { DialogSizeEnum, dialogSizeMapping } from "./index";
+import { TjDialog } from "./index";
 defineOptions({
   inheritAttrs: false,
   name: "jas-dialog",
 });
 
-const emit = defineEmits(["close", "confirm"]);
 const dialogVisible = ref(true);
 const dialogContentRef = ref();
 const props = defineProps({
   component: [Object, Function],
-  componentOptions: {
+  componentProps: {
     type: Object,
   },
-  dialogOptions: Object,
-  size: {
-    type: Number,
-    default: () => {
-      return DialogSizeEnum.w960;
-    },
-  },
+  dialogInstance: TjDialog,
 });
 
 const styleVarComp = computed(() => {
-  const obj = dialogSizeMapping[props.size];
-  if (props.height) {
-    obj["--height"] = props.height;
-  }
+  const obj = TjDialog.sizeMapping[props.dialogInstance?.size];
+
   return obj;
 });
-
-watch(
-  () => dialogVisible.value,
-  (newVal) => {
-    if (!newVal) {
-      setTimeout(() => {
-        emit("close");
-      }, 0);
-    }
-  },
-);
 </script>
 
 <style lang="scss" scoped></style>

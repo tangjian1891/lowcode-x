@@ -11,9 +11,9 @@
       />
     </el-row>
   </el-form>
-  <div class="flex justify-end" v-if="isNil(componentOptions.showFooter) ? true : componentOptions.showFooter">
+  <div class="flex justify-end">
     <el-button type="primary" @click="handleSave">保存</el-button>
-    <el-button @click="componentOptions.close">取消</el-button>
+    <el-button @click="dialogInstance.close()">取消</el-button>
   </div>
 </template>
 
@@ -23,14 +23,17 @@ import { runtimeComponentMap } from "./material";
 import { ElMessage } from "element-plus";
 import { instance } from "@/api/request";
 const props = defineProps({
-  componentOptions: Object,
+  dialogInstance: Object,
+  formId: String,
+  id: String,
+  mode: String,
 });
 const data = reactive({
   fields: [],
   formTree: [],
 });
 onMounted(async () => {
-  const { formId, id } = props.componentOptions;
+  const { formId, id } = props;
   const menu = await api.menu.info(formId);
 
   Object.assign(data, menu.value);
@@ -40,7 +43,7 @@ onMounted(async () => {
     Object.assign(form, res2);
   }
 
-  if (props.componentOptions.mode === "detail") {
+  if (props.mode === "detail") {
     // 详情模式下的逻辑
     data.fields.forEach((field) => {
       field.authProps.enabled = false;
@@ -54,12 +57,10 @@ const fieldMapping = computed(() => {
 
 const form = reactive({});
 async function handleSave() {
-  await api.form.create(props.componentOptions.formId, form);
+  await api.form.create(props.formId, form);
   ElMessage.success("保存成功");
-  props.componentOptions.close();
-  if (props.componentOptions.tjTable) {
-    props.componentOptions.tjTable.refresh();
-  }
+  props.dialogInstance.onRefresh();
+  props.dialogInstance.close();
 }
 </script>
 

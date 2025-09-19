@@ -42,6 +42,8 @@
       </div>
     </el-card>
   </div>
+
+  <Qwer></Qwer>
 </template>
 
 <script setup lang="tsx">
@@ -62,6 +64,12 @@ interface SystemItem {
 const user = useUser();
 const loading = ref(false);
 const router = useRouter();
+
+const Qwer = defineComponent({
+  render() {
+    return <div>Qwer</div>;
+  },
+});
 
 const fetchSystems = async () => {
   try {

@@ -1,4 +1,4 @@
-import { createDialog } from "@/tj-dialog/index.ts";
+import { createDialog, TjDialog } from "@/tj-dialog/index.ts";
 import { createButton } from "./button.tsx";
 import JasForm from "@/design/jas-form.vue";
 export function createToolbarButtonFactory(tjTable) {
@@ -7,19 +7,11 @@ export function createToolbarButtonFactory(tjTable) {
       const button = createButton();
       button.props.label = "新增";
       button.props.onClick = () => {
-        const dialog = createDialog(
-          JasForm,
-          {
-            formId: tjTable.menuId,
-            tjTable,
-            close() {
-              dialog.close();
-            },
-          },
-          {
-            title: "新增",
-          },
-        );
+        const dialog = new TjDialog(JasForm, { formId: tjTable.menuId });
+        dialog.open();
+        dialog.onRefresh = () => {
+          tjTable.refresh();
+        };
       };
       return button;
     },
