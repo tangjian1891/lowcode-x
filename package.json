@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cd frontend && npm run dev",
-    "debug": "cd backend && npm run start:debug",
+    "dev": "cd apps/frontend && npm run dev",
+    "debug": "cd apps/backend && npm run start:debug",
     "docs": "cd docs && npm run docs:dev",
     "prepare": "husky"
   },
@@ -28,5 +28,9 @@
     "*.{js,ts,tsx,json,css}": [
       "prettier --write"
     ]
-  }
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
