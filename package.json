@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cd apps/frontend && npm run dev",
-    "debug": "cd apps/backend && npm run start:debug",
-    "docs": "cd docs && npm run docs:dev",
+    "dev": "pnpm --filter frontend dev",
+    "debug": "pnpm --filter backend start:debug",
+    "docs": "pnpm --filter docs docs:dev",
     "prepare": "husky"
   },
   "keywords": [],
