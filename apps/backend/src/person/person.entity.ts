@@ -1,10 +1,7 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { v7 } from "uuid";
+import BaseEntity from "src/common/entities/base.entity";
+import { Column, Entity } from "typeorm";
 @Entity()
-export class Person {
-  @PrimaryColumn("uuid")
-  id: string;
-
+export class Person extends BaseEntity {
   @Column()
   firstName: string;
 
@@ -13,11 +10,4 @@ export class Person {
 
   @Column({ default: true })
   isActive: boolean;
-
-  @BeforeInsert()
-  generateId() {
-    if (!this.id) {
-      this.id = v7();
-    }
-  }
 }

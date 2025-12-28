@@ -16,9 +16,6 @@ import { SystemModule } from "./system/system.module";
 import PersonModule from "./person/person.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-const password = "user1";
-const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
 @Module({
   imports: [
     // ConfigModule.forRoot({
@@ -30,8 +27,8 @@ const uri = `mongodb+srv://user1:${password}@cluster0.lhndjvy.mongodb.net/?retry
     // FormModule,
     // MenuModule,
     // UploadModule,
-    // UserModule,
     // SystemModule,
+    UserModule,
     TypeOrmModule.forRoot({
       type: "postgres",
       host: "123.57.237.100",
