@@ -27,6 +27,13 @@ export class UserController {
     const u = await this.userService.verifyPassword(user);
     return u;
   }
+  @Post("register")
+  async register(@Body() user: User) {
+    console.log(user);
+
+    const u = await this.userService.save(user);
+    return u;
+  }
 
   @Post("save")
   save(@Body() user: User) {

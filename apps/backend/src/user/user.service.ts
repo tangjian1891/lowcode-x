@@ -58,9 +58,9 @@ export class UserService {
     return flag ? u : null;
   }
 
-  // async getJwtToken(payload: { username: string; password: string }): Promise<string> {
-  //   return await this.jwtService.signAsync({ username: payload.username });
-  // }
+  async getJwtToken(payload: { username: string; password: string }): Promise<string> {
+    return await this.jwtService.signAsync({ username: payload.username });
+  }
 
   // async create(data: Partial<User> & { id?: string }): Promise<User> {
   //   if (data.id) {
