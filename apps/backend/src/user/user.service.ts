@@ -35,6 +35,12 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
+  async generateToken(user: User) {
+    const jwt = await this.jwtService.signAsync({ username: user.username, sub: user.id });
+
+    return jwt;
+  }
+
   async verifyPassword(user: User) {
     const u = await this.userRepository.findOne({
       where: { username: user.username },

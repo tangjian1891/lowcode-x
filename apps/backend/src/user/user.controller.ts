@@ -7,7 +7,12 @@ export class UserController {
   @Post("login")
   async login(@Body() user: User) {
     const u = await this.userService.verifyPassword(user);
-    return u;
+
+    const token = await this.userService.generateToken(u!);
+    return {
+      user: u,
+      access_token: token,
+    };
   }
   @Post("register")
   async register(@Body() user: User) {
