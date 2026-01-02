@@ -11,10 +11,10 @@ import { MenuModule } from "./menu/menu.module";
 import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
 import { APP_GUARD } from "@nestjs/core";
-import { AuthGuard } from "./common/auth.guard";
 import { SystemModule } from "./system/system.module";
 import PersonModule from "./person/person.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { JwtAuthGuard } from "./common/guards/jwt.auth.guard";
 
 @Module({
   imports: [
@@ -44,10 +44,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
