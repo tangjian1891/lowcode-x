@@ -1,0 +1,17 @@
+import BaseEntity from "src/common/entities/base.entity";
+import { Column, Entity } from "typeorm";
+@Entity()
+export class FormSchema extends BaseEntity {
+  @Column({ comment: "租户ID" })
+  tenantId: string;
+  @Column({ comment: "表单名称" })
+  name: string;
+  @Column({ type: "jsonb", comment: "表单结构，树结构，仅结构" })
+  structure: any;
+
+  @Column({ type: "jsonb", comment: "表单字段配置,列表结构的数据字段" })
+  fields: any;
+
+  @Column({ comment: "表单描述", default: "" })
+  description: string;
+}

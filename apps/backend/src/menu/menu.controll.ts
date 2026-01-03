@@ -1,31 +1,32 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { MenuService } from "./menu.service";
-import { Menu } from "./menu.schema";
+import { Menu } from "./menu.entity";
 
 @Controller("menu")
 export class MenuControll {
   constructor(private readonly menuService: MenuService) {}
-  @Post("create")
-  async create(@Body() data: Menu) {
-    return await this.menuService.create(data);
+  @Post("save")
+  async save(@Body() menu: Menu) {
+    return await this.menuService.save(menu);
   }
 
-  @Get("info")
-  async info(@Query("id") id: string) {
-    return await this.menuService.info(id);
+  @Post("delete")
+  async remove(@Body("ids") ids: string[]) {
+    return await this.menuService.remove(ids);
   }
 
-  @Post("remove")
-  async remove(@Body() data: { id?: string; ids?: string[] }): Promise<any> {
-    const id = data.id ?? data.ids;
-    if (!id) {
-      throw new Error("Missing id or ids");
-    }
-    return await this.menuService.remove(id);
+  @Get(":id")
+  async findOne(@Param("id") id: string) {
+    return await this.menuService.findOne(id);
   }
 
-  @Get("tree")
-  async tree(@Query("systemId") systemId: string): Promise<any[]> {
-    return await this.menuService.tree(systemId);
+  @Post("tree")
+  async findTree() {
+    return await this.menuService.findTree();
+  }
+
+  @Post("list")
+  async findList(@Body() body: any) {
+    return this.menuService.findAll(body.pageNum, body.pageSize);
   }
 }

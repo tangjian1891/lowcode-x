@@ -1,45 +1,35 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { System } from "./system.schema";
-import { Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { System } from "./system.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class SystemService {
-  constructor(@InjectModel(System.name) private systemModel: Model<System>) {}
+  constructor(@InjectRepository(System) private systemRepository: Repository<System>) {}
 
-  // 创建新记录
-  async create(data: Partial<System> & { id?: string }): Promise<System> {
-    if (data.id) {
-      const system = await this.systemModel.findByIdAndUpdate(data.id, data).exec();
-      if (!system) {
-        throw new Error("数据不存在，更新失败");
-      }
-      return system;
-    } else {
-      return await this.systemModel.create(data);
-    }
+  async save(system: System) {
+    console.log(system);
+
+    const entity = this.systemRepository.create(system);
+    const result = await this.systemRepository.save(entity);
+
+    return result;
   }
 
-  async remove(id: string | string[]): Promise<any> {
-    if (!Array.isArray(id)) {
-      id = [id];
-    }
-    return await this.systemModel.deleteMany({ _id: { $in: id } }).exec();
+  async remove(ids: string[]) {
+    return await this.systemRepository.delete(ids);
   }
 
-  async info(id: string): Promise<System | null> {
-    return this.systemModel.findById(id);
+  async findOne(id: string) {
+    return this.systemRepository.findOne({ where: { id } });
   }
 
-  async page(userId: string, query: any, page: number, pageSize: number): Promise<{ data: System[]; total: number }> {
-    const [data, total] = await Promise.all([
-      this.systemModel
-        .find({ userId, ...query })
-        .skip((page - 1) * pageSize)
-        .limit(pageSize)
-        .exec(),
-      this.systemModel.countDocuments(),
-    ]);
-    return { data, total };
+  async findAll(pageNum: number, pageSize: number) {
+    const [list, total] = await this.systemRepository.findAndCount({
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+    });
+
+    return { list, total, pageNum, pageSize, page: Math.ceil(total / pageSize) };
   }
 }

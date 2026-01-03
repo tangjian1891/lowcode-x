@@ -1,13 +1,11 @@
 import BaseEntity from "src/common/entities/base.entity";
 import { Column, Entity } from "typeorm";
+
 @Entity()
-export class Person extends BaseEntity {
+export class System extends BaseEntity {
   @Column()
-  firstName: string;
+  name: string;
 
   @Column()
-  lastName: string;
-
-  @Column({ default: true })
-  isActive: boolean;
+  userId: string;
 }

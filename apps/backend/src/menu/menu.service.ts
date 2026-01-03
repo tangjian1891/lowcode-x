@@ -1,68 +1,48 @@
 import { Injectable } from "@nestjs/common";
-import { InjectConnection, InjectModel } from "@nestjs/mongoose";
-import { Menu } from "./menu.schema";
-import { Connection, Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Menu } from "./menu.entity";
+import { keyBy } from "lodash-es";
 
 @Injectable()
 export class MenuService {
-  constructor(
-    @InjectModel(Menu.name) private menuService: Model<Menu>,
-    @InjectConnection() private connection: Connection,
-  ) {}
-  /**
-   * 获取菜单树
-   */
-  async tree(systemId: string): Promise<any[]> {
-    // 查询所有菜单
-    const menus = await this.menuService.find({ systemId }).lean();
+  constructor(@InjectRepository(Menu) private menuRepository: Repository<Menu>) {}
 
-    // 构建id到菜单的映射
-    const menuMap = new Map<string, any>();
-    menus.forEach((menu: any) => {
-      menu.children = [];
-      menuMap.set(menu._id.toString(), menu);
+  async save(menu: Menu) {
+    const entity = this.menuRepository.create(menu);
+    const result = await this.menuRepository.save(entity);
+    return result;
+  }
+
+  async remove(ids: string[]) {
+    return await this.menuRepository.delete(ids);
+  }
+
+  async findOne(id: string) {
+    return await this.menuRepository.findOne({ where: { id } });
+  }
+
+  async findAll(pageNum: number, pageSize: number) {
+    const [list, total] = await this.menuRepository.findAndCount({
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
     });
 
-    // 构建树结构
-    const tree: any[] = [];
-    menus.forEach((menu: any) => {
-      menu.id = menu._id;
-      if (menu.parentId) {
-        const parent = menuMap.get(menu.parentId.toString());
-        if (parent) {
-          parent.children.push(menu);
-        }
+    return { list, total, pageNum, pageSize, page: Math.ceil(total / pageSize) };
+  }
+
+  async findTree() {
+    const list = await this.menuRepository.find();
+    const mapping = keyBy(list, "id");
+    const result: Menu[] = [];
+    list.forEach((item) => {
+      if (item.parentId && mapping[item.parentId]) {
+        item.children ??= [];
+        item.children.push(item);
       } else {
-        tree.push(menu);
+        result.push(item);
       }
     });
-    return tree;
-  }
-
-  async info(id: string): Promise<Menu | null> {
-    return await this.menuService.findById(id);
-  }
-
-  async create(data: Menu & { id?: string }) {
-    let res;
-    if (data.id) {
-      res = await this.menuService.findByIdAndUpdate(data.id, data).exec();
-      // 移除已有模型
-      const modelName: string = `dynamic_form_${data.id}`;
-      if (this.connection.models[modelName]) {
-        this.connection.deleteModel(modelName);
-      }
-    } else {
-      res = await this.menuService.create(data);
-    }
-
-    return res;
-  }
-
-  async remove(id: string | string[]): Promise<any> {
-    if (!Array.isArray(id)) {
-      id = [id];
-    }
-    return await this.menuService.deleteMany({ _id: { $in: id } }).exec();
+    return result;
   }
 }
