@@ -8,6 +8,9 @@ axios.defaults.validateStatus = (status) => {
 const instance = axios.create({
   baseURL: "http://127.0.0.1:3000/",
   // baseURL: "https://backend-uy6g.onrender.com",
+  validateStatus(status) {
+    return status > 200 && status < 300; // 200-299 都认为是成功
+  },
 });
 
 // 添加请求拦截器
@@ -21,13 +24,11 @@ instance.interceptors.response.use(
   function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    if (response.data.code !== 0) {
-      ElMessage.error(response.data.message);
-      return Promise.reject(response);
-    }
-    return response.data.data;
+    return response.data;
   },
   (error) => {
+    console.log("还能调进来吗", error);
+
     // 错误处理
     if (isAxiosError(error)) {
       const { status } = error.response as any;

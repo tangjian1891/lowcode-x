@@ -79,7 +79,10 @@ const fetchSystems = async () => {
       ElMessage.error("用户信息获取失败");
       return;
     }
-    const res = await api.system.page(currentUser.id);
+    const res = await api.system.page({
+      pageNum: 1,
+      pageSize: 100,
+    });
     console.log("没有", res);
 
     list.value = res.data || [];

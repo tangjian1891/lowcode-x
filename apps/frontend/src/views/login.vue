@@ -57,7 +57,7 @@ const handleLogin = async () => {
       data: loginForm.value,
       url: "user/login",
     });
-    localStorage.setItem("token", res.token);
+    localStorage.setItem("token", res.access_token);
     useUser().user = res.user;
 
     // 跳转到首页或其他页面

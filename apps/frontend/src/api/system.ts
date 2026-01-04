@@ -7,11 +7,11 @@ export const system = {
   info(id: string) {
     return instance.get("/system/info", { params: { id } });
   },
-  page(userId: string) {
+  page(data) {
     return instance.request({
-      url: "/system/page",
+      url: "/system/list",
       method: "post",
-      params: { userId },
+      data,
     });
   },
   remove(data: anya) {
