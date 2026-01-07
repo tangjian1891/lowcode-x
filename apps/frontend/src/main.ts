@@ -22,6 +22,7 @@ import { AddRuleButton } from "./components/add-rule-button/add-rule-button";
 import { mergeAppContext } from "./utils/merge-app-context";
 
 import PiniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { setMainApp } from "./utils/create-app-with-provider";
 
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -80,5 +81,7 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 app.mount("#app");
+
+setMainApp(app);
 
 mergeAppContext(app);
