@@ -73,7 +73,7 @@ const addTab = (menu: Menu) => {
     tabList.value.push({
       id: menu.id,
       name: menu.name,
-      route: `/jas-layout/${route.params.systemId}/${menu.id}`,
+      route: `/app-layout/${route.params.systemId}/${menu.id}`,
     });
   }
 

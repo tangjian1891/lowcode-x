@@ -1,16 +1,7 @@
 <template>
-  <el-button @click="open">这是啥</el-button>
   <router-view></router-view>
 </template>
-<script setup lang="tsx">
-import { ElButton } from "element-plus";
-import { AppDialog } from "./AppUI/AppDialog/AppDialog";
-import Qwer from "./qwer.vue";
-
-function open() {
-  const appDialog = AppDialog.create(Qwer);
-}
-</script>
+<script setup lang="tsx"></script>
 
 <!-- 满屏情况下：按高清屏幕1920*1080正常显示  Full HD-->
 <style>

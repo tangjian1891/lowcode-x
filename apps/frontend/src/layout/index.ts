@@ -81,7 +81,7 @@ class JasLayout {
   static goRoute(router: Router, menu: Menu) {
     const currentRoute = router.currentRoute.value;
     router.push({
-      path: `/jas-layout/${currentRoute.params.systemId}/${menu.id}`,
+      path: `/app-layout/${currentRoute.params.systemId}/${menu.id}`,
     });
   }
 

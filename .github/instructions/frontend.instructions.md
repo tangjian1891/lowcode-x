@@ -46,7 +46,7 @@ applyTo: "frontend/**"
 ### 组件命名规范
 
 - 通用组件: PascalCase (如 `HelloWorld.vue`)
-- 业务组件: kebab-case 前缀 (如 `tj-input`, `jas-layout`)
+- 业务组件: kebab-case 前缀 (如 `tj-input`, `app-layout`)
 - 核心组件: `tj-` 前缀，存放在 `core-components/` 目录
 
 ### 目录结构规范

@@ -28,9 +28,9 @@ const router = createRouter({
       component: () => import("@/views/workbench/index.vue"),
     },
     {
-      path: "/jas-layout/:systemId",
-      name: "jas-layout",
-      component: () => import("@/layout/jas-layout.vue"),
+      path: "/app-layout/:systemId",
+      name: "app-layout",
+      component: () => import("@/layout/app-layout.vue"),
       children: [
         {
           path: ":menuId",
@@ -64,7 +64,7 @@ router.beforeEach((to, from) => {
   console.log(to.name, to.path);
   if (to.name === "menu") {
     const menuId = to.params.menuId as string;
-    router.addRoute("jas-layout", {
+    router.addRoute("app-layout", {
       path: ":menuId",
       name: menuId,
       component: {

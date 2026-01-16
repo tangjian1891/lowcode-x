@@ -1,21 +1,18 @@
 <template>
   <div class="h-full w-full flex flex-col overflow-hidden">
-    <div class="shrink-0 basis-50px">
-      <jas-top-layout :menuTree="menuTree" @select="handleTopMenuSelect" />
-    </div>
+    <div class="shrink-0 basis-50px"></div>
     <div class="flex-1">
-      <jas-resize span="300">
-        <template #p1>
+      <el-splitter>
+        <el-splitter-panel collapsible min="300">
           <jas-side-menu :menuTree="menuTree" :title="systemInfo.name" @select="handleSideMenuSelect" @refreshMenu="getMenuTree" />
-        </template>
-        <template #p2>
-          <router-view #default="{ Component }">
-            <keep-alive :include="cachedViews">
-              <component :menuTree="menuTree" :systemInfo="systemInfo" :is="Component ?? AddMenuAccess" @refreshMenu="getMenuTree" />
-            </keep-alive>
-          </router-view>
-        </template>
-      </jas-resize>
+        </el-splitter-panel>
+        <router-view #default="{ Component }">
+          <keep-alive :include="cachedViews">
+            <component :menuTree="menuTree" :systemInfo="systemInfo" :is="Component ?? AddMenuAccess" @refreshMenu="getMenuTree" />
+          </keep-alive>
+        </router-view>
+        <el-splitter-panel> </el-splitter-panel>
+      </el-splitter>
     </div>
   </div>
 </template>
@@ -23,9 +20,7 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import JasTopLayout from "./components/jas-top-layout.vue";
 import JasSideMenu from "./components/jas-side-menu.vue";
-import JasResize from "@/components/jas-resize/jas-resize.vue";
 import AddMenuAccess from "./components/add-menu-access.vue";
 
 const route = useRoute();
@@ -52,7 +47,7 @@ const handleSideMenuSelect = (index: string) => {
 };
 const systemInfo = ref({});
 onMounted(async () => {
-  systemInfo.value = await api.system.info(route.params.systemId as string);
+  systemInfo.value = await api.system.detail(route.params.systemId as string);
   getMenuTree();
 });
 

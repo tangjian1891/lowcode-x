@@ -118,7 +118,7 @@ const handleCreateSystem = () => {
 const handleSystemClick = (system: SystemItem) => {
   ElMessage.info(`进入系统：${system.name}`);
   // 这里可以添加路由跳转逻辑
-  router.push(`/jas-layout/${system.id}`);
+  router.push(`/app-layout/${system.id}`);
 };
 
 const handleSettingClick = (system: SystemItem) => {

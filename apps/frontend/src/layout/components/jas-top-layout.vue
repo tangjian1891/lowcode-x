@@ -3,7 +3,7 @@
     <!-- 左侧公司名 -->
     <div class="company-logo flex shrink-0 basis-200px items-center justify-center">
       <h1 class="text-lg font-bold">{{ companyName }}</h1>
-      <el-button @click="$router.push({ name: 'jas-layout' })" class="ml-6px text-16px" circle icon="Plus"></el-button>
+      <el-button @click="$router.push({ name: 'app-layout' })" class="ml-6px text-16px" circle icon="Plus"></el-button>
     </div>
 
     <!-- 中间菜单 -->
