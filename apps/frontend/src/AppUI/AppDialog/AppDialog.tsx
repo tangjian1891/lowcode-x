@@ -13,6 +13,7 @@ export class AppDialog extends reactiveObject {
   app!: App;
   mountedElement: HTMLElement = document.createElement("div");
   teleportId = "app-" + crypto.randomUUID();
+  componentProps: Record<string, any> = {};
   constructor() {
     super();
   }
@@ -25,11 +26,11 @@ export class AppDialog extends reactiveObject {
           return () => {
             return (
               <ElDialog modelValue={true}>
-                <div>
-                  <div>
+                <div class="flex flex-col">
+                  <div class="flex-grow">
                     <component appDialog={appDialog}></component>
                   </div>
-                  <div id={appDialog.teleportId}></div>
+                  <div class="shrink-0 flex justify-end" id={appDialog.teleportId}></div>
                 </div>
               </ElDialog>
             );
@@ -50,4 +51,9 @@ export class AppDialog extends reactiveObject {
   }
 
   open() {}
+
+  destory() {
+    this.app.unmount();
+    document.body.removeChild(this.mountedElement);
+  }
 }

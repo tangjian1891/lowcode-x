@@ -4,13 +4,13 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
-import UnoCSS from "unocss/vite";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    UnoCSS({}),
+    tailwindcss(),
     vueJsx(),
     AutoImport({
       eslintrc: {

@@ -11,11 +11,10 @@ import VxeUITable, { VxeUI } from "vxe-table";
 import "vxe-table/lib/style.css";
 import VxeUIAll from "vxe-pc-ui";
 import "vxe-pc-ui/lib/style.css";
-
+import "@/assets/css/tailwind.css";
 import ElementPlus from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import "element-plus/dist/index.css";
-import "virtual:uno.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
 import { AddRuleButton } from "./components/add-rule-button/add-rule-button";

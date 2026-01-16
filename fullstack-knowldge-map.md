@@ -1,34 +1,22 @@
-- 全栈知识技能图谱
-- 本图展示了前端与后端常用技术体系结构
-- 允许点击节点触发链接
+# 基于上下文的依赖注入(provide/inject)
 
-```mermaid
-graph TD;
-A[前端开发技能] --> B[前端基础]
-A --> C[前端框架]
-A --> P[前端工程化]
-    B --> D["HTML"]
-    D --> DA[详细理解]
-    B --> E[CSS]
-    B --> F[JavaScript]
-    C --> G[React]
-    C --> H[Vue]
-E --> J[语义化标签]
-F --> K[ES6+]
-G --> L[Hooks]
-H --> M[Vue 3]
-C --> N[TypeScript]
-G --> O[Next.js]
-P --> Q[Git]
+1. 多实例共存
+2. 数据在源头定义
+3. 适合大型的复杂业务组件页面
 
-    Z[后端开发技能] --> ZA[Node.js]
-    ZA --> ZB[NestJS]
-    Z --> ZC[数据库]
-    ZC --> ZD[MongoDB]
-    Z --> ZE[运维与部署]
-    ZE --> ZF[域名]
-    ZE --> ZG[DNS解析]
-    ZE --> Q
+# 显示单向数据流（props/event)
 
-class DA  "./docs/html-tags.md";
-```
+1. 业务组件复用
+2. 组件解耦
+3. 数据哪里定义，哪里修改
+4. 服务于小范围的通用组件
+
+后端接口：
+| --- | -- | -- | -- |
+| 接口名称 | 接口地址 | 接口方法 | 接口函数名 |
+| 增加/更新 | save | POST | save |
+| 批量删除 | delete | DELETE | remove |
+| 获取详情 | :id | GET | :id |
+| 获取列表(带分页) | page | POST | page |
+
+前端组件：

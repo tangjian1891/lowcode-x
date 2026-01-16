@@ -19,8 +19,8 @@ export class SystemController {
     return this.systemService.findOne(id);
   }
 
-  @Post("list")
-  findAll(@Body() body: any) {
+  @Post("page")
+  page(@Body() body: any) {
     return this.systemService.findAll(body.pageNum, body.pageSize);
   }
 }

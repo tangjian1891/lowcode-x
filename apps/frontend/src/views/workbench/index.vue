@@ -11,7 +11,7 @@
         <el-button class="workbench-create-btn" type="success" size="small" @click="handleCreateSystem">创建子系统</el-button>
       </div>
       <div class="workbench-list" v-loading="loading">
-        <div class="workbench-item" v-for="item in filteredList" :key="item.id" @click="handleSystemClick(item)">
+        <div class="workbench-item" v-for="item in state.filteredList" :key="item.id" @click="handleSystemClick(item)">
           <div class="workbench-item-icon">
             <el-avatar :size="40" style="background: #409eff" icon="el-icon-setting" />
             <div class="workbench-item-actions">
@@ -36,7 +36,7 @@
           </div>
         </div>
         <!-- 空状态 -->
-        <div v-if="!loading && filteredList.length === 0" class="workbench-empty">
+        <div v-if="!loading && state.filteredList.length === 0" class="workbench-empty">
           <el-empty description="暂无子系统数据" />
         </div>
       </div>
@@ -48,11 +48,11 @@
 
 <script setup lang="tsx">
 import { useUser } from "@/stores/user";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, Teleport } from "vue";
 import { ElForm, ElMessage, ElMessageBox } from "element-plus";
 import { api } from "@/api";
-import { createDialog } from "@/tj-dialog";
 import { useRouter } from "vue-router";
+import { AppDialog } from "@/AppUI/AppDialog/AppDialog";
 
 interface SystemItem {
   id: string;
@@ -70,8 +70,15 @@ const Qwer = defineComponent({
     return <div>Qwer</div>;
   },
 });
+const state = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  list: [],
+  // computed
+  filteredList: computed(() => state.list.filter((item) => !search.value || item.name.includes(search.value))),
+});
 
-const fetchSystems = async () => {
+const getList = async () => {
   try {
     loading.value = true;
     const currentUser = user.user as any;
@@ -80,12 +87,11 @@ const fetchSystems = async () => {
       return;
     }
     const res = await api.system.page({
-      pageNum: 1,
-      pageSize: 100,
+      pageNum: state.pageNum,
+      pageSize: state.pageSize,
     });
     console.log("没有", res);
-
-    list.value = res.data || [];
+    state.list = res.list;
   } catch (error) {
     console.error("获取系统列表失败:", error);
     ElMessage.error("获取系统列表失败");
@@ -95,13 +101,10 @@ const fetchSystems = async () => {
 };
 
 onMounted(() => {
-  fetchSystems();
+  getList();
 });
 
 const search = ref("");
-const list = ref<SystemItem[]>([]);
-
-const filteredList = computed(() => list.value.filter((item) => !search.value || item.name.includes(search.value)));
 
 const formatDate = (dateStr?: string) => {
   if (!dateStr) return "-";
@@ -109,11 +112,7 @@ const formatDate = (dateStr?: string) => {
 };
 
 const handleCreateSystem = () => {
-  const dialog = createDialog(addDialog, {
-    close() {
-      (dialog as any).close();
-    },
-  });
+  const dialog = AppDialog.create(addDialog);
 };
 
 const handleSystemClick = (system: SystemItem) => {
@@ -128,12 +127,9 @@ const handleSettingClick = (system: SystemItem) => {
 };
 
 const handleEditClick = (system: SystemItem) => {
-  const dialog = createDialog(addDialog, {
-    system,
-    close() {
-      (dialog as any).close();
-    },
-  });
+  const dialog = AppDialog.create(addDialog);
+  dialog.componentProps.id = system.id;
+  dialog.open();
 };
 
 const handleDeleteClick = (system: SystemItem) => {
@@ -147,7 +143,7 @@ const handleDeleteClick = (system: SystemItem) => {
       try {
         await api.system.remove({ id: system.id });
         ElMessage.success("删除成功");
-        await fetchSystems();
+        await getList();
       } catch (error) {
         console.error("删除失败:", error);
         ElMessage.error("删除失败");
@@ -160,24 +156,27 @@ const handleDeleteClick = (system: SystemItem) => {
 
 const addDialog = defineComponent({
   name: "AddDialog",
-  props: ["componentOptions"],
+  props: ["appDialog"],
   data() {
     return {
-      form: this.componentOptions.system ?? {
-        name: name,
+      form: {
+        name: "",
         userId: (useUser().user as any)?.id || "",
       },
     };
   },
+  async mounted() {
+    if (this.appDialog.componentProps.id) {
+      this.form = await api.system.detail(this.appDialog.componentProps.id);
+    }
+  },
   methods: {
     async onSubmit() {
-      const res = await api.system.create(this.form);
-      fetchSystems();
-      this.onClose();
+      const res = await api.system.save(this.form);
+      getList();
+      this.appDialog.destory();
     },
-    onClose() {
-      this.componentOptions.close();
-    },
+    onClose() {},
   },
   render() {
     return (
@@ -185,13 +184,14 @@ const addDialog = defineComponent({
         <el-form-item label="子系统名称">
           <el-input modelValue={this.form.name} onUpdate:modelValue={(v: string) => (this.form.name = v)} placeholder="请输入子系统名称" />
         </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" onclick={this.onSubmit}>
-            提交
-          </el-button>
-          <el-button onClick={this.onClose}>取消</el-button>
-        </el-form-item>
+        <Teleport defer to={"#" + this.appDialog.teleportId}>
+          <el-form-item>
+            <el-button onClick={this.onClose}>取消</el-button>
+            <el-button type="primary" onclick={this.onSubmit}>
+              提交
+            </el-button>
+          </el-form-item>
+        </Teleport>
       </ElForm>
     );
   },

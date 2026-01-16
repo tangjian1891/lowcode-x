@@ -9,7 +9,7 @@ const instance = axios.create({
   baseURL: "http://127.0.0.1:3000/",
   // baseURL: "https://backend-uy6g.onrender.com",
   validateStatus(status) {
-    return status > 200 && status < 300; // 200-299 都认为是成功
+    return status >= 200 && status < 300; // 200-299 都认为是成功
   },
 });
 
@@ -27,8 +27,6 @@ instance.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.log("还能调进来吗", error);
-
     // 错误处理
     if (isAxiosError(error)) {
       const { status } = error.response as any;

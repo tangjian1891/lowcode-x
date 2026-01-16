@@ -1,15 +1,15 @@
 import { instance } from "./request";
 
 export const system = {
-  create(data: any) {
-    return instance.post("/system/create", data);
+  save(data: any) {
+    return instance.post("/system/save", data);
   },
-  info(id: string) {
-    return instance.get("/system/info", { params: { id } });
+  detail(id: string) {
+    return instance.get(`/system/${id}`);
   },
   page(data) {
     return instance.request({
-      url: "/system/list",
+      url: "/system/page",
       method: "post",
       data,
     });
