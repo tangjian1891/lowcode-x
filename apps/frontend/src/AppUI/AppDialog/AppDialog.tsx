@@ -14,6 +14,9 @@ export class AppDialog extends reactiveObject {
   mountedElement: HTMLElement = document.createElement("div");
   teleportId = "app-" + crypto.randomUUID();
   componentProps: Record<string, any> = {};
+  dialogProps = {
+    onConfirm() {},
+  };
   constructor() {
     super();
   }

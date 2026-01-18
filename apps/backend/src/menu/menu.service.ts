@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Menu } from "./menu.entity";
 import { keyBy } from "lodash-es";
+import { utils } from "src/utils";
 
 @Injectable()
 export class MenuService {
@@ -31,18 +32,10 @@ export class MenuService {
     return { list, total, pageNum, pageSize, page: Math.ceil(total / pageSize) };
   }
 
-  async findTree() {
-    const list = await this.menuRepository.find();
-    const mapping = keyBy(list, "id");
-    const result: Menu[] = [];
-    list.forEach((item) => {
-      if (item.parentId && mapping[item.parentId]) {
-        item.children ??= [];
-        item.children.push(item);
-      } else {
-        result.push(item);
-      }
+  async tree(systemId: string) {
+    const list = await this.menuRepository.find({
+      where: { systemId },
     });
-    return result;
+    return utils.listToTree(list);
   }
 }

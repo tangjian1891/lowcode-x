@@ -1,41 +1,31 @@
 import BaseEntity from "src/common/entities/base.entity";
 import { Column, Entity } from "typeorm";
+import { Menu as MenuModel } from "./menu.model";
 
-enum Type {
-  FOLDER = "folder",
-  PAGE = "page",
-  BUTTON = "button",
-}
-
-enum PageType {
-  LINK = "link", //http://www.baidu.com
-  VIEW = "view", //内部视图
-  FORM = "form", //自动表单
-}
 @Entity()
 export class Menu extends BaseEntity {
-  @Column()
+  @Column({ type: "varchar", comment: "菜单名称" })
   name: string;
 
-  @Column({ type: "varchar" })
-  type: Type;
+  @Column({ type: "varchar", comment: "菜单类型" })
+  type: MenuModel["type"];
 
-  @Column()
-  pageType: PageType;
+  @Column({ type: "varchar", comment: "页面类型，type为page时有效", nullable: true })
+  pageType?: MenuModel["pageType"];
 
-  @Column({ comment: "菜单值，根据menuType不同而不同" })
-  value: string;
+  @Column({ type: "varchar", nullable: true, comment: "菜单值，根据menuType不同而不同" })
+  value?: string;
 
-  @Column()
+  @Column({ type: "varchar", nullable: true })
   icon?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   parentId: string;
 
-  @Column()
+  @Column({ type: "int", default: 0 })
   order: number;
 
-  @Column()
+  @Column({ type: "varchar" })
   systemId: string;
 
   children?: Menu[];

@@ -116,7 +116,7 @@ const handleCreateSystem = () => {
 };
 
 const handleSystemClick = (system: SystemItem) => {
-  ElMessage.info(`进入系统：${system.name}`);
+  ElMessage.info(`进入系统：${system.id}`);
   // 这里可以添加路由跳转逻辑
   router.push(`/app-layout/${system.id}`);
 };

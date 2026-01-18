@@ -10,7 +10,8 @@
 import { ref, watch } from "vue";
 import type { TabPanelName } from "element-plus";
 import { useRouter, useRoute } from "vue-router";
-import { Menu, JasLayout } from "@/layout";
+import { Menu } from "@backend/menu/menu.model";
+import { JasLayout } from "@/layout";
 import { systemManagementMenus } from "@/layout/menu-data";
 
 const router = useRouter();

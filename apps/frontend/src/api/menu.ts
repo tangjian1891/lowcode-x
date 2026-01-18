@@ -1,8 +1,8 @@
 import { instance } from "./request";
 
 export const menu = {
-  create(data: any) {
-    return instance.post("/menu/create", data);
+  save(data: any) {
+    return instance.post("/menu/save", data);
   },
   info(id: string) {
     return instance.get(`/menu/info/`, { params: { id } });
@@ -12,6 +12,6 @@ export const menu = {
   },
 
   tree(systemId: string) {
-    return instance.get("/menu/tree", { params: { systemId } });
+    return instance.post("/menu/tree", { systemId });
   },
 };

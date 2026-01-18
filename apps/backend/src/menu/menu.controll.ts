@@ -21,8 +21,8 @@ export class MenuControll {
   }
 
   @Post("tree")
-  async findTree() {
-    return await this.menuService.findTree();
+  async tree(@Body("systemId") systemId: string) {
+    return await this.menuService.tree(systemId);
   }
 
   @Post("list")

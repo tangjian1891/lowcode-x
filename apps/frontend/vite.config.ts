@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
     vue(),
     tailwindcss(),
     vueJsx(),
+    tsconfigPaths(),
     AutoImport({
       eslintrc: {
         enabled: true, // <-- this
@@ -42,6 +44,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@backend": fileURLToPath(new URL("../backend/src", import.meta.url)),
+      "@/shared": fileURLToPath(new URL("../../packages/shared/src", import.meta.url)),
     },
   },
   server: {

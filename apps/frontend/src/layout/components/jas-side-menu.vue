@@ -19,7 +19,7 @@
 import { ref, computed } from "vue";
 
 import { initSystemMenu } from "../menu-data";
-import { JasLayout, Menu, MenuType, SubMenuType } from "../index";
+import { JasLayout, Menu } from "../index";
 import { useRouter } from "vue-router";
 import JasSideMenuItem from "./jas-side-menu-item.vue";
 const router = useRouter();
@@ -55,20 +55,6 @@ const handleSelect = (index: string) => {
   // emit('select', selectedMenu)
 };
 
-// 根据菜单的子类型获取对应的图标
-const getMenuIcon = (menu) => {
-  // 只根据菜单子类型返回对应图标，不再考虑自定义图标
-  if (menu.subType === SubMenuType.GENERAL_FORM) {
-    return "Document";
-  } else if (menu.subType === SubMenuType.INTERNAL) {
-    return "Operation";
-  } else if (menu.subType === SubMenuType.EXTERNAL_MENU) {
-    return "Link";
-  }
-
-  // 默认图标
-  return "Menu";
-};
 async function removeMenu(menu: Menu) {
   await JasLayout.removeMenu(menu);
   emit("refreshMenu");

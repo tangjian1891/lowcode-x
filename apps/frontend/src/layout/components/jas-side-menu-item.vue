@@ -1,14 +1,14 @@
 <template>
   <!-- 目录 -->
-  <el-sub-menu v-if="menu.type === MenuType.FOLDER" :index="menu.id">
+  <el-sub-menu v-if="menu.type === Menu.Type.FOLDER" :index="menu.id">
     <template #title>
       <el-icon><component :is="menu.icon || 'Folder'" /></el-icon>
       <span>{{ menu.name }}</span>
     </template>
-    <jas-side-menu-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu" @select="handleSelect" />
+    <jas-side-menu-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu" />
   </el-sub-menu>
 
-  <el-menu-item v-if="menu.type === MenuType.MENU" :index="menu.id">
+  <el-menu-item v-if="menu.type === Menu.Type.PAGE" :index="menu.id">
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
       <span class="flex items-center flex-1">
         <el-icon>
@@ -25,7 +25,9 @@
 </template>
 
 <script lang="ts" setup>
-import { JasLayout, Menu, MenuType, SubMenuType } from "../index";
+import { JasLayout } from "../index";
+import { Menu } from "@backend/menu/menu.model";
+
 defineProps({
   menu: Object,
 });
@@ -34,19 +36,21 @@ async function removeMenu(menu: Menu) {
   await JasLayout.removeMenu(menu);
 }
 // 根据菜单的子类型获取对应的图标
-const getMenuIcon = (menu) => {
+const getMenuIcon = (menu: Menu) => {
   // 只根据菜单子类型返回对应图标，不再考虑自定义图标
-  if (menu.subType === SubMenuType.GENERAL_FORM) {
+  if (menu.pageType === Menu.PageType.FORM) {
     return "Document";
-  } else if (menu.subType === SubMenuType.INTERNAL) {
+  } else if (menu.pageType === Menu.PageType.VIEW) {
     return "Operation";
-  } else if (menu.subType === SubMenuType.EXTERNAL_MENU) {
+  } else if (menu.pageType === Menu.PageType.LINK) {
     return "Link";
   }
 
   // 默认图标
   return "Menu";
 };
+
+function handleSelect() {}
 </script>
 
 <style lang="scss" scoped></style>

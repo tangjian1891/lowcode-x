@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Menu } from "@/layout/index";
+import { Menu } from "@backend/menu/menu.model";
 
 // import { workApi } from '@/api/business/workbench'
 // https://juejin.cn/post/6991828558096105485#heading-0
