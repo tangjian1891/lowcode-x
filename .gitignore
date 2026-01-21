@@ -32,3 +32,4 @@ dist-ssr
 *.local
 frontend/.eslintrc-auto-import.json
 cache
+auto-imports.d.ts

@@ -64,6 +64,7 @@ function addMenu(type: (typeof MenuModel.Type)[keyof typeof MenuModel.Type]) {
 
 <script lang="tsx">
 import { AppDialog } from "@/AppUI/AppDialog/AppDialog";
+import { Teleport } from "vue";
 
 const addMenuComponent = defineComponent({
   name: "add-menu-dialog",
@@ -132,11 +133,10 @@ const addMenuComponent = defineComponent({
             onUpdate:modelValue={(val: (typeof MenuModel.Type)[keyof typeof MenuModel.Type]) => (this.form.type = val)}
             placeholder="请选择菜单类型"
             onChange={() => this.formResetter(this.form, ["pageType", "value"])}
-          >
-            {this.menuTypeOptions.map((option) => (
-              <el-option key={option.value} label={option.label} value={option.value} />
-            ))}
-          </el-select>
+            v-slots={{
+              default: () => this.menuTypeOptions.map((option) => <el-option key={option.value} label={option.label} value={option.value} />),
+            }}
+          ></el-select>
         </el-form-item>
 
         {this.form.type === MenuModel.Type.PAGE && (
@@ -146,11 +146,10 @@ const addMenuComponent = defineComponent({
               onUpdate:modelValue={(val: (typeof MenuModel.PageType)[keyof typeof MenuModel.PageType]) => (this.form.pageType = val)}
               placeholder="请选择菜单子类型"
               onChange={() => this.formResetter(this.form, ["value"])}
-            >
-              {this.subMenuTypeOptions.map((option) => (
-                <el-option key={option.value} label={option.label} value={option.value} />
-              ))}
-            </el-select>
+              v-slots={{
+                default: () => this.subMenuTypeOptions.map((option) => <el-option key={option.value} label={option.label} value={option.value} />),
+              }}
+            ></el-select>
           </el-form-item>
         )}
 
@@ -179,13 +178,12 @@ const addMenuComponent = defineComponent({
             check-strictly
           />
         </el-form-item>
-
-        <el-form-item>
+        <Teleport defer to={"#" + this.appDialog.teleportId}>
           <el-button type="primary" onClick={this.onConfirm}>
             确认
           </el-button>
           <el-button onClick={() => this.$emit("close")}>取消</el-button>
-        </el-form-item>
+        </Teleport>
       </ElForm>
     );
   },
