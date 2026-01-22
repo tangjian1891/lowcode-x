@@ -1,22 +1,16 @@
-import { AppInput, AppTextarea } from "./input/app-input.model";
-import AppInputView from "./input/app-input.vue";
+import { AppInput, AppTextarea, AppInputView } from "./input";
+import { AppNumber, AppNumberView } from "./number";
+import { AppDatetime, AppDatetimeView } from "./datetime";
+import { AppSelect, AppMultiSelect, AppSelectView } from "./select";
+import { AppUploadImage, AppUploadFile, AppUploadView } from "./upload";
+import { AppCollapse, AppCollapseView } from "./collapse";
 
-import { AppNumber } from "./number/app-number.model";
-import AppNumberView from "./number/app-number.vue";
-
-import { AppDatetime } from "./datetime/app-datetime.model";
-import AppDatetimeView from "./datetime/app-datetime.vue";
-
-import { AppSelect, AppMultiSelect } from "./select/app-select.model";
-import AppSelectView from "./select/app-select.vue";
-
-import { AppUploadImage, AppUploadFile } from "./upload/app-upload.model";
-import AppUploadView from "./upload/app-upload.vue";
-
-import { AppCollapse } from "./collapse/app-collapse.model";
-import AppCollapseView from "./collapse/app-collapse.vue";
-
-export * from "./input/app-input.model";
+export * from "./input";
+export * from "./number";
+export * from "./datetime";
+export * from "./select";
+export * from "./upload";
+export * from "./collapse";
 
 export const materialList = [
   {
