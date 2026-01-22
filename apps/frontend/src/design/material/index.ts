@@ -35,7 +35,7 @@ const materialList: MaterialElement[] = [
   { type: MaterialEnum.TjDatetime, label: "日期时间", class: TjDatetime, id: nanoid() },
   { type: MaterialEnum.TjSelect, label: "下拉单选", class: TjSelect, id: nanoid() },
   { type: MaterialEnum.TjMultiSelect, label: "下拉多选", class: TjMultiSelect, id: nanoid() },
-  { type: MaterialEnum.TjCollapse, label: "折叠面板", class: TjCollapse, id: nanoid() },
+  // { type: MaterialEnum.TjCollapse, label: "折叠面板", class: TjCollapse, id: nanoid() },
   { type: MaterialEnum.TjUploadImage, label: "图片上传", class: TjUploadImage, id: nanoid() },
   { type: MaterialEnum.TjUploadFile, label: "文件上传", class: TjUploadFile, id: nanoid() },
 ];

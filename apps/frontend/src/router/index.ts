@@ -45,9 +45,9 @@ const router = createRouter({
       ],
     },
     {
-      path: "/design/:menuId",
-      name: "design",
-      component: () => import("@/design/index.vue"),
+      path: "/form-design/:menuId",
+      name: "form-design",
+      component: () => import("@/views/form/form-design.vue"),
     },
     {
       path: "/login",

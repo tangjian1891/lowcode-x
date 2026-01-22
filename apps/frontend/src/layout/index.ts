@@ -62,7 +62,7 @@ class JasLayout {
     console.log(menu);
 
     router.push({
-      name: "design",
+      name: "form-design",
       params: {
         menuId: menu.id,
       },
