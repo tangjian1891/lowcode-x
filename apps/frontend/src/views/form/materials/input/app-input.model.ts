@@ -1,20 +1,10 @@
 import { nanoid } from "nanoid";
 
-export enum MaterialEnum {
-  AppInput = "AppInput",
-  AppTextarea = "AppTextarea",
-  AppNumber = "AppNumber",
-  AppDatetime = "AppDatetime",
-  AppSelect = "AppSelect",
-  AppMultiSelect = "AppMultiSelect",
-  AppUploadImage = "AppUploadImage",
-  AppUploadFile = "AppUploadFile",
-  AppCollapse = "AppCollapse",
-}
+import { MaterialType } from "../types";
 
 export class AppInput {
   id = nanoid();
-  type = MaterialEnum.AppInput;
+  type = MaterialType.AppInput;
   label = "单行文本";
   icon = "Document";
 
@@ -34,7 +24,7 @@ export class AppInput {
 }
 
 export class AppTextarea extends AppInput {
-  type = MaterialEnum.AppTextarea;
+  type = MaterialType.AppTextarea;
   label = "多行文本";
   icon = "Tickets";
 

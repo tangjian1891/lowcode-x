@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { MaterialEnum } from "../input/app-input.model";
+import { MaterialType } from "../types";
 
 export class AppSelect {
   id = nanoid();
-  type = MaterialEnum.AppSelect;
+  type = MaterialType.AppSelect;
   label = "单选下拉";
   icon = "Select";
 
@@ -24,7 +24,7 @@ export class AppSelect {
 }
 
 export class AppMultiSelect extends AppSelect {
-  type = MaterialEnum.AppMultiSelect;
+  type = MaterialType.AppMultiSelect;
   label = "多选下拉";
 
   constructor() {

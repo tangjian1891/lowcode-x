@@ -16,8 +16,8 @@ export class FormService {
     return this.formSchemaRepository.save(entity);
   }
 
-  async findOneFormSchema(id: string) {
-    return this.formSchemaRepository.findOne({ where: { id } });
+  async findOneFormSchema(menuId: string) {
+    return this.formSchemaRepository.findOne({ where: { menuId } });
   }
 
   async removeFormSchema(ids: string[]) {

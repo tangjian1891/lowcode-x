@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { MaterialEnum } from "../input/app-input.model";
+import { MaterialType } from "../types";
 
 export class AppNumber {
   id = nanoid();
-  type = MaterialEnum.AppNumber;
+  type = MaterialType.AppNumber;
   label = "数字";
   icon = "Memo";
 

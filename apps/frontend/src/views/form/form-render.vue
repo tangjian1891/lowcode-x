@@ -17,9 +17,8 @@
 
 <script lang="ts" setup>
 import { onMounted, provide } from "vue";
-import { FormViewModel } from "./form-model";
+import { FormViewModel, materialMap } from "./form-model";
 import { instance } from "@/api/request";
-import { materialComponentMap } from "./materials";
 
 const props = defineProps({
   menuId: {
@@ -47,7 +46,7 @@ onMounted(async () => {
 });
 
 const getComponent = (type: string) => {
-  return (materialComponentMap as any)[type];
+  return materialMap[type]?.component;
 };
 </script>
 

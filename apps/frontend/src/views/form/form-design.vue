@@ -47,13 +47,10 @@ provide("viewModel", viewModel);
 onMounted(async () => {
   if (menuId) {
     try {
-      const res = await instance.get(`/menu/info/${menuId}`);
-      if (res.data) {
-        menuInfo.value = res.data;
-        if (res.data.value) {
-          viewModel.loadConfig(res.data.value);
-        }
-      }
+      const res = await instance.get(`/menu/${menuId}`);
+
+      menuInfo.value = res;
+      const res2 = await instance.get(`/menu/schema/${menuId}`);
     } catch (error) {
       console.error("Failed to fetch menu info:", error);
     }

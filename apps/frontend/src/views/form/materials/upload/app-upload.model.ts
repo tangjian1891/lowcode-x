@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { MaterialEnum } from "../input/app-input.model";
+import { MaterialType } from "../types";
 
 export class AppUploadImage {
   id = nanoid();
-  type = MaterialEnum.AppUploadImage;
+  type = MaterialType.AppUploadImage;
   label = "图片上传";
   icon = "Picture";
 
@@ -22,7 +22,7 @@ export class AppUploadImage {
 }
 
 export class AppUploadFile extends AppUploadImage {
-  type = MaterialEnum.AppUploadFile;
+  type = MaterialType.AppUploadFile;
   label = "文件上传";
   icon = "Files";
 

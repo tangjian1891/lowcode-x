@@ -6,6 +6,8 @@ export class FormSchema extends BaseEntity {
   tenantId: string;
   @Column({ comment: "表单名称" })
   name: string;
+  @Column({ comment: "菜单ID,关联菜单表，同样可以查询" })
+  menuId: string;
   @Column({ type: "jsonb", comment: "表单结构，树结构，仅结构" })
   structure: any;
 

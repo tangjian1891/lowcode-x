@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { MaterialEnum } from "../input/app-input.model";
+import { MaterialType } from "../types";
 
 export class AppDatetime {
   id = nanoid();
-  type = MaterialEnum.AppDatetime;
+  type = MaterialType.AppDatetime;
   label = "日期时间";
   icon = "Calendar";
 

@@ -33,21 +33,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, onMounted } from "vue";
-import { Search, Document, Tickets, Select, Calendar, Memo, Picture, Files, Minus, Plus } from "@element-plus/icons-vue";
-import { materialList } from "../materials";
+import { ref, computed, inject } from "vue";
+import { materialList } from "../form-model";
 
 const searchText = ref("");
 const viewModel = inject<any>("viewModel");
 
-// Initialize viewModel with material list to break circular dependency and enable copy/paste
-onMounted(() => {
-  if (viewModel && typeof viewModel.setMaterials === "function") {
-    // Flatten materials for the model's mapping
-    const flatMaterials = materialList.reduce((acc: any[], group) => [...acc, ...group.items], []);
-    viewModel.setMaterials(flatMaterials);
-  }
-});
+// Initialize viewModel is no longer needed in onMounted since materialList is directly available in viewModel
 
 const filteredGroups = computed(() => {
   if (!searchText.value) return materialList;

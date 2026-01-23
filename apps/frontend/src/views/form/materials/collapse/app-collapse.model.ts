@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
-import { MaterialEnum } from "../input/app-input.model";
+import { MaterialType } from "../types";
 
 export class AppCollapse {
   id = nanoid();
-  type = MaterialEnum.AppCollapse;
+  type = MaterialType.AppCollapse;
   label = "折叠面板";
   icon = "Memo";
 

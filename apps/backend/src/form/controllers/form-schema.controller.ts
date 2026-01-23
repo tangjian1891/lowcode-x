@@ -17,9 +17,9 @@ export class FormSchemaController {
   /**
    * 获取单个表单模板
    */
-  @Get(":id")
-  findOneFormSchema(@Param("id") id: string) {
-    return this.formService.findOneFormSchema(id);
+  @Get(":menuId")
+  findOneFormSchema(@Param("menuId") menuId: string) {
+    return this.formService.findOneFormSchema(menuId);
   }
 
   /**
