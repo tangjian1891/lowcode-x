@@ -55,50 +55,45 @@ export interface FieldType {
 }
 
 // 定义表单配置接口
+// 定义表单配置接口
 export interface FormConfig {
   fields: FieldType[];
-  formTree: any[];
-  formProps: {
+  structure: any[];
+  config: {
     labelWidth: string;
     labelPosition: string;
     size: string;
   };
 }
+export class ReactiveBase {
+  constructor() {
+    return reactive(this);
+  }
+}
 
 /**
  * 基础视图模型：包含渲染、呈现所需的核心数据和逻辑
  */
-export class FormViewModel {
+export class FormViewModel extends ReactiveBase {
   static readonly MaterialType = MaterialType;
-  public state = reactive<FormConfig>({
-    fields: [],
-    formTree: [],
-    formProps: {
-      labelWidth: "120px",
-      labelPosition: "right",
-      size: "default",
-    },
-  });
+
+  public fields: FieldType[] = [];
+  public structure: any[] = [];
+  public config = {
+    labelWidth: "120px",
+    labelPosition: "right",
+    size: "default",
+  };
 
   constructor(initialData?: Partial<FormConfig>) {
+    super();
     if (initialData) {
-      Object.assign(this.state, initialData);
+      Object.assign(this, initialData);
     }
   }
 
   public get fieldMapping() {
-    return keyBy(this.state.fields, "id") as Record<string, FieldType>;
-  }
-
-  // 加载数据
-  public loadConfig(config: FormConfig) {
-    this.state.fields = config.fields || [];
-    this.state.formTree = config.formTree || [];
-    this.state.formProps = config.formProps || {
-      labelWidth: "120px",
-      labelPosition: "right",
-      size: "default",
-    };
+    return keyBy(this.fields, "id") as Record<string, FieldType>;
   }
 }
 
@@ -107,17 +102,19 @@ export class FormViewModel {
  */
 export class FormDesignerViewModel extends FormViewModel {
   // 基础数据
-  public materialList = materialList;
-  public materialMap = materialMap;
+  public materialList = markRaw(materialList);
+  public materialMap = markRaw(materialMap);
 
   // 虚拟一个占位 ID 用作“未选中”或“表单设置”状态
   public readonly EMPTY_ID = "__EMPTY_FORM__";
 
   public activeId = ref(this.EMPTY_ID);
 
-  constructor(initialData?: Partial<FormConfig>) {
-    super(initialData);
-    this.activeId.value = this.EMPTY_ID;
+  constructor() {
+    super();
+  }
+  loadData(initialData: Partial<FormConfig>) {
+    Object.assign(this, initialData);
   }
 
   // 移除 setMaterials，因为现在直接从常量引用
@@ -141,8 +138,8 @@ export class FormDesignerViewModel extends FormViewModel {
   // 添加字段到设计区域
   public addField2Design(field: any) {
     const newField = cloneDeep(field) as FieldType;
-    this.state.fields.push(newField);
-    this.state.formTree.push({ id: newField.id });
+    this.fields.push(newField);
+    this.structure.push({ id: newField.id });
     this.clickField(newField);
   }
 
@@ -153,13 +150,13 @@ export class FormDesignerViewModel extends FormViewModel {
 
   // 删除元素
   public deleteField(field: any) {
-    const idx = this.state.fields.findIndex((f) => f.id === field.id);
+    const idx = this.fields.findIndex((f) => f.id === field.id);
     if (idx > -1) {
-      this.state.fields.splice(idx, 1);
+      this.fields.splice(idx, 1);
 
-      const treeIdx = this.state.formTree.findIndex((item) => item.id === field.id);
+      const treeIdx = this.structure.findIndex((item: any) => item.id === field.id);
       if (treeIdx > -1) {
-        this.state.formTree.splice(treeIdx, 1);
+        this.structure.splice(treeIdx, 1);
       }
 
       this.clickField(null);
@@ -173,16 +170,16 @@ export class FormDesignerViewModel extends FormViewModel {
       const newField = this.onClone(element) as any;
       Object.assign(newField, cloneDeep(field));
       newField.id = nanoid(); // 确保 ID 唯一
-      this.state.fields.push(newField);
-      this.state.formTree.push({ id: newField.id });
+      this.fields.push(newField);
+      this.structure.push({ id: newField.id });
       this.clickField(newField);
     }
   }
 
   // 清空表单
   public clearForm() {
-    this.state.fields = [];
-    this.state.formTree = [];
+    this.fields = [];
+    this.structure = [];
     this.clickField(null);
   }
 }

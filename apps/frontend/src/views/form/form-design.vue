@@ -14,7 +14,7 @@
     </div>
 
     <!-- Design Area -->
-    <div class="form-design-container flex flex-1 overflow-hidden">
+    <div class="form-design-container flex flex-1 overflow-hidden" v-if="viewModel">
       <form-sidebar class="flex-basis-300px border-r" />
       <form-canvas class="flex-1 bg-gray-50 p-4 overflow-auto" />
       <form-setting class="flex-basis-400px border-l" />
@@ -31,26 +31,24 @@ import FormCanvas from "./components/form-canvas.vue";
 import FormSetting from "./components/form-setting.vue";
 import { FormDesignerViewModel } from "./form-model";
 import { instance } from "@/api/request";
-import { createDialog } from "@/tj-dialog";
-// import JasForm from "../../design/jas-form.vue";
 
 const route = useRoute();
 const menuId = route.params.menuId as string;
 const menuInfo = ref<any>({ name: "", value: null });
 
 // 实例化 ViewModel，不引入 materialList 以避免循环依赖
-const viewModel = new FormDesignerViewModel();
+let viewModel :FormDesignerViewModel  = new FormDesignerViewModel( );
 
-// Provide viewModel to all sub-components
 provide("viewModel", viewModel);
 
 onMounted(async () => {
   if (menuId) {
     try {
       const res = await instance.get(`/menu/${menuId}`);
-
       menuInfo.value = res;
-      const res2 = await instance.get(`/menu/schema/${menuId}`);
+
+      const res2 = await instance.get(`/form/schema/${menuId}`) as any;
+       viewModel.loadData(res2)
     } catch (error) {
       console.error("Failed to fetch menu info:", error);
     }
@@ -64,10 +62,17 @@ const previewForm = () => {
 
 const saveForm = async () => {
   try {
-    menuInfo.value.value = viewModel.state;
-    await instance.post("/menu/create", menuInfo.value);
+    const payload = {
+      menuId: menuId,
+      name: menuInfo.value.name,
+      structure: viewModel.structure,
+      fields: viewModel.fields,
+      config: viewModel.config,
+    };
+    await instance.post("/form/schema/save", payload);
     ElMessage.success("表单已保存");
   } catch (error) {
+    console.error(error);
     ElMessage.error("保存失败");
   }
 };

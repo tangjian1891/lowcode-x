@@ -1,12 +1,12 @@
 <template>
   <div class="form-render-wrapper p-4 max-w-800px mx-auto">
-    <el-card v-if="viewModel.state.fields.length > 0">
+    <el-card v-if="viewModel.fields.length > 0">
       <el-form
-        :label-width="viewModel.state.formProps.labelWidth"
-        :label-position="viewModel.state.formProps.labelPosition"
-        :size="viewModel.state.formProps.size"
+        :label-width="viewModel.config.labelWidth"
+        :label-position="viewModel.config.labelPosition"
+        :size="viewModel.config.size"
       >
-        <div v-for="field in viewModel.state.fields" :key="field.id" class="mb-4">
+        <div v-for="field in viewModel.fields" :key="field.id" class="mb-4">
           <component :is="getComponent(field.type)" :field="field" mode="runtime" />
         </div>
       </el-form>
@@ -35,12 +35,16 @@ provide("viewModel", viewModel);
 onMounted(async () => {
   if (props.menuId) {
     try {
-      const res = await instance.get(`/menu/info/${props.menuId}`);
-      if (res.data && res.data.value) {
-        viewModel.loadConfig(res.data.value);
+      const res = await instance.get(`/form/schema/${props.menuId}`) as any;
+      if (res) {
+        // 直接使用 loadConfig 加载后端返回的 FormSchema 数据
+        // 后端返回结构为 { structure, fields, config, ... }
+        // loadConfig 期望参数为 FormConfig { structure, fields, config }
+        // 刚好匹配
+        viewModel.loadConfig(res);
       }
     } catch (error) {
-      console.error("Failed to fetch menu info:", error);
+      console.error("Failed to fetch form schema:", error);
     }
   }
 });

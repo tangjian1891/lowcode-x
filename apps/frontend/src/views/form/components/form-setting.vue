@@ -32,17 +32,17 @@
         <div class="form-props p-2">
           <el-form label-position="top">
             <el-form-item label="标签宽度">
-              <el-input v-model="viewModel.state.formProps.labelWidth" />
+              <el-input v-model="viewModel.config.labelWidth" />
             </el-form-item>
             <el-form-item label="标签位置">
-              <el-radio-group v-model="viewModel.state.formProps.labelPosition">
+              <el-radio-group v-model="viewModel.config.labelPosition">
                 <el-radio-button label="left">左对齐</el-radio-button>
                 <el-radio-button label="right">右对齐</el-radio-button>
                 <el-radio-button label="top">顶部对齐</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="全局尺寸">
-              <el-radio-group v-model="viewModel.state.formProps.size">
+              <el-radio-group v-model="viewModel.config.size">
                 <el-radio-button label="large">大</el-radio-button>
                 <el-radio-button label="default">中</el-radio-button>
                 <el-radio-button label="small">小</el-radio-button>

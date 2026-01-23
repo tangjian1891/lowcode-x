@@ -1,8 +1,8 @@
 <template>
   <div class="canvas-wrapper min-h-full bg-white shadow-sm rounded-lg p-4" @dragover.prevent @drop="onDrop">
-    <vue-draggable v-model="viewModel.state.fields" group="material" item-key="id" class="design-list min-h-200px" ghost-class="ghost">
+    <vue-draggable v-model="viewModel.fields" group="material" item-key="id" class="design-list min-h-200px" ghost-class="ghost">
       <div
-        v-for="element in viewModel.state.fields"
+        v-for="element in viewModel.fields"
         :key="element.id"
         class="field-item relative p-4 mb-4 border-2 border-transparent transition-all cursor-pointer hover:bg-blue-50/30"
         :class="{ 'active-field !border-primary': activeId === element.id }"
@@ -19,7 +19,7 @@
       </div>
     </vue-draggable>
 
-    <div v-if="viewModel.state.fields.length === 0" class="empty-placeholder flex flex-col items-center justify-center py-20 text-gray-400">
+    <div v-if="viewModel.fields.length === 0" class="empty-placeholder flex flex-col items-center justify-center py-20 text-gray-400">
       <el-icon class="text-40px mb-2"><Plus /></el-icon>
       <p>拖拽或点击左侧组件添加字段</p>
     </div>
