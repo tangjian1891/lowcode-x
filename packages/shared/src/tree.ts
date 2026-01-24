@@ -44,3 +44,20 @@ export function treeToList<T extends BaseNode>(tree: T[]) {
   traverse(tree);
   return list;
 }
+
+// 带引用
+export function flattenTreeToMapping<T extends BaseNode>(tree: T[]) {
+  const mapping = {} as Record<string, T>;
+
+  function traverse(items: T[]) {
+    items.forEach((item) => {
+      mapping[item.id] = item;
+      if (item.children && item.children.length > 0) {
+        traverse(item.children as T[]);
+      }
+    });
+  }
+
+  traverse(tree);
+  return mapping;
+}

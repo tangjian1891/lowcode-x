@@ -30,7 +30,7 @@
 import { inject } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import { Plus, Delete, CopyDocument } from "@element-plus/icons-vue";
-
+import { utils } from "@shared/index";
 const viewModel = inject<any>("viewModel")!;
 const { activeId } = viewModel;
 
@@ -48,6 +48,10 @@ const onDrop = (event: DragEvent) => {
     }
   }
 };
+const mapping = computed(() => {
+  return utils.flattenTreeToMapping(viewModel.fields);
+});
+console.log(mapping);
 </script>
 
 <style lang="scss" scoped>

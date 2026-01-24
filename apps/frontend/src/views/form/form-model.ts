@@ -58,7 +58,6 @@ export interface FieldType {
 // 定义表单配置接口
 export interface FormConfig {
   fields: FieldType[];
-  structure: any[];
   config: {
     labelWidth: string;
     labelPosition: string;
@@ -78,7 +77,6 @@ export class FormViewModel extends ReactiveBase {
   static readonly MaterialType = MaterialType;
 
   public fields: FieldType[] = [];
-  public structure: any[] = [];
   public config = {
     labelWidth: "120px",
     labelPosition: "right",
@@ -90,6 +88,10 @@ export class FormViewModel extends ReactiveBase {
     if (initialData) {
       Object.assign(this, initialData);
     }
+  }
+
+  public loadData(initialData: Partial<FormConfig>) {
+    Object.assign(this, initialData);
   }
 
   public get fieldMapping() {
@@ -112,9 +114,6 @@ export class FormDesignerViewModel extends FormViewModel {
 
   constructor() {
     super();
-  }
-  loadData(initialData: Partial<FormConfig>) {
-    Object.assign(this, initialData);
   }
 
   // 移除 setMaterials，因为现在直接从常量引用
@@ -139,7 +138,6 @@ export class FormDesignerViewModel extends FormViewModel {
   public addField2Design(field: any) {
     const newField = cloneDeep(field) as FieldType;
     this.fields.push(newField);
-    this.structure.push({ id: newField.id });
     this.clickField(newField);
   }
 
@@ -154,11 +152,6 @@ export class FormDesignerViewModel extends FormViewModel {
     if (idx > -1) {
       this.fields.splice(idx, 1);
 
-      const treeIdx = this.structure.findIndex((item: any) => item.id === field.id);
-      if (treeIdx > -1) {
-        this.structure.splice(treeIdx, 1);
-      }
-
       this.clickField(null);
     }
   }
@@ -171,7 +164,6 @@ export class FormDesignerViewModel extends FormViewModel {
       Object.assign(newField, cloneDeep(field));
       newField.id = nanoid(); // 确保 ID 唯一
       this.fields.push(newField);
-      this.structure.push({ id: newField.id });
       this.clickField(newField);
     }
   }
@@ -179,7 +171,6 @@ export class FormDesignerViewModel extends FormViewModel {
   // 清空表单
   public clearForm() {
     this.fields = [];
-    this.structure = [];
     this.clickField(null);
   }
 }

@@ -37,7 +37,7 @@ const menuId = route.params.menuId as string;
 const menuInfo = ref<any>({ name: "", value: null });
 
 // 实例化 ViewModel，不引入 materialList 以避免循环依赖
-let viewModel :FormDesignerViewModel  = new FormDesignerViewModel( );
+let viewModel: FormDesignerViewModel = new FormDesignerViewModel();
 
 provide("viewModel", viewModel);
 
@@ -47,8 +47,8 @@ onMounted(async () => {
       const res = await instance.get(`/menu/${menuId}`);
       menuInfo.value = res;
 
-      const res2 = await instance.get(`/form/schema/${menuId}`) as any;
-       viewModel.loadData(res2)
+      const res2 = (await instance.get(`/form/schema/${menuId}`)) as any;
+      viewModel.loadData(res2);
     } catch (error) {
       console.error("Failed to fetch menu info:", error);
     }
@@ -65,7 +65,6 @@ const saveForm = async () => {
     const payload = {
       menuId: menuId,
       name: menuInfo.value.name,
-      structure: viewModel.structure,
       fields: viewModel.fields,
       config: viewModel.config,
     };
