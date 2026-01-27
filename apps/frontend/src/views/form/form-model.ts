@@ -110,7 +110,7 @@ export class FormDesignerViewModel extends FormViewModel {
   // 虚拟一个占位 ID 用作“未选中”或“表单设置”状态
   public readonly EMPTY_ID = "__EMPTY_FORM__";
 
-  public activeId = ref(this.EMPTY_ID);
+  public activeId = this.EMPTY_ID;
 
   constructor() {
     super();
@@ -120,7 +120,7 @@ export class FormDesignerViewModel extends FormViewModel {
 
   // 获取当前激活的字段
   public get activeField() {
-    return this.fieldMapping[this.activeId.value] || null;
+    return this.fieldMapping[this.activeId] || null;
   }
 
   // 克隆元素
@@ -143,7 +143,7 @@ export class FormDesignerViewModel extends FormViewModel {
 
   // 高亮选中字段
   public clickField(field: { id: string } | null) {
-    this.activeId.value = field ? field.id : this.EMPTY_ID;
+    this.activeId = field ? field.id : this.EMPTY_ID;
   }
 
   // 删除元素

@@ -11,15 +11,13 @@
           <div
             v-for="item in group.items"
             :key="item.type"
-            class="material-item"
+            class="material-drag-item flex items-center gap-1 rounded-sm cursor-move p-1 pl-2 text-sm"
             draggable="true"
             @dragstart="onDragStart($event, item)"
             @click="onItemClick(item)"
           >
-            <div class="item-inner">
-              <el-icon class="text-18px mb-1 text-gray-600"><component :is="item.icon" /></el-icon>
-              <span class="text-12px text-gray-700">{{ item.label }}</span>
-            </div>
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
           </div>
         </div>
       </div>
@@ -61,6 +59,13 @@ $primary-color: #00a29a;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  .material-drag-item {
+    border: 1px solid #e4e7ed;
+
+    &:hover {
+      border: 1px dashed var(--el-color-primary);
+    }
+  }
 }
 
 .material-item {

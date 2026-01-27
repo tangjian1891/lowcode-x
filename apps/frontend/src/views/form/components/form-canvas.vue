@@ -1,7 +1,14 @@
 <template>
   <div class="flex bg-[#f5f5f7] p-2" @dragover.prevent @drop="onDrop">
     <div class="bg-white flex-1 rounded-sm">
-      <vue-draggable v-model="viewModel.fields" group="material" item-key="id" class="design-list min-h-600px pb-20 p-2" ghost-class="ghost">
+      <vue-draggable
+        v-model="viewModel.fields"
+        ghost-class="ghost-class"
+        drag-class="drag-class"
+        group="material"
+        item-key="id"
+        class="design-list min-h-600px pb-20 p-2"
+      >
         <div
           v-for="element in viewModel.fields"
           :key="element.id"
@@ -89,11 +96,6 @@ const mapping = computed(() => {
   border-radius: 2px;
   position: relative;
 
-  &:hover {
-    background-color: rgba(0, 162, 154, 0.02);
-    box-shadow: inset 0 0 0 1px rgba(0, 162, 154, 0.1);
-  }
-
   &.active-field {
     background-color: rgba(0, 162, 154, 0.05);
     box-shadow: inset 0 0 0 1px rgba(0, 162, 154, 0.2);
@@ -119,15 +121,31 @@ const mapping = computed(() => {
   }
 }
 
-.ghost {
-  opacity: 0.5;
-  background: rgba(0, 162, 154, 0.1);
-}
-
 .empty-placeholder {
   pointer-events: none;
   .empty-icon-box {
     transition: all 0.3s;
   }
+}
+</style>
+
+<style lang="scss">
+.ghost-class {
+  position: relative;
+  &::after {
+    content: "";
+    background: #fff;
+    border: 1px dashed var(--el-color-primary, #03aba0);
+    border-radius: 4px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    z-index: 10;
+  }
+}
+.drag-class {
+  opacity: 0.2 !important;
 }
 </style>
