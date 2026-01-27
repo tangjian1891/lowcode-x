@@ -1,55 +1,37 @@
 <template>
-  <div class="sidebar-wrapper flex flex-col h-full bg-white shadow-sm border-r">
-    <!-- Search Box -->
-    <div class="p-4 border-b">
-      <el-input v-model="searchText" placeholder="搜索组件" prefix-icon="Search" clearable class="search-input" />
-    </div>
-
+  <div class="sidebar-wrapper flex flex-col h-full bg-white border-r">
     <!-- Component Groups -->
-    <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
-      <div v-for="group in filteredGroups" :key="group.group" class="group-section mb-6">
-        <h3 class="text-14px font-bold mb-3 flex items-center gap-2 text-gray-700">
+    <div class="flex-1 overflow-y-auto custom-scrollbar">
+      <div v-for="group in materialList" :key="group.group" class="group-section">
+        <div class="group-header px-4 py-4 text-12px font-bold text-gray-500 uppercase tracking-wider">
           {{ group.group }}
-        </h3>
+        </div>
 
-        <div class="material-list grid grid-cols-2 gap-2">
+        <div class="material-grid px-4 pb-4">
           <div
             v-for="item in group.items"
             :key="item.type"
-            class="material-item p-2 border rounded transition-all cursor-pointer hover:border-primary hover:text-primary flex items-center gap-2 bg-white"
+            class="material-item"
             draggable="true"
             @dragstart="onDragStart($event, item)"
             @click="onItemClick(item)"
           >
-            <el-icon class="text-16px"><component :is="item.icon" /></el-icon>
-            <span class="text-12px line-clamp-1">{{ item.label }}</span>
+            <div class="item-inner">
+              <el-icon class="text-18px mb-1 text-gray-600"><component :is="item.icon" /></el-icon>
+              <span class="text-12px text-gray-700">{{ item.label }}</span>
+            </div>
           </div>
         </div>
       </div>
-
-      <div v-if="filteredGroups.length === 0" class="text-center py-10 text-gray-400 text-sm">未找到相关组件</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from "vue";
+import { inject } from "vue";
 import { materialList } from "../form-model";
 
-const searchText = ref("");
 const viewModel = inject<any>("viewModel");
-
-// Initialize viewModel is no longer needed in onMounted since materialList is directly available in viewModel
-
-const filteredGroups = computed(() => {
-  if (!searchText.value) return materialList;
-  return materialList
-    .map((group) => ({
-      ...group,
-      items: group.items.filter((item) => item.label.toLowerCase().includes(searchText.value.toLowerCase())),
-    }))
-    .filter((group) => group.items.length > 0);
-});
 
 const onDragStart = (event: DragEvent, item: any) => {
   event.dataTransfer?.setData("material", JSON.stringify(item));
@@ -63,29 +45,52 @@ const onItemClick = (item: any) => {
 </script>
 
 <style lang="scss" scoped>
+$primary-color: #00a29a;
+
 .sidebar-wrapper {
   user-select: none;
 }
 
-.search-input {
-  :deep(.el-input__wrapper) {
-    background-color: #f5f7fa;
-    box-shadow: none;
-    &:hover,
-    &.is-focus {
-      box-shadow: 0 0 0 1px var(--el-color-primary) inset;
-    }
+.group-section {
+  &:not(:first-child) {
+    margin-top: 8px;
   }
 }
 
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
 .material-item {
-  border-color: #e4e7ed;
+  background-color: #f7f8fa;
+  border: 1px solid #f7f8fa;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
   &:hover {
-    background-color: #f0f7ff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    border-color: $primary-color;
+    box-shadow: 0 2px 8px rgba(0, 162, 154, 0.1);
+
+    .el-icon {
+      color: $primary-color;
+    }
   }
+
   &:active {
     cursor: grabbing;
+    transform: scale(0.95);
+  }
+
+  .item-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px;
   }
 }
 
@@ -96,17 +101,9 @@ const onItemClick = (item: any) => {
   &::-webkit-scrollbar-thumb {
     background: #e4e7ed;
     border-radius: 2px;
+    &:hover {
+      background: #dcdfe6;
+    }
   }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-}
-
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
 }
 </style>

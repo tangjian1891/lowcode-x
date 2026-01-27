@@ -5,13 +5,13 @@ import { createPinia } from "pinia";
 import "@/assets/scss/cover-element-plus/index.scss";
 import "@/assets/scss/tj-scss/index.scss";
 
-import App from "./App.vue";
 import router from "./router";
 import VxeUITable, { VxeUI } from "vxe-table";
 import "vxe-table/lib/style.css";
 import VxeUIAll from "vxe-pc-ui";
 import "vxe-pc-ui/lib/style.css";
 import "@/assets/css/tailwind.css";
+import App from "./App.vue";
 import ElementPlus from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import "element-plus/dist/index.css";

@@ -5,10 +5,6 @@
 
 <!-- 满屏情况下：按高清屏幕1920*1080正常显示  Full HD-->
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
 html {
   height: 100%;
   width: 100%;
