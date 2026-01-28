@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import TjDynamice from "@/core-components/tj-dynamic.vue";
+import AppPage from "@/core-components/app-page.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -33,10 +33,20 @@ const router = createRouter({
       component: () => import("@/layout/app-layout.vue"),
       children: [
         {
-          path: ":menuId",
-          name: "menu",
+          path: "app-form/:menuId",
+          name: "app-form",
           component: {
-            name: "dynamic-menu",
+            name: "app-page",
+            render() {
+              return h("div", "");
+            },
+          },
+        },
+        {
+          path: "app-composite/:menuId",
+          name: "app-composite",
+          component: {
+            name: "app-page",
             render() {
               return h("div", "");
             },
@@ -58,19 +68,32 @@ const router = createRouter({
 });
 
 export default router;
-window.router = router;
 
 router.beforeEach((to, from) => {
   console.log(to.name, to.path);
-  if (to.name === "menu") {
+  if (to.name === "app-form") {
     const menuId = to.params.menuId as string;
     router.addRoute("app-layout", {
-      path: ":menuId",
+      path: "app-form/:menuId",
       name: menuId,
       component: {
         name: menuId,
         render() {
-          return h(TjDynamice);
+          return h(AppPage);
+        },
+      },
+    });
+    router.replace({ name: menuId, params: to.params });
+    return false;
+  } else if (to.name === "app-composite") {
+    const menuId = to.params.menuId as string;
+    router.addRoute("app-layout", {
+      path: "app-composite/:menuId",
+      name: menuId,
+      component: {
+        name: menuId,
+        render() {
+          return h(AppPage);
         },
       },
     });
