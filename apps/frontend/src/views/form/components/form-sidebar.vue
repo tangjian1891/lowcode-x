@@ -7,7 +7,7 @@
           {{ group.group }}
         </div>
 
-        <div class="material-grid px-4 pb-4">
+        <!-- <div class="material-grid px-4 pb-4">
           <div
             v-for="item in group.items"
             :key="item.type"
@@ -19,7 +19,25 @@
             <el-icon><component :is="item.icon" /></el-icon>
             <span>{{ item.label }}</span>
           </div>
-        </div>
+        </div> -->
+        <VueDraggable
+          v-model="group.items"
+          :clone="onClone"
+          :group="{ name: 'material', pull: 'clone', put: false }"
+          class="material-grid px-4 pb-4"
+          :sort="false"
+          ghost-class="ghost-class"
+        >
+          <div
+            v-for="item in group.items"
+            :key="item.type"
+            class="material-drag-item flex items-center gap-1 rounded-sm cursor-move p-1 pl-2 text-sm"
+            @click="onItemClick(item)"
+          >
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
+          </div>
+        </VueDraggable>
       </div>
     </div>
   </div>
@@ -28,6 +46,7 @@
 <script lang="ts" setup>
 import { inject } from "vue";
 import { materialList } from "../form-model";
+import { VueDraggable } from "vue-draggable-plus";
 
 const viewModel = inject<any>("viewModel");
 
@@ -39,6 +58,10 @@ const onItemClick = (item: any) => {
   if (viewModel && typeof viewModel.addFieldByClick === "function") {
     viewModel.addFieldByClick(item);
   }
+}; // 克隆逻辑
+const onClone = (item: any) => {
+  const registryItem = viewModel.materialMap[item.type];
+  return viewModel.onClone(registryItem);
 };
 </script>
 
@@ -112,3 +135,4 @@ $primary-color: #00a29a;
   }
 }
 </style>
+<style lang="scss"></style>

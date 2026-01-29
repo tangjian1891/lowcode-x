@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-[#f5f5f7] p-2" @dragover.prevent @drop="onDrop">
+  <div class="form-canvas flex bg-[#f5f5f7] p-2" @dragover.prevent @drop="onDrop">
     <div class="bg-white flex-1 rounded-sm">
       <vue-draggable
         v-model="viewModel.fields"
@@ -8,6 +8,7 @@
         group="material"
         item-key="id"
         class="design-list min-h-600px pb-20 p-2"
+        @add="onAdd"
       >
         <div
           v-for="element in viewModel.fields"
@@ -79,6 +80,10 @@ const onDrop = (event: DragEvent) => {
 const mapping = computed(() => {
   return utils.flattenTreeToMapping(viewModel.fields);
 });
+
+function onAdd(e) {
+  console.log("元素来了", e);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -130,22 +135,21 @@ const mapping = computed(() => {
 </style>
 
 <style lang="scss">
-.ghost-class {
-  position: relative;
-  &::after {
-    content: "";
-    background: #fff;
-    border: 1px dashed var(--el-color-primary, #03aba0);
-    border-radius: 4px;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    top: 10px;
-    z-index: 10;
+.form-canvas {
+  .ghost-class {
+    position: relative;
+    &::after {
+      content: "";
+      background: #fff;
+      border: 1px dashed var(--el-color-primary, #03aba0);
+      border-radius: 4px;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      top: 10px;
+      z-index: 10;
+    }
   }
-}
-.drag-class {
-  opacity: 0.2 !important;
 }
 </style>
