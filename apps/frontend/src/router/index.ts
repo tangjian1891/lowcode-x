@@ -74,31 +74,37 @@ window.router = router;
 export default router;
 
 router.beforeEach(async (to, from) => {
-  console.log("路由守卫触发");
-  console.log(to, from);
-
+  const routeName = to.name as string;
   // 检查路由参数中是否包含 systemId
   const systemId = to.params.systemId as string;
-  if (systemId && to.params.menuId) {
-    if (router.hasRoute(to.params.menuId)) {
-      return true;
-    }
-    const menuStore = useMenuStore();
 
-    // 检查当前 store 中的 systemId 是否一致
+  if (systemId) {
+    const menuStore = useMenuStore();
     const currentSystemId = menuStore.systemInfo?.id;
 
-    // 如果不一致或没有，则加载菜单
+    // 如果系统 ID 不一致或没有，则加载系统信息和菜单列表
     if (!currentSystemId || currentSystemId !== systemId) {
-      console.log(`系统 ID 不一致或未加载，正在加载系统 ${systemId} 的菜单...`);
+      console.log(`系统 ID 不一致或未加载，正在加载系统 ${systemId} 的信息和菜单...`);
       await menuStore.initSystemMenu(systemId, router);
     }
-    if (router.hasRoute(to.params.menuId)) {
-      return {
-        replace: true,
-        name: to.params.menuId,
-        params: { ...to.params },
-      };
+
+    // 检查是否含有 menuId
+    const menuId = to.params.menuId as string;
+    if (menuId && ["app-form", "app-composite"].includes(routeName)) {
+      // 判断路由是否已存在
+      if (!router.hasRoute(menuId)) {
+        // 路由不存在，尝试根据现有菜单树添加该路由
+        console.log(`路由 ${menuId} 不存在，尝试添加路由...`);
+        menuStore.addMenuRoutes(router, menuId);
+      }
+      // 如果路由现在已存在，则替换路由
+      if (router.hasRoute(menuId)) {
+        return {
+          replace: true,
+          name: menuId,
+          params: { ...to.params },
+        };
+      }
     }
   }
 

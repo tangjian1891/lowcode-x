@@ -3,7 +3,6 @@
 <script lang="ts" setup>
 import { ref, shallowRef, defineAsyncComponent, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { Menu } from "@backend/menu/menu.model";
 const targetComp = shallowRef();
 const menu = ref();
 const route = useRoute();
@@ -18,7 +17,10 @@ onMounted(async () => {
     console.error("菜单ID不存在");
     return;
   }
-  const menuInfo = await api.menu.info(menuId);
+
+  const schema = await api.form.formSchema(menuId);
+
+  console.log("表单配置", schema);
 });
 </script>
 

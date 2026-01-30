@@ -14,6 +14,13 @@ export const useMenuStore = defineStore("menu", {
     systemInfo: {} as any, // 当前系统信息
   }),
 
+  getters: {
+    // 菜单树的扁平化映射
+    menuMapping(state) {
+      return flattenTreeToMapping(state.menuTree);
+    },
+  },
+
   actions: {
     // 获取菜单树
     async fetchMenuTree(systemId: string) {
@@ -32,28 +39,32 @@ export const useMenuStore = defineStore("menu", {
       this.systemInfo = info;
     },
 
+    // 根据菜单树添加路由
+    addMenuRoutes(router: Router, menuId?: string) {
+      // 如果指定了 menuId，只添加该路由
+      if (menuId && this.menuMapping[menuId]) {
+        const element = this.menuMapping[menuId];
+        if (element && element.type == "page" && !router.hasRoute(element.id)) {
+          router.addRoute("app-layout", {
+            name: element.id,
+            path: `app-form/:menuId`,
+            component: {
+              name: element.id,
+              render() {
+                return h(AppPage);
+              },
+            },
+          });
+        }
+      }
+    },
+
     // 获取系统信息并加载菜单
     async initSystemMenu(systemId: string, router: Router) {
       try {
         this.systemInfo = await api.system.detail(systemId);
         await this.fetchMenuTree(this.systemInfo.id);
-        const mapping = flattenTreeToMapping(this.menuTree);
-
-        for (const key in mapping) {
-          const element = mapping[key];
-          if (element.type == "page") {
-            router.addRoute("app-layout", {
-              name: element.id,
-              path: `app-form/:menuId`,
-              component: {
-                name: element.id,
-                render() {
-                  return h(AppPage);
-                },
-              },
-            });
-          }
-        }
+        this.addMenuRoutes(router);
       } catch (error) {
         console.error("初始化系统菜单失败:", error);
       }

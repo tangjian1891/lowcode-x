@@ -3,7 +3,7 @@
     <div class="shrink-0 basis-50px"></div>
     <div class="flex-1">
       <el-splitter>
-        <el-splitter-panel collapsible min="300">
+        <el-splitter-panel collapsible size="300">
           <jas-side-menu />
         </el-splitter-panel>
         <router-view #default="{ Component }">
