@@ -51,7 +51,7 @@ import { Document, ArrowLeft, View, Share } from "@element-plus/icons-vue";
 import FormSidebar from "./components/form-sidebar.vue";
 import FormCanvas from "./components/form-canvas.vue";
 import FormSetting from "./components/form-setting.vue";
-import { FormDesignerViewModel } from "./form-model";
+import { FormDesignerViewModel } from "../form-model";
 import { instance } from "@/api/request";
 
 const route = useRoute();

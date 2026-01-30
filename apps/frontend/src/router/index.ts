@@ -61,7 +61,7 @@ const router = createRouter({
     {
       path: "/form-design/:menuId",
       name: "form-design",
-      component: () => import("@/views/form/form-design.vue"),
+      component: () => import("@/views/form/designer/form-designer.vue"),
     },
     {
       path: "/login",
