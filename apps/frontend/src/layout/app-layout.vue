@@ -6,12 +6,13 @@
         <el-splitter-panel collapsible size="300">
           <jas-side-menu />
         </el-splitter-panel>
-        <router-view #default="{ Component }">
-          <keep-alive :include="cachedViews">
-            <component :is="Component ?? AddMenuAccess" />
-          </keep-alive>
-        </router-view>
-        <el-splitter-panel> </el-splitter-panel>
+        <el-splitter-panel class="flex">
+          <router-view #default="{ Component }">
+            <keep-alive :include="cachedViews">
+              <component :is="Component ?? AddMenuAccess" />
+            </keep-alive>
+          </router-view>
+        </el-splitter-panel>
       </el-splitter>
     </div>
   </div>

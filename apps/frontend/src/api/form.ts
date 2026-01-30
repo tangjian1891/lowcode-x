@@ -35,7 +35,7 @@ export const form = {
     return instance.post(`/forms/${menuId}/create`, data);
   },
 
-  formSchema(menuId: string) {
+  getFormSchema(menuId: string) {
     return instance.get(`/form/schema/${menuId}`);
   },
 };
