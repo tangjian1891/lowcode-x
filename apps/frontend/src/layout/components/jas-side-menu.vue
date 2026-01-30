@@ -1,69 +1,37 @@
 <template>
   <div class="side-menu-container">
-    <div class="system-title">{{ title }}</div>
+    <div class="system-title">{{ menuStore.systemInfo.name || "系统模块" }}</div>
     <el-menu
-      :default-active="activeMenu"
+      :default-active="menuStore.activeMenuId"
       class="side-menu"
       background-color="#fff"
       text-color="#333"
       active-text-color="#1890ff"
-      @select="(menuId) => JasLayout.menuSelect(menuId, menuTree, router)"
+      @select="handleMenuSelect"
     >
       <!-- 动态渲染菜单项，替换原来的静态菜单 -->
-      <JasSideMenuItem v-for="menu in menuTree" :key="menu.id" :menu="menu" />
+      <JasSideMenuItem v-for="menu in menuStore.menuTree" :key="menu.id" :menu="menu" />
     </el-menu>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-
-import { initSystemMenu } from "../menu-data";
-import { JasLayout, Menu } from "../index";
 import { useRouter } from "vue-router";
+import { useMenuStore } from "@/stores/menu";
 import JasSideMenuItem from "./jas-side-menu-item.vue";
+
 const router = useRouter();
-
-// 为initSystemMenu函数提供系统ID参数
-const menuData = computed(() => initSystemMenu("system-001"));
-
-// 定义组件的props
-const props = defineProps({
-  title: {
-    type: String,
-    default: "系统模块",
-  },
-  menuTree: Array,
-});
-
-const activeMenu = ref(""); // 默认不选中任何菜单项
-
-// 初始化默认选中的菜单项(如果有菜单)
-if (menuData.value.length > 0 && menuData.value[0].children.length > 0) {
-  activeMenu.value = menuData.value[0].children[0].id;
-}
-
-// 定义emit事件
-const emit = defineEmits(["select", "refreshMenu"]);
+const menuStore = useMenuStore();
 
 // 处理菜单选择事件
-const handleSelect = (index: string) => {
-  activeMenu.value = index;
-  // 查找选中的菜单项
-  const selectedMenu = JasLayout.findMenuById(index, menuData.value);
-  JasLayout.goRoute(router, selectedMenu);
-  // emit('select', selectedMenu)
+const handleMenuSelect = (menuId: string) => {
+  menuStore.selectMenu(menuId, router);
 };
-
-async function removeMenu(menu: Menu) {
-  await JasLayout.removeMenu(menu);
-  emit("refreshMenu");
-}
 
 // 暴露方法给父组件
 defineExpose({
   setActiveMenu: (index: string) => {
-    activeMenu.value = index;
+    menuStore.setActiveMenu(index);
   },
 });
 </script>

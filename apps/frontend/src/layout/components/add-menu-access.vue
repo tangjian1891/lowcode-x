@@ -3,7 +3,7 @@
     <div class="parent-menu" style="width: 100%; display: flex; justify-content: center; margin-bottom: 40px">
       <el-tree-select
         v-model="selectedParentId"
-        :data="menuTree"
+        :data="menuStore.menuTree"
         node-key="id"
         :props="{ label: 'name', children: 'children', disabled: (node: any) => node.type !== MenuModel.Type.FOLDER }"
         placeholder="请选择父菜单"
@@ -39,24 +39,22 @@ import { ElMessage, type FormContext, type FormInstance, ElForm } from "element-
 import { Folder, Menu as MenuIcon } from "@element-plus/icons-vue";
 import { createDialog } from "@/tj-dialog";
 import { Menu as MenuModel } from "@backend/menu/menu.model";
+import { useMenuStore } from "@/stores/menu";
 
-const props = defineProps({
-  menuTree: Array,
-  systemInfo: Object,
-});
-const emit = defineEmits(["add-directory", "add-menu", "refreshMenu"]);
+const menuStore = useMenuStore();
 const selectedParentId = ref("");
+
 function addMenu(type: (typeof MenuModel.Type)[keyof typeof MenuModel.Type]) {
   const appDialog = AppDialog.create(addMenuComponent);
   Object.assign(appDialog.componentProps, {
-    menuTree: props.menuTree,
+    menuTree: menuStore.menuTree,
     parentId: selectedParentId.value,
-    systemInfo: props.systemInfo,
+    systemInfo: menuStore.systemInfo,
     type: type,
   });
 
   appDialog.dialogProps.onConfirm = () => {
-    emit("refreshMenu");
+    menuStore.refreshMenuTree();
     appDialog.destory();
   };
 }

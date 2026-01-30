@@ -73,7 +73,7 @@ class JasLayout {
     console.log("找到了", menu);
     if (menu) {
       router.push({
-        name: "menu",
+        name: "app-form",
         params: {
           menuId: menu.id!,
         },

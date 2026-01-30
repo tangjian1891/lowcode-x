@@ -17,23 +17,33 @@
         <span style="margin-left: 6px">{{ menu.name }}</span>
       </span>
       <span class="flex items-center">
-        <el-link underline="never" icon="Edit" @click.stop="JasLayout.goDesign(router, menu)" />
-        <el-link underline="never" icon="Delete" @click.stop="removeMenu(menu)" class="ml-6px" />
+        <el-link underline="never" icon="Edit" @click.stop="handleGoDesign(menu)" />
+        <el-link underline="never" icon="Delete" @click.stop="handleRemoveMenu(menu)" class="ml-6px" />
       </span>
     </div>
   </el-menu-item>
 </template>
 
 <script lang="ts" setup>
-import { JasLayout } from "../index";
+import { useRouter } from "vue-router";
+import { useMenuStore } from "@/stores/menu";
 import { Menu } from "@backend/menu/menu.model";
 
 defineProps({
   menu: Object,
 });
+
 const router = useRouter();
-async function removeMenu(menu: Menu) {
-  await JasLayout.removeMenu(menu);
+const menuStore = useMenuStore();
+
+// 删除菜单
+async function handleRemoveMenu(menu: Menu) {
+  await menuStore.removeMenu(menu.id!);
+}
+
+// 跳转到设计页面
+function handleGoDesign(menu: Menu) {
+  menuStore.goDesign(router, menu.id!);
 }
 // 根据菜单的子类型获取对应的图标
 const getMenuIcon = (menu: Menu) => {

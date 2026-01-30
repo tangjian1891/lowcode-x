@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AppPage from "@/core-components/app-page.vue";
+import { useEventBus } from "@/hooks/use-mitt";
+import { useMenuStore } from "@/stores/menu";
+
+const eventBus = useEventBus();
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -66,39 +70,37 @@ const router = createRouter({
     },
   ],
 });
-
+window.router = router;
 export default router;
 
-router.beforeEach((to, from) => {
-  console.log(to.name, to.path);
-  if (to.name === "app-form") {
-    const menuId = to.params.menuId as string;
-    router.addRoute("app-layout", {
-      path: "app-form/:menuId",
-      name: menuId,
-      component: {
-        name: menuId,
-        render() {
-          return h(AppPage);
-        },
-      },
-    });
-    router.replace({ name: menuId, params: to.params });
-    return false;
-  } else if (to.name === "app-composite") {
-    const menuId = to.params.menuId as string;
-    router.addRoute("app-layout", {
-      path: "app-composite/:menuId",
-      name: menuId,
-      component: {
-        name: menuId,
-        render() {
-          return h(AppPage);
-        },
-      },
-    });
-    router.replace({ name: menuId, params: to.params });
-    return false;
+router.beforeEach(async (to, from) => {
+  console.log("路由守卫触发");
+  console.log(to, from);
+
+  // 检查路由参数中是否包含 systemId
+  const systemId = to.params.systemId as string;
+  if (systemId && to.params.menuId) {
+    if (router.hasRoute(to.params.menuId)) {
+      return true;
+    }
+    const menuStore = useMenuStore();
+
+    // 检查当前 store 中的 systemId 是否一致
+    const currentSystemId = menuStore.systemInfo?.id;
+
+    // 如果不一致或没有，则加载菜单
+    if (!currentSystemId || currentSystemId !== systemId) {
+      console.log(`系统 ID 不一致或未加载，正在加载系统 ${systemId} 的菜单...`);
+      await menuStore.initSystemMenu(systemId, router);
+    }
+    if (router.hasRoute(to.params.menuId)) {
+      return {
+        replace: true,
+        name: to.params.menuId,
+        params: { ...to.params },
+      };
+    }
   }
+
   return true;
 });
