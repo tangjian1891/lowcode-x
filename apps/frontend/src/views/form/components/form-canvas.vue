@@ -4,8 +4,7 @@
       <vue-draggable
         v-model="viewModel.fields"
         ghost-class="ghost-class"
-        drag-class="drag-class"
-        group="material"
+        :group="{ name: 'material', pull: true, put: true }"
         item-key="id"
         class="design-list min-h-600px pb-20 p-2"
         @add="onAdd"
@@ -150,6 +149,9 @@ function onAdd(e) {
       top: 10px;
       z-index: 10;
     }
+  }
+  .material-drag-item {
+    height: 100px;
   }
 }
 </style>

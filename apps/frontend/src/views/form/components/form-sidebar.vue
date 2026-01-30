@@ -6,27 +6,12 @@
         <div class="group-header px-4 py-4 text-12px font-bold text-gray-500 uppercase tracking-wider">
           {{ group.group }}
         </div>
-
-        <!-- <div class="material-grid px-4 pb-4">
-          <div
-            v-for="item in group.items"
-            :key="item.type"
-            class="material-drag-item flex items-center gap-1 rounded-sm cursor-move p-1 pl-2 text-sm"
-            draggable="true"
-            @dragstart="onDragStart($event, item)"
-            @click="onItemClick(item)"
-          >
-            <el-icon><component :is="item.icon" /></el-icon>
-            <span>{{ item.label }}</span>
-          </div>
-        </div> -->
         <VueDraggable
           v-model="group.items"
           :clone="onClone"
           :group="{ name: 'material', pull: 'clone', put: false }"
           class="material-grid px-4 pb-4"
           :sort="false"
-          ghost-class="ghost-class"
         >
           <div
             v-for="item in group.items"
@@ -49,10 +34,6 @@ import { materialList } from "../form-model";
 import { VueDraggable } from "vue-draggable-plus";
 
 const viewModel = inject<any>("viewModel");
-
-const onDragStart = (event: DragEvent, item: any) => {
-  event.dataTransfer?.setData("material", JSON.stringify(item));
-};
 
 const onItemClick = (item: any) => {
   if (viewModel && typeof viewModel.addFieldByClick === "function") {
