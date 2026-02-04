@@ -5,7 +5,7 @@ import { Menu } from "@backend/menu/menu.model";
 import { JasLayout } from "@/layout";
 import { flattenTreeToMapping } from "@shared/tree";
 import AppPage from "@/core-components/app-page.vue";
-import TableRenderer from "@/views/form/renderer/table-renderer/table-renderer.vue";
+import ListRenderer from "@/views/form/renderer/list-renderer/list-renderer.vue";
 
 export const useMenuStore = defineStore("menu", {
   state: () => ({
@@ -52,7 +52,7 @@ export const useMenuStore = defineStore("menu", {
             component: {
               name: element.id,
               render() {
-                return h(TableRenderer);
+                return h(ListRenderer);
               },
             },
           });

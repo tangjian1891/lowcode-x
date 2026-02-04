@@ -1,7 +1,8 @@
 import { api } from "@/api";
+import { reactive } from "vue";
 import type { VxeGridProps } from "vxe-table";
 
-interface TableRendererParams {
+interface ListRendererParams {
   fields?: any[];
   menuId?: string;
   data?: any[];
@@ -13,7 +14,10 @@ class Reactive {
   }
 }
 
-export class TableRendererModel extends Reactive {
+/**
+ * 列表渲染器模型 (包含表格配置、工具栏、分页等逻辑)
+ */
+export class ListRendererModel extends Reactive {
   fields: any[] = [];
   data: any[] = [];
   dataLoading = false;
@@ -27,7 +31,7 @@ export class TableRendererModel extends Reactive {
     currentPage: 1,
   };
 
-  constructor(params: TableRendererParams = {}) {
+  constructor(params: ListRendererParams = {}) {
     super();
     this.fields = params.fields || [];
     this.menuId = params.menuId || null;
@@ -35,12 +39,12 @@ export class TableRendererModel extends Reactive {
   }
 
   /**
-   * 初始化表格配置
+   * 初始化列表/表格配置
    */
   init(fields: any) {
-    console.log("看下", fields);
+    console.log("Initializing List Renderer with fields:", fields);
 
-    const columns: any[] = fields.map((field) => {
+    const columns: any[] = fields.map((field: any) => {
       return {
         ...field,
         field: field.id,
@@ -51,7 +55,6 @@ export class TableRendererModel extends Reactive {
 
     this.grid = {
       height: "auto",
-      // minHeight: "300px",
       columns,
       showHeaderOverflow: "ellipsis",
       data: this.data,
@@ -59,13 +62,10 @@ export class TableRendererModel extends Reactive {
   }
 
   /**
-   * 加载表格数据
+   * 加载数据
    */
   async loadData(): Promise<void> {
-    if (!this.menuId) {
-      console.warn("menuId is required for loading data");
-      return;
-    }
+    if (!this.menuId) return;
 
     try {
       this.dataLoading = true;
@@ -75,7 +75,7 @@ export class TableRendererModel extends Reactive {
       this.grid.data = data.data;
       this.pagination.total = data.total;
     } catch (error) {
-      console.error("Failed to load table data:", error);
+      console.error("Failed to load list data:", error);
       this.grid.data = [];
       this.pagination.total = 0;
     } finally {
@@ -83,24 +83,15 @@ export class TableRendererModel extends Reactive {
     }
   }
 
-  /**
-   * 刷新数据
-   */
   async refresh(): Promise<void> {
     await this.loadData();
   }
 
-  /**
-   * 分页改变
-   */
   async handlePageChange(page: number): Promise<void> {
     this.pagination.currentPage = page;
     await this.loadData();
   }
 
-  /**
-   * 页大小改变
-   */
   async handlePageSizeChange(pageSize: number): Promise<void> {
     this.pagination.pageSize = pageSize;
     this.pagination.currentPage = 1;
