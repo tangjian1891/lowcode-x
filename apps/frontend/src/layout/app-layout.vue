@@ -44,11 +44,22 @@ const cachedViews = computed(() => {
   return tabNavRef.value?.cachedViews || [];
 });
 
-// 监听菜单树，如果没有选中的菜单且树不为空，则自动打开第一个
+// 1. 保持激活菜单与 URL 参数同步（处理页面刷新和浏览器前进后退）
+watch(
+  () => route.params.menuId,
+  (menuId) => {
+    if (menuId) {
+      menuStore.setActiveMenu(menuId as string);
+    }
+  },
+  { immediate: true },
+);
+
+// 2. 监听菜单树变化，如果没有选中的菜单且树不为空，则自动打开第一个页面
 watch(
   () => menuStore.menuTree,
   (newTree) => {
-    // 只有在当前没有 menuId（即处于占位状态）且确实有菜单数据时才自动跳转
+    // 只有在当前没有 menuId（即处于占位状态）且确实有菜单数据时才执行自动跳转
     if (!route.params.menuId && newTree.length > 0) {
       const firstPage = JasLayout.findFirstPage(newTree);
       if (firstPage) {
