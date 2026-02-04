@@ -5,18 +5,19 @@
       <el-icon><component :is="menu.icon || 'Folder'" /></el-icon>
       <span>{{ menu.name }}</span>
     </template>
-    <jas-side-menu-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu" />
+    <app-sidebar-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu" />
   </el-sub-menu>
 
+  <!-- 页面 -->
   <el-menu-item v-if="menu.type === Menu.Type.PAGE" :index="menu.id">
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
-      <span class="flex items-center flex-1">
+    <div class="menu-item-content">
+      <span class="flex items-center flex-1 overflow-hidden">
         <el-icon>
           <component :is="getMenuIcon(menu)" />
         </el-icon>
-        <span style="margin-left: 6px">{{ menu.name }}</span>
+        <span class="ml-6px truncate">{{ menu.name }}</span>
       </span>
-      <span class="flex items-center">
+      <span class="action-buttons flex items-center">
         <el-link underline="never" icon="Edit" @click.stop="handleGoDesign(menu)" />
         <el-link underline="never" icon="Delete" @click.stop="handleRemoveMenu(menu)" class="ml-6px" />
       </span>
@@ -25,12 +26,16 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from "vue";
 import { useRouter } from "vue-router";
 import { useMenuStore } from "@/stores/menu";
 import { Menu } from "@backend/menu/menu.model";
 
 defineProps({
-  menu: Object,
+  menu: {
+    type: Object as PropType<Menu>,
+    required: true,
+  },
 });
 
 const router = useRouter();
@@ -45,9 +50,9 @@ async function handleRemoveMenu(menu: Menu) {
 function handleGoDesign(menu: Menu) {
   menuStore.goDesign(router, menu.id!);
 }
+
 // 根据菜单的子类型获取对应的图标
 const getMenuIcon = (menu: Menu) => {
-  // 只根据菜单子类型返回对应图标，不再考虑自定义图标
   if (menu.pageType === Menu.PageType.FORM) {
     return "Document";
   } else if (menu.pageType === Menu.PageType.VIEW) {
@@ -55,12 +60,26 @@ const getMenuIcon = (menu: Menu) => {
   } else if (menu.pageType === Menu.PageType.LINK) {
     return "Link";
   }
-
-  // 默认图标
   return "Menu";
 };
-
-function handleSelect() {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  .action-buttons {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+}
+
+.el-menu-item:hover {
+  .action-buttons {
+    opacity: 1;
+  }
+}
+</style>

@@ -27,6 +27,20 @@ class JasLayout {
     return null;
   }
 
+  // 递归查找第一个页面类型的菜单
+  static findFirstPage(menus: Menu[]): Menu | null {
+    for (const menu of menus) {
+      if (menu.type === Menu.Type.PAGE) {
+        return menu;
+      }
+      if (menu.children && menu.children.length > 0) {
+        const found = JasLayout.findFirstPage(menu.children);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
   static async removeMenu(menu: Menu) {
     try {
       await ElMessageBox.confirm("确认删除", "提示", {

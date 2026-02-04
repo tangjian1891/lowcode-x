@@ -1,16 +1,15 @@
 <template>
-  <div class="side-menu-container">
+  <div class="sidebar-container">
     <div class="system-title">{{ menuStore.systemInfo.name || "系统模块" }}</div>
     <el-menu
       :default-active="menuStore.activeMenuId"
-      class="side-menu"
+      class="sidebar-menu"
       background-color="#fff"
       text-color="#333"
       active-text-color="#1890ff"
       @select="handleMenuSelect"
     >
-      <!-- 动态渲染菜单项，替换原来的静态菜单 -->
-      <JasSideMenuItem v-for="menu in menuStore.menuTree" :key="menu.id" :menu="menu" />
+      <app-sidebar-item v-for="menu in menuStore.menuTree" :key="menu.id" :menu="menu" />
     </el-menu>
   </div>
 </template>
@@ -18,7 +17,7 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { useMenuStore } from "@/stores/menu";
-import JasSideMenuItem from "./jas-side-menu-item.vue";
+import AppSidebarItem from "./app-sidebar-item.vue";
 
 const router = useRouter();
 const menuStore = useMenuStore();
@@ -27,17 +26,10 @@ const menuStore = useMenuStore();
 const handleMenuSelect = (menuId: string) => {
   menuStore.selectMenu(menuId, router);
 };
-
-// 暴露方法给父组件
-defineExpose({
-  setActiveMenu: (index: string) => {
-    menuStore.setActiveMenu(index);
-  },
-});
 </script>
 
 <style lang="scss" scoped>
-.side-menu-container {
+.sidebar-container {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -49,7 +41,7 @@ defineExpose({
     border-bottom: 1px solid #e8e8e8;
   }
 
-  :deep(.side-menu) {
+  :deep(.sidebar-menu) {
     flex: 1;
     overflow-y: auto;
     border-right: none;
