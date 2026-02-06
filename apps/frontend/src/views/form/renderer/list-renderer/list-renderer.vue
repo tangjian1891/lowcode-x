@@ -39,7 +39,8 @@ import { useRoute } from "vue-router";
 import type { VxeGridInstance } from "vxe-table";
 import { ListRendererModel } from "./list-renderer-model";
 import { api } from "@/api";
-import { Plus, Refresh } from "@element-plus/icons-vue";
+import { AppDialog } from "@/AppUI/AppDialog/AppDialog";
+import FormRenderer from "../form-renderer/form-renderer.vue";
 
 const props = defineProps({
   menuId: {
@@ -65,6 +66,10 @@ onMounted(async () => {
 const handleAdd = () => {
   console.log("Handle Add New Record");
   // 此处可调用 viewModel 的方法或打开弹窗
+
+  const appDialog = AppDialog.create(FormRenderer, {
+    menuId: props.menuId,
+  });
 };
 </script>
 

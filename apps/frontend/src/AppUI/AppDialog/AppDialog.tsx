@@ -1,19 +1,19 @@
 import { assignContext } from "@/utils/create-app-with-provider";
-import { ElDialog, ElIcon } from "element-plus";
-import { Close, Download, FullScreen } from "@element-plus/icons-vue";
-import { createApp, defineComponent, reactive, type App, type DefineComponent } from "vue";
+import { ElButton, ElDialog, ElIcon } from "element-plus";
+import { Close } from "@element-plus/icons-vue";
+import { createApp, defineComponent, reactive, ref, type App, type DefineComponent } from "vue";
 
 class reactiveObject {
   constructor() {
     return reactive(this);
   }
 }
+
 export class AppDialog extends reactiveObject {
   // App 实例与容器元素（只保存引用，不做副作用）
   app!: App;
   mountedElement: HTMLElement = document.createElement("div");
   teleportId = "app-" + crypto.randomUUID();
-  componentProps: Record<string, any> = {};
   dialogProps = {
     title: "",
     fullscreen: false,
@@ -22,14 +22,21 @@ export class AppDialog extends reactiveObject {
   constructor() {
     super();
   }
-  static create(TargetComponent: DefineComponent<any>) {
+
+  /**
+   * 创建一个命令式弹窗
+   * @param TargetComponent 业务组件
+   * @param props 业务组件需要的 Props
+   */
+  static create<P>(TargetComponent: DefineComponent<P, any, any, any, any>, props: P) {
     const appDialog = new AppDialog();
+
     const app = createApp(
       defineComponent({
         name: "AppDialog",
         setup() {
           return () => {
-            const DynamicComp = TargetComponent as DefineComponent<{ appDialog: AppDialog }>;
+            const DynamicComp = TargetComponent as any;
             return (
               <ElDialog modelValue={true} class="w-full" show-close={false}>
                 {{
@@ -50,11 +57,16 @@ export class AppDialog extends reactiveObject {
                     </div>
                   ),
                   default: () => (
-                    <div class="flex flex-col">
-                      <div class="grow">
-                        <DynamicComp appDialog={appDialog}></DynamicComp>
+                    <div class="flex flex-col min-h-[160px] overflow-y-auto">
+                      <div class="grow p-6">
+                        {/* 直接使用传入的 props */}
+                        <DynamicComp appDialog={appDialog} {...props}></DynamicComp>
                       </div>
-                      <div class="shrink-0 flex justify-end" id={appDialog.teleportId}></div>
+                    </div>
+                  ),
+                  footer: () => (
+                    <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/50">
+                      <div id={appDialog.teleportId} class="flex items-center gap-3"></div>
                     </div>
                   ),
                 }}
@@ -82,4 +94,34 @@ export class AppDialog extends reactiveObject {
     this.app.unmount();
     document.body.removeChild(this.mountedElement);
   }
+}
+
+export function useConfirmButton(cb: () => Promise<void> | void, options: { text?: string; type?: string } = {}) {
+  const loading = ref(false);
+  async function onClick() {
+    loading.value = true;
+    try {
+      await cb();
+    } catch (error) {
+      console.error("Action error:", error);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  const component = defineComponent({
+    name: "ActionButton",
+    inheritAttrs: false,
+    setup(props, { slots, attrs }) {
+      return () => {
+        return (
+          <ElButton {...attrs} type={(attrs.type as any) || options.type || "primary"} onClick={onClick} loading={loading.value}>
+            {slots.default?.() ?? options.text ?? "确认"}
+          </ElButton>
+        );
+      };
+    },
+  });
+
+  return [component, loading] as const;
 }

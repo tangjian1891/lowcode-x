@@ -9,22 +9,39 @@
     </el-card>
     <div v-else class="empty-tip text-center py-20 text-gray-400">表单暂无内容</div>
   </div>
+
+  <teleport defer :to="`#${appDialog.teleportId}`">
+    <el-button> 取消 </el-button>
+    <ConfirmButton />
+  </teleport>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, provide } from "vue";
-import { FormViewModel, materialMap } from "./form-model";
+import { onMounted, provide, Teleport } from "vue";
+import { FormViewModel, materialMap } from "../../form-model";
 import { instance } from "@/api/request";
+import { AppDialog, useConfirmButton } from "@/AppUI/AppDialog/AppDialog";
 
 const props = defineProps({
   menuId: {
     type: String,
     required: true,
   },
+  appDialog: {
+    type: AppDialog,
+    required: true,
+  },
+  id: String,
 });
 
 const viewModel = new FormViewModel();
-
+const [ConfirmButton, loading] = useConfirmButton(async () => {
+  await new Promise((r) => {
+    setTimeout(() => {
+      r(1);
+    }, 1000);
+  });
+});
 // Provide to deep components if needed
 provide("viewModel", viewModel);
 
