@@ -1,12 +1,15 @@
 <template>
   <div class="app-input-container w-full">
     <el-form-item :label="field.label">
-      <el-input v-model="field.fieldProps.modelValue" v-bind="field.fieldProps" :placeholder="field.fieldProps.placeholder" />
+      <el-input v-model="fieldModel" v-bind="field.fieldProps" :placeholder="field.fieldProps.placeholder" />
     </el-form-item>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { inject } from "vue";
+import { FormViewModel, useFieldModel } from "../../form-model";
+
 const props = defineProps({
   field: {
     type: Object,
@@ -17,6 +20,9 @@ const props = defineProps({
     default: "design", // design or runtime
   },
 });
+
+const viewModel = inject("viewModel") as FormViewModel;
+const fieldModel = useFieldModel(viewModel, props.field.id);
 </script>
 
 <style lang="scss" scoped>

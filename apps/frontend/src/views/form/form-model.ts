@@ -104,6 +104,24 @@ export class FormViewModel extends ReactiveBase {
   public setFormData(data: Record<string, any>) {
     this.formData = data;
   }
+
+  public updateFormData(key: string, value: any) {
+    this.formData[key] = value;
+  }
+}
+
+/**
+ * 字段模型 Hook：实现配置与数据的双向绑定
+ */
+export function useFieldModel(viewModel: FormViewModel, fieldId: string) {
+  return computed({
+    get() {
+      return viewModel.formData[fieldId];
+    },
+    set(val) {
+      viewModel.updateFormData(fieldId, val);
+    },
+  });
 }
 
 /**

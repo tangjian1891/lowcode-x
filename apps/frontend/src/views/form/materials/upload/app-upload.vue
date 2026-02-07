@@ -1,7 +1,7 @@
 <template>
   <div class="app-upload-container w-full">
     <el-form-item :label="field.label">
-      <el-upload v-bind="field.fieldProps" v-model:file-list="field.fieldProps.modelValue">
+      <el-upload v-bind="field.fieldProps" v-model:file-list="fieldModel">
         <template v-if="field.fieldProps.listType === 'picture-card'">
           <el-icon><Plus /></el-icon>
         </template>
@@ -15,6 +15,8 @@
 
 <script lang="ts" setup>
 import { Plus } from "@element-plus/icons-vue";
+import { inject } from "vue";
+import { FormViewModel, useFieldModel } from "../../form-model";
 
 const props = defineProps({
   field: {
@@ -26,6 +28,9 @@ const props = defineProps({
     default: "design",
   },
 });
+
+const viewModel = inject("viewModel") as FormViewModel;
+const fieldModel = useFieldModel(viewModel, props.field.id);
 </script>
 
 <style lang="scss" scoped>

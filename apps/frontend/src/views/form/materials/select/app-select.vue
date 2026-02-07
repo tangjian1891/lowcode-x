@@ -1,7 +1,7 @@
 <template>
   <div class="app-select-container w-full">
     <el-form-item :label="field.label">
-      <el-select v-model="field.fieldProps.modelValue" v-bind="field.fieldProps" class="!w-full">
+      <el-select v-model="fieldModel" v-bind="field.fieldProps" class="!w-full">
         <el-option v-for="item in field.fieldProps.options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-form-item>
@@ -9,6 +9,9 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from "vue";
+import { FormViewModel, useFieldModel } from "../../form-model";
+
 const props = defineProps({
   field: {
     type: Object,
@@ -19,6 +22,9 @@ const props = defineProps({
     default: "design",
   },
 });
+
+const viewModel = inject("viewModel") as FormViewModel;
+const fieldModel = useFieldModel(viewModel, props.field.id);
 </script>
 
 <style lang="scss" scoped>
