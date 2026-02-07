@@ -55,8 +55,11 @@ export class FormService {
       skip: (pageNum - 1) * pageSize,
       take: pageSize,
     });
+    const flagList = list.map((item) => {
+      return { ...item, ...item.data, data: undefined };
+    });
 
-    return { list, total, pageNum, pageSize, pages: Math.ceil(total / pageSize) };
+    return { list: flagList, total, pageNum, pageSize, pages: Math.ceil(total / pageSize) };
   }
 
   async initFormData(menuId: string) {

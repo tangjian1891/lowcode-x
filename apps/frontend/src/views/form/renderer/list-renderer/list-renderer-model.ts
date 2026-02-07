@@ -72,7 +72,7 @@ export class ListRendererModel extends Reactive {
       const response = await api.form.list(this.menuId);
       const data = response as any;
 
-      this.grid.data = data.data;
+      this.grid.data = data.list;
       this.pagination.total = data.total;
     } catch (error) {
       console.error("Failed to load list data:", error);
