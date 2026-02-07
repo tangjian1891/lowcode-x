@@ -56,7 +56,6 @@ const viewModel = new ListRendererModel({ menuId: props.menuId });
 
 onMounted(async () => {
   const schema = await api.form.getFormSchema(props.menuId);
-  console.log("List Schema Loaded:", schema);
 
   viewModel.init(schema.fields);
   viewModel.loadData();
@@ -70,6 +69,7 @@ const handleAdd = () => {
   const appDialog = AppDialog.create(FormRenderer, {
     menuId: props.menuId,
   });
+  appDialog.dialogProps.title="新增"
 };
 </script>
 

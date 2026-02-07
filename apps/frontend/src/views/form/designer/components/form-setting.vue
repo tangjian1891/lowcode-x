@@ -92,7 +92,7 @@
 
 <script lang="ts" setup>
 import { ref, inject, computed } from "vue";
-import type { FormDesignerViewModel } from "../form-model";
+import type { FormDesignerViewModel } from "../../form-model";
 import { Pointer, QuestionFilled } from "@element-plus/icons-vue";
 
 const viewModel = inject<FormDesignerViewModel>("viewModel")!;

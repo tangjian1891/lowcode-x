@@ -48,12 +48,33 @@ export class FormService {
     return this.formDataRepository.findOne({ where: { id } });
   }
 
-  async findListFormData(pageNum: number, pageSize: number) {
+  async findListFormData(formId: string, pageNum: number, pageSize: number) {
     const [list, total] = await this.formDataRepository.findAndCount({
+      where: { formId },
+
       skip: (pageNum - 1) * pageSize,
       take: pageSize,
     });
 
     return { list, total, pageNum, pageSize, pages: Math.ceil(total / pageSize) };
+  }
+
+  async initFormData(menuId: string) {
+    const schema = await this.findOneFormSchema(menuId);
+    if (!schema) {
+      throw new NotFoundException("Form schema not found");
+    }
+
+    const data: Record<string, any> = {};
+    if (schema.fields && Array.isArray(schema.fields)) {
+      schema.fields.forEach((field: any) => {
+        const key = field.id;
+        if (key) {
+          data[key] = field.fieldProps?.defaultValue ?? null;
+        }
+      });
+    }
+
+    return data;
   }
 }

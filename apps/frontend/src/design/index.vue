@@ -25,7 +25,10 @@
 import LeftMaterial from "./layout/left-material.vue";
 import CenterArea from "./layout/center-area.vue";
 import RightPropPanel from "./layout/right-prop-panel.vue";
-import { ref, reactive, provide } from "vue";
+import { ref, reactive, provide, computed } from "vue";
+import { useRoute } from "vue-router";
+import { api } from "@/api";
+import { utils } from "@shared/index";
 import type { DraggableEvent, SortableEvent } from "vue-draggable-plus";
 import type Sortable from "sortablejs";
 import { materialList, type MaterialElement } from "./material";
@@ -178,7 +181,7 @@ const previewForm = () => {
 const saveForm = async () => {
   console.log("保存表单", { formConfig, fields: data.fields });
   menuInfo.value.value = data.formConfig;
-  await api.menu.create(menuInfo.value);
+  await api.menu.save(menuInfo.value);
 
   ElMessage.success("表单已保存");
 };

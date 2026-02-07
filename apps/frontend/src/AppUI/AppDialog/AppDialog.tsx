@@ -28,7 +28,7 @@ export class AppDialog extends reactiveObject {
    * @param TargetComponent 业务组件
    * @param props 业务组件需要的 Props
    */
-  static create<P>(TargetComponent: DefineComponent<P, any, any, any, any>, props: P) {
+  static create<P>(TargetComponent: DefineComponent<P, any, any, any, any>, props: Omit<P, "appDialog">) {
     const appDialog = new AppDialog();
 
     const app = createApp(
@@ -58,17 +58,13 @@ export class AppDialog extends reactiveObject {
                   ),
                   default: () => (
                     <div class="flex flex-col min-h-[160px] overflow-y-auto">
-                      <div class="grow p-6">
+                      <div class="grow">
                         {/* 直接使用传入的 props */}
                         <DynamicComp appDialog={appDialog} {...props}></DynamicComp>
                       </div>
                     </div>
                   ),
-                  footer: () => (
-                    <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/50">
-                      <div id={appDialog.teleportId} class="flex items-center gap-3"></div>
-                    </div>
-                  ),
+                  footer: () => <div class="flex items-center justify-end " id={appDialog.teleportId}></div>,
                 }}
               </ElDialog>
             );

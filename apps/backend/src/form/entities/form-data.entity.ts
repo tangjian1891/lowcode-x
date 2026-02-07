@@ -3,7 +3,7 @@ import { Column, Entity } from "typeorm";
 
 @Entity()
 export class FormData extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   tenantId: string;
   @Column()
   formId: string;

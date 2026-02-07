@@ -34,7 +34,15 @@ export class FormDataController {
    * 获取表单数据列表（分页）
    */
   @Post("list")
-  findListFormData(@Body() body: { pageNum: number; pageSize: number }) {
-    return this.formService.findListFormData(body.pageNum, body.pageSize);
+  findListFormData(@Body() body: { formId: string; pageNum: number; pageSize: number }) {
+    return this.formService.findListFormData(body.formId, body.pageNum, body.pageSize);
+  }
+
+  /**
+   * 初始化表单数据
+   */
+  @Get("init/:menuId")
+  initFormData(@Param("menuId") menuId: string) {
+    return this.formService.initFormData(menuId);
   }
 }

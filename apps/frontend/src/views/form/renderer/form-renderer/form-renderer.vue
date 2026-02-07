@@ -1,12 +1,10 @@
 <template>
-  <div class="form-render-wrapper p-4 max-w-800px mx-auto">
-    <el-card v-if="viewModel.fields.length > 0">
-      <el-form :label-width="viewModel.config.labelWidth" :label-position="viewModel.config.labelPosition" :size="viewModel.config.size">
+  <div class="form-render-wrapper ">
+      <el-form v-if="viewModel.fields.length > 0" :label-width="viewModel.config.labelWidth" :label-position="viewModel.config.labelPosition" :size="viewModel.config.size">
         <div v-for="field in viewModel.fields" :key="field.id" class="mb-4">
           <component :is="getComponent(field.type)" :field="field" mode="runtime" />
         </div>
       </el-form>
-    </el-card>
     <div v-else class="empty-tip text-center py-20 text-gray-400">表单暂无内容</div>
   </div>
 
@@ -18,8 +16,11 @@
 
 <script lang="ts" setup>
 import { onMounted, provide, Teleport } from "vue";
+import { ElMessage } from "element-plus";
 import { FormViewModel, materialMap } from "../../form-model";
 import { instance } from "@/api/request";
+import { api } from "@/api";
+
 import { AppDialog, useConfirmButton } from "@/AppUI/AppDialog/AppDialog";
 
 const props = defineProps({
@@ -31,34 +32,52 @@ const props = defineProps({
     type: AppDialog,
     required: true,
   },
-  id: String,
+  id: {
+    type: String,
+  },
 });
 
 const viewModel = new FormViewModel();
 const [ConfirmButton, loading] = useConfirmButton(async () => {
-  await new Promise((r) => {
-    setTimeout(() => {
-      r(1);
-    }, 1000);
-  });
+  try {
+    const data = {
+      formId: props.menuId,
+      data: viewModel.formData,
+    };
+    if (props.id) {
+      data.id = props.id;
+    }
+    await api.form.saveData(data);
+    ElMessage.success("保存成功");
+    props.appDialog.destory();
+  } catch (error) {
+    console.error(error);
+  }
 });
 // Provide to deep components if needed
 provide("viewModel", viewModel);
 
 onMounted(async () => {
-  if (props.menuId) {
-    try {
-      const res = (await instance.get(`/form/schema/${props.menuId}`)) as any;
-      if (res) {
-        // 直接使用 loadConfig 加载后端返回的 FormSchema 数据
-        // 后端返回结构为 { fields, config, ... }
-        // loadConfig 期望参数为 FormConfig { fields, config }
-        // 刚好匹配
-        viewModel.loadData(res);
-      }
-    } catch (error) {
-      console.error("Failed to fetch form schema:", error);
+  if (!props.menuId) return;
+
+  try {
+    const fetchMethods = [instance.get(`/form/schema/${props.menuId}`)] as any[];
+    if (props.id) {
+      fetchMethods.push(api.form.findOneData(props.id));
+    } else {
+      fetchMethods.push(api.form.init(props.menuId));
     }
+
+    const [schemaRes, initData] = await Promise.all(fetchMethods);
+
+    if (schemaRes) {
+      viewModel.loadData(schemaRes);
+    }
+    if (initData) {
+      viewModel.setFormData(initData);
+    }
+  } catch (error) {
+    console.error("Failed to init form:", error);
   }
 });
 
@@ -67,8 +86,4 @@ const getComponent = (type: string) => {
 };
 </script>
 
-<style lang="scss" scoped>
-.form-render-wrapper {
-  background-color: transparent;
-}
-</style>
+<style lang="scss" scoped></style>

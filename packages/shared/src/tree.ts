@@ -61,3 +61,32 @@ export function flattenTreeToMapping<T extends BaseNode>(tree: T[]) {
   traverse(tree);
   return mapping;
 }
+
+export function resetObjectProperties(obj: any, excludes: string[] = []) {
+  Object.keys(obj).forEach((key) => {
+    if (!excludes.includes(key)) {
+      if (typeof obj[key] === "string") {
+        obj[key] = "";
+      } else if (typeof obj[key] === "number") {
+        obj[key] = 0;
+      } else if (Array.isArray(obj[key])) {
+        obj[key] = [];
+      } else if (typeof obj[key] === "object" && obj[key] !== null) {
+        resetObjectProperties(obj[key], excludes);
+      }
+    }
+  });
+}
+
+export function findParentNode<T extends BaseNode>(tree: T[], targetId: string): T[] | null {
+  for (const node of tree) {
+    if (node.children) {
+      if (node.children.some((child) => child.id === targetId)) {
+        return node.children as T[];
+      }
+      const parent = findParentNode(node.children as T[], targetId);
+      if (parent) return parent;
+    }
+  }
+  return null;
+}

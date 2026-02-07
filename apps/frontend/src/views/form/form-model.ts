@@ -97,6 +97,13 @@ export class FormViewModel extends ReactiveBase {
   public get fieldMapping() {
     return keyBy(this.fields, "id") as Record<string, FieldType>;
   }
+
+  // 表单数据
+  public formData: Record<string, any> = {};
+
+  public setFormData(data: Record<string, any>) {
+    this.formData = data;
+  }
 }
 
 /**

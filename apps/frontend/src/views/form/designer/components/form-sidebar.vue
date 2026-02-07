@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { inject } from "vue";
-import { materialList } from "../form-model";
+import { materialList } from "../../form-model";
 import { VueDraggable } from "vue-draggable-plus";
 
 const viewModel = inject<any>("viewModel");

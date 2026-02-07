@@ -29,7 +29,11 @@ export const form = {
   },
 
   list(menuId: string) {
-    return instance.post(`/forms/${menuId}/list`);
+    return instance.post(`/form/data/list`, {
+      formId: menuId,
+      pageNum: 1,
+      pageSize: 10,
+    });
   },
   create(menuId: string, data: any) {
     return instance.post(`/forms/${menuId}/create`, data);
@@ -37,5 +41,17 @@ export const form = {
 
   getFormSchema(menuId: string) {
     return instance.get(`/form/schema/${menuId}`);
+  },
+
+  init(menuId: string) {
+    return instance.get(`/form/data/init/${menuId}`);
+  },
+
+  saveData(data: any) {
+    return instance.post(`/form/data/save`, data);
+  },
+
+  findOneData(id: string) {
+    return instance.get(`/form/data/${id}`);
   },
 };

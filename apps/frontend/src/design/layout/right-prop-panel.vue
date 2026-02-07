@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
+import { MaterialEnum } from "@/enums/material-enum";
 import type { TabsPaneContext } from "element-plus";
 import Tj1 from "@/components/el-wrap/tj-1.vue";
 import TitleAttr from "../attrs/label-attr.vue";
@@ -36,7 +37,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
 
-function onChange(params: type) {
+function onChange(params: any) {
   console.log("变化了", params);
 }
 watch(
