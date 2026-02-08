@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { FormService } from "../form.service";
+import { FormDataService } from "../services/form-data.service";
 import { FormData } from "../entities/form-data.entity";
 
 @Controller("form/data")
 export class FormDataController {
-  constructor(private readonly formService: FormService) {}
+  constructor(private readonly formDataService: FormDataService) {}
 
   /**
    * 保存表单数据
    */
   @Post("save")
   saveFormData(@Body() formData: FormData) {
-    return this.formService.saveFormData(formData);
+    return this.formDataService.saveFormData(formData);
   }
 
   /**
@@ -19,7 +19,7 @@ export class FormDataController {
    */
   @Get(":id")
   findOneFormData(@Param("id") id: string) {
-    return this.formService.findOneFormData(id);
+    return this.formDataService.findOneFormData(id);
   }
 
   /**
@@ -27,7 +27,7 @@ export class FormDataController {
    */
   @Post("delete")
   removeFormData(@Body("ids") ids: string[]) {
-    return this.formService.removeFormData(ids);
+    return this.formDataService.removeFormData(ids);
   }
 
   /**
@@ -35,7 +35,7 @@ export class FormDataController {
    */
   @Post("list")
   findListFormData(@Body() body: { formId: string; pageNum: number; pageSize: number }) {
-    return this.formService.findListFormData(body.formId, body.pageNum, body.pageSize);
+    return this.formDataService.findListFormData(body.formId, body.pageNum, body.pageSize);
   }
 
   /**
@@ -43,6 +43,6 @@ export class FormDataController {
    */
   @Get("init/:menuId")
   initFormData(@Param("menuId") menuId: string) {
-    return this.formService.initFormData(menuId);
+    return this.formDataService.initFormData(menuId);
   }
 }

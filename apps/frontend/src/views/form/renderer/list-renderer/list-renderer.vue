@@ -4,6 +4,7 @@
     <div class="list-toolbar">
       <div class="left-actions">
         <el-button type="primary" icon="Plus" @click="handleAdd">新增</el-button>
+        <el-button type="danger" icon="Delete" @click="viewModel.handleDelete()">批量删除</el-button>
         <el-button icon="Refresh" @click="viewModel.refresh()">刷新</el-button>
       </div>
       <div class="right-actions">
@@ -55,9 +56,10 @@ const gridRef = ref<VxeGridInstance<any>>();
 const viewModel = new ListRendererModel({ menuId: props.menuId });
 
 onMounted(async () => {
-  const schema = await api.form.getFormSchema(props.menuId);
+  const data = await api.formSchema.get(props.menuId);
 
-  viewModel.init(schema.fields);
+  viewModel.init(data.fields);
+  viewModel.gridRef = gridRef.value as any;
   viewModel.loadData();
 });
 
@@ -68,8 +70,11 @@ const handleAdd = () => {
 
   const appDialog = AppDialog.create(FormRenderer, {
     menuId: props.menuId,
+    onSuccess: () => {
+      viewModel.refresh();
+    },
   });
-  appDialog.dialogProps.title="新增"
+  appDialog.dialogProps.title = "新增";
 };
 </script>
 

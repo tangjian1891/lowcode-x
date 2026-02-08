@@ -38,7 +38,7 @@ onMounted(async () => {
 
   Object.assign(data, menu.value);
   if (!isNil(id)) {
-    let res2 = await api.form.info(formId, id);
+    let res2 = await api.formData.get(id);
     console.log(res2);
     Object.assign(form, res2);
   }
@@ -57,7 +57,7 @@ const fieldMapping = computed(() => {
 
 const form = reactive({});
 async function handleSave() {
-  await api.form.create(props.formId, form);
+  await api.formData.save(form);
   ElMessage.success("保存成功");
   props.dialogInstance.onRefresh();
   props.dialogInstance.close();

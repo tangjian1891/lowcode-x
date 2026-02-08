@@ -35,6 +35,9 @@ const props = defineProps({
   id: {
     type: String,
   },
+  onSuccess: {
+    type: Function,
+  },
 });
 
 const viewModel = new FormViewModel();
@@ -45,10 +48,11 @@ const [ConfirmButton, loading] = useConfirmButton(async () => {
       data: viewModel.formData,
     };
     if (props.id) {
-      data.id = props.id;
+      (data as any).id = props.id;
     }
-    await api.form.saveData(data);
+    await api.formData.save(data);
     ElMessage.success("保存成功");
+    props.onSuccess?.();
     props.appDialog.destory();
   } catch (error) {
     console.error(error);
@@ -61,17 +65,17 @@ onMounted(async () => {
   if (!props.menuId) return;
 
   try {
-    const fetchMethods = [instance.get(`/form/schema/${props.menuId}`)] as any[];
+    const fetchMethods = [api.formSchema.get(props.menuId)] as any[];
     if (props.id) {
-      fetchMethods.push(api.form.findOneData(props.id));
+      fetchMethods.push(api.formData.get(props.id));
     } else {
-      fetchMethods.push(api.form.init(props.menuId));
+      fetchMethods.push(api.formData.init(props.menuId));
     }
 
     const [schemaRes, initData] = await Promise.all(fetchMethods);
 
     if (schemaRes) {
-      viewModel.loadData(schemaRes);
+      viewModel.loadData(schemaRes.data);
     }
     if (initData) {
       viewModel.setFormData(initData);

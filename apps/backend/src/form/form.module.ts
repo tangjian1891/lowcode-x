@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
-import { FormService } from "./form.service";
+import { FormSchemaService } from "./services/form-schema.service";
+import { FormDataService } from "./services/form-data.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FormData } from "./entities/form-data.entity";
 import { FormSchema } from "./entities/form-schema.entity";
@@ -9,6 +10,7 @@ import { FormDataController } from "./controllers/form-data.controller";
 @Module({
   imports: [TypeOrmModule.forFeature([FormSchema, FormData])],
   controllers: [FormSchemaController, FormDataController],
-  providers: [FormService],
+  providers: [FormSchemaService, FormDataService],
+  exports: [FormSchemaService, FormDataService],
 })
 export class FormModule {}

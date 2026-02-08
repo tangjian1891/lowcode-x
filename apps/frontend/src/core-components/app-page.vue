@@ -18,7 +18,7 @@ onMounted(async () => {
     return;
   }
 
-  const schema = await api.form.formSchema(menuId);
+  const schema = await api.formSchema.get(menuId);
 
   console.log("表单配置", schema);
 });

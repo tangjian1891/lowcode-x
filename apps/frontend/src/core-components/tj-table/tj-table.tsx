@@ -141,7 +141,7 @@ export class TjTable extends Reactive {
 
     try {
       this.dataLoading = true;
-      const response = await api.form.list(this.menuId);
+      const response = await api.formData.list(this.menuId);
       const data = response as any; // 临时处理类型
 
       // 根据您的 API 返回结构调整

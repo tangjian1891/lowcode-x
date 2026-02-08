@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { FormService } from "../form.service";
+import { FormSchemaService } from "../services/form-schema.service";
 import { FormSchema } from "../entities/form-schema.entity";
 
 @Controller("form/schema")
 export class FormSchemaController {
-  constructor(private readonly formService: FormService) {}
+  constructor(private readonly formSchemaService: FormSchemaService) {}
 
   /**
    * 保存表单模板
    */
   @Post("save")
   saveFormSchema(@Body() formSchema: FormSchema) {
-    return this.formService.saveFormSchema(formSchema);
+    return this.formSchemaService.saveFormSchema(formSchema);
   }
 
   /**
@@ -19,7 +19,7 @@ export class FormSchemaController {
    */
   @Get(":menuId")
   findOneFormSchema(@Param("menuId") menuId: string) {
-    return this.formService.findOneFormSchema(menuId);
+    return this.formSchemaService.findOneFormSchema(menuId);
   }
 
   /**
@@ -27,7 +27,7 @@ export class FormSchemaController {
    */
   @Post("delete")
   removeFormSchema(@Body("ids") ids: string[]) {
-    return this.formService.removeFormSchema(ids);
+    return this.formSchemaService.removeFormSchema(ids);
   }
 
   /**
@@ -35,6 +35,6 @@ export class FormSchemaController {
    */
   @Post("list")
   findListFormSchema(@Body() body: { pageNum: number; pageSize: number }) {
-    return this.formService.findListFormSchema(body.pageNum, body.pageSize);
+    return this.formSchemaService.findListFormSchema(body.pageNum, body.pageSize);
   }
 }

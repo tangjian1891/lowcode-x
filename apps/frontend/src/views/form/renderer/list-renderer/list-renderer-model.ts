@@ -1,6 +1,7 @@
 import { api } from "@/api";
 import { reactive } from "vue";
-import type { VxeGridProps } from "vxe-table";
+import type { VxeGridProps, VxeGridInstance } from "vxe-table";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 interface ListRendererParams {
   fields?: any[];
@@ -23,7 +24,7 @@ export class ListRendererModel extends Reactive {
   dataLoading = false;
   menuId: string | null = null;
   grid: VxeGridProps = {};
-  gridRef = null;
+  gridRef: VxeGridInstance | null = null;
   pagination = {
     pageSize: 50,
     pageSizes: [10, 20, 50, 100],
@@ -53,6 +54,13 @@ export class ListRendererModel extends Reactive {
       };
     });
 
+    // Add checkbox column
+    columns.unshift({
+      type: "checkbox",
+      width: 50,
+      fixed: "left",
+    });
+
     this.grid = {
       height: "auto",
       columns,
@@ -69,7 +77,7 @@ export class ListRendererModel extends Reactive {
 
     try {
       this.dataLoading = true;
-      const response = await api.form.list(this.menuId);
+      const response = await api.formData.list(this.menuId);
       const data = response as any;
 
       this.grid.data = data.list;
@@ -96,5 +104,34 @@ export class ListRendererModel extends Reactive {
     this.pagination.pageSize = pageSize;
     this.pagination.currentPage = 1;
     await this.loadData();
+  }
+
+  async handleDelete() {
+    if (!this.gridRef) {
+      console.warn("Grid reference is not ready.");
+      return;
+    }
+
+    const selectedRecords = this.gridRef.getCheckboxRecords();
+    if (selectedRecords.length === 0) {
+      ElMessage.warning("请选择要删除的数据");
+      return;
+    }
+
+    try {
+      await ElMessageBox.confirm("确定要删除选中的数据吗？", "提示", {
+        type: "warning",
+      });
+
+      const ids = selectedRecords.map((item: any) => item.id);
+      await api.formData.remove(ids);
+      ElMessage.success("删除成功");
+      this.refresh();
+    } catch (error) {
+      // Cancelled or failed
+      if (error !== "cancel") {
+        console.error("Delete failed:", error);
+      }
+    }
   }
 }

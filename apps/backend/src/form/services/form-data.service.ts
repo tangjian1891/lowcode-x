@@ -1,39 +1,15 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FormSchema } from "./entities/form-schema.entity";
 import { Repository } from "typeorm";
-import { FormData } from "./entities/form-data.entity";
+import { FormData } from "../entities/form-data.entity";
+import { FormSchemaService } from "./form-schema.service";
 
 @Injectable()
-export class FormService {
+export class FormDataService {
   constructor(
-    @InjectRepository(FormSchema) private formSchemaRepository: Repository<FormSchema>,
     @InjectRepository(FormData) private formDataRepository: Repository<FormData>,
+    private formSchemaService: FormSchemaService,
   ) {}
-
-  async saveFormSchema(formSchema: FormSchema) {
-    const entity = this.formSchemaRepository.create(formSchema);
-    return this.formSchemaRepository.save(entity);
-  }
-
-  async findOneFormSchema(menuId: string) {
-    return this.formSchemaRepository.findOne({ where: { menuId } });
-  }
-
-  async removeFormSchema(ids: string[]) {
-    return this.formSchemaRepository.delete(ids);
-  }
-
-  async findListFormSchema(pageNum: number, pageSize: number) {
-    const [list, total] = await this.formSchemaRepository.findAndCount({
-      skip: (pageNum - 1) * pageSize,
-      take: pageSize,
-    });
-
-    return { list, total, pageNum, pageSize, pages: Math.ceil(total / pageSize) };
-  }
-
-  // 表单数据
 
   async saveFormData(formData: FormData) {
     const entity = this.formDataRepository.create(formData);
@@ -51,7 +27,6 @@ export class FormService {
   async findListFormData(formId: string, pageNum: number, pageSize: number) {
     const [list, total] = await this.formDataRepository.findAndCount({
       where: { formId },
-
       skip: (pageNum - 1) * pageSize,
       take: pageSize,
     });
@@ -63,7 +38,7 @@ export class FormService {
   }
 
   async initFormData(menuId: string) {
-    const schema = await this.findOneFormSchema(menuId);
+    const schema = await this.formSchemaService.findOneFormSchema(menuId);
     if (!schema) {
       throw new NotFoundException("Form schema not found");
     }
