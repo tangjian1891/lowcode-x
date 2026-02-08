@@ -9,7 +9,7 @@
   </div>
 
   <teleport defer :to="`#${appDialog.teleportId}`">
-    <el-button> 取消 </el-button>
+    <el-button @click="appDialog.destory()"> 取消 </el-button>
     <ConfirmButton />
   </teleport>
 </template>
@@ -18,7 +18,6 @@
 import { onMounted, provide, Teleport } from "vue";
 import { ElMessage } from "element-plus";
 import { FormViewModel, materialMap } from "../../form-model";
-import { instance } from "@/api/request";
 import { api } from "@/api";
 
 import { AppDialog, useConfirmButton } from "@/AppUI/AppDialog/AppDialog";
@@ -75,10 +74,10 @@ onMounted(async () => {
     const [schemaRes, initData] = await Promise.all(fetchMethods);
 
     if (schemaRes) {
-      viewModel.loadData(schemaRes.data);
+      viewModel.loadData(schemaRes);
     }
     if (initData) {
-      viewModel.setFormData(initData);
+      viewModel.setFormData(initData.data || initData);
     }
   } catch (error) {
     console.error("Failed to init form:", error);

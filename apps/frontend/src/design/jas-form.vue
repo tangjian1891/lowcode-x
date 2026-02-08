@@ -40,7 +40,7 @@ onMounted(async () => {
   if (!isNil(id)) {
     let res2 = await api.formData.get(id);
     console.log(res2);
-    Object.assign(form, res2);
+    Object.assign(form, res2.data || res2);
   }
 
   if (props.mode === "detail") {
