@@ -52,7 +52,9 @@ import FormSidebar from "./components/form-sidebar.vue";
 import FormCanvas from "./components/form-canvas.vue";
 import FormSetting from "./components/form-setting.vue";
 import { FormDesignerViewModel } from "../form-model";
-import { instance } from "@/api/request";
+import { formSchema } from "@/api/form-schema";
+import { menu } from "@/api/menu";
+import { id } from "element-plus/es/locale/index.mjs";
 
 const route = useRoute();
 const menuId = route.params.menuId as string;
@@ -73,10 +75,10 @@ provide("viewModel", viewModel);
 onMounted(async () => {
   if (menuId) {
     try {
-      const res = await instance.get(`/menu/${menuId}`);
+      const res = await menu.getMenuById(menuId);
       menuInfo.value = res;
 
-      const res2 = (await instance.get(`/form/schema/${menuId}`)) as any;
+      const res2 = (await formSchema.get(menuId)) as any;
       viewModel.loadData(res2);
     } catch (error) {
       console.error("Failed to fetch menu info:", error);
@@ -87,12 +89,15 @@ onMounted(async () => {
 const saveForm = async () => {
   try {
     const payload = {
-      menuId: menuId,
+      id: viewModel.id,
+      tenantId: viewModel.tenantId,
       name: menuInfo.value.name,
-      fields: viewModel.fields,
+      menuId: menuId,
       config: viewModel.config,
+      fields: viewModel.fields,
+      description: viewModel.description,
     };
-    await instance.post("/form/schema/save", payload);
+    await formSchema.save(payload);
     ElMessage.success("表单已保存");
   } catch (error) {
     console.error(error);

@@ -75,6 +75,12 @@ export class ReactiveBase {
  */
 export class FormViewModel extends ReactiveBase {
   static readonly MaterialType = MaterialType;
+  // 表单元数据
+  public id?: string;
+  public tenantId?: string;
+  public menuId?: string;
+  public name?: string;
+  public description?: string;
 
   public fields: FieldType[] = [];
   public config = {
