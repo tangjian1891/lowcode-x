@@ -15,9 +15,6 @@ export default defineConfig({
     vueJsx(),
     tsconfigPaths(),
     AutoImport({
-      eslintrc: {
-        enabled: true, // <-- this
-      },
       dts: true,
       include: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx

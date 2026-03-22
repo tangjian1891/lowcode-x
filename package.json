@@ -1,6 +1,14 @@
 {
   "name": "jas-table",
   "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter frontend dev",
@@ -8,10 +16,6 @@
     "docs": "pnpm --filter docs docs:dev",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "dayjs": "^1.11.13",
     "lodash-es": "^4.17.21"
@@ -22,6 +26,8 @@
     "eslint": "^9.22.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.1",
+    "oxfmt": "^0.37.0",
+    "oxlint": "~1.51.0",
     "prettier": "3.5.3",
     "typescript": "~5.8.0"
   },
@@ -29,9 +35,5 @@
     "*.{js,ts,tsx,json,css}": [
       "prettier --write"
     ]
-  },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  }
 }

@@ -1,9 +1,18 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "auto-imports.d.ts", "global.d.ts", "vite.env.d.ts"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "auto-imports.d.ts",
+    "global.d.ts",
+    "vite.env.d.ts"
+  ],
   "exclude": ["src/**/__tests__/*", "node_modules"],
   "compilerOptions": {
+    "baseUrl": ".",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["../../packages/shared/src/*"],
