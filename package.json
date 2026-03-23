@@ -21,19 +21,12 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@tangjian1891/eslint-config": "0.0.1-beta.2",
     "@types/lodash-es": "^4.17.12",
-    "eslint": "^9.22.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.1",
-    "oxfmt": "^0.37.0",
-    "oxlint": "~1.51.0",
-    "prettier": "3.5.3",
     "typescript": "~5.8.0"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json,css}": [
-      "prettier --write"
-    ]
+    "*.{js,ts,tsx,json,css}": []
   }
 }

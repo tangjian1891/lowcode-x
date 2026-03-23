@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // app.useGlobalInterceptors(new ResponseInterceptor());
   // app.useGlobalFilters(new AllExceptionsFilter());
-  // 启用 CORS
+  // 启用 CORS  
   app.enableCors();
 
   await app.listen(process.env.PORT ?? 3000);
