@@ -51,7 +51,7 @@
     "sass": "^1.86.3",
     "typescript": "~5.9.3",
     "unplugin-auto-import": "^19.1.2",
-    "vite": "beta",
+    "vite": "9.0.1",
     "vite-plugin-vue-devtools": "^8.0.7",
     "vite-tsconfig-paths": "^6.0.4",
     "vue-tsc": "^3.2.5"
