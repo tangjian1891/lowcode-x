@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { FormModule } from "./form/form.module";
@@ -20,15 +20,21 @@ import { MenuModule } from "./menu/menu.module";
     FormModule,
     SystemModule,
     UserModule,
-    TypeOrmModule.forRoot({
-      type: "postgres",
-      host: "123.57.237.100",
-      port: 5432,
-      username: "admin",
-      password: "passwordpassword",
-      database: "lowcode_x_db",
-      autoLoadEntities: true,
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return {
+          type: "postgres",
+          host: configService.get("sql_host"),
+          port: 5432,
+          username: "admin",
+          password: configService.get("sql_password"),
+          database: "lowcode_x_db",
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
     }),
   ],
   controllers: [AppController],
